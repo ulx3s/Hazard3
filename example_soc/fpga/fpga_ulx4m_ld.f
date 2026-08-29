@@ -1,4 +1,5 @@
 file fpga_ulx4m_ld.v
+file pll_25_40.v
 file pll_25_50.v
 file pll_25_50_250.v
 file ulx3s_hdmi_test_pattern.v

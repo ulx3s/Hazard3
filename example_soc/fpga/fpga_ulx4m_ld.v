@@ -5,6 +5,10 @@
 
 `default_nettype none
 
+`ifndef HAZARD3_ULX4M_SYS_CLK_MHZ
+`define HAZARD3_ULX4M_SYS_CLK_MHZ 50
+`endif
+
 // Hazard3 + Doom target for ULX4M-LD v0.0.3 with LiteDRAM ECP5 DDR3.
 // FPGA build: ULX4M-LD-LITEDRAM-PERFORMANCE-R5-20260716
 module fpga_ulx4m_ld (
@@ -38,11 +42,28 @@ wire clk_sys;
 wire pll_sys_locked;
 wire rst_n_sys;
 
-pll_25_50 pll_sys_u (
-    .clkin   (clk_osc),
-    .clkout0 (clk_sys),
-    .locked  (pll_sys_locked)
-);
+localparam integer SYS_CLK_MHZ = `HAZARD3_ULX4M_SYS_CLK_MHZ;
+
+generate
+if (SYS_CLK_MHZ == 25) begin : gen_sys_clk_25
+    assign clk_sys = clk_osc;
+    assign pll_sys_locked = 1'b1;
+end else if (SYS_CLK_MHZ == 40) begin : gen_pll_sys_40
+    pll_25_40 pll_sys_u (
+        .clkin   (clk_osc),
+        .clkout0 (clk_sys),
+        .locked  (pll_sys_locked)
+    );
+end else if (SYS_CLK_MHZ == 50) begin : gen_pll_sys_50
+    pll_25_50 pll_sys_u (
+        .clkin   (clk_osc),
+        .clkout0 (clk_sys),
+        .locked  (pll_sys_locked)
+    );
+end else begin : gen_pll_sys_unsupported
+    unsupported_ulx4m_sys_clk_mhz unsupported_sys_clk_u ();
+end
+endgenerate
 
 fpga_reset #(
     .SHIFT (3)
@@ -195,7 +216,7 @@ example_soc #(
     .DTM_TYPE           ("ECP5"),
     .SRAM_DEPTH         (1 << 15),
     .SRAM_PRELOAD_FILE  ("../soc/hazard3-boot-monitor.hex"),
-    .CLK_MHZ            (50),
+    .CLK_MHZ            (SYS_CLK_MHZ),
     .SDRAM_ENABLE       (1),
     .LITEDRAM_ENABLE     (1),
 
