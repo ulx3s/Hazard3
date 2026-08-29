@@ -5,7 +5,8 @@
 
 `default_nettype none
 
-// Double-buffered 320x200 / experimental 400x240 framebuffer output shared by ULX3S and ULX4M.
+// Double-buffered 320x200 / experimental 400x240 framebuffer output plus a
+// packed 512x300 GUI mode shared by ULX3S and ULX4M.
 //
 // The fast path writes a completed Doom frame directly into the inactive ECP5
 // block-RAM bank through two APB registers, then swaps banks during vertical
@@ -14,16 +15,23 @@
 // retained for monitor diagnostics and backward compatibility.
 //
 // The Elecrow panel is driven at 1024x600. The standard source remains 320x200.
-// CONTROL_HIGH_RES optionally selects a 400x240 source; phase accumulators map
-// either source size across the complete panel without changing HDMI timing.
+// CONTROL_HIGH_RES optionally selects a 400x240 8-bpp source. CONTROL_GUI_RES
+// selects a packed 512x300 4-bpp indexed source, which scales exactly 2x in
+// both directions. The GUI reuses the existing EBR frame banks; no additional
+// full-frame EBR or continuous SDRAM scanout is required.
+// EXTENDED_VIDEO_MODES=0 removes the 400x240/512x300 capabilities and sizes
+// the displayed frame RAM for the two standard 320x200 buffers only.
 //
 // Frame data may be either RGB332 or native Doom palette indices. Indexed mode
 // uses one independently stored 256-entry RGB332 palette for each SDRAM staging
 // buffer, so palette changes become visible atomically with the matching frame.
 module ulx3s_hdmi_framebuffer #(
+    parameter EXTENDED_VIDEO_MODES = 1'b1,
     parameter [24:0] FRAMEBUFFER0_HALFWORD_BASE = 25'h1e00000,
     parameter [24:0] FRAMEBUFFER1_HALFWORD_BASE = 25'h1e08000,
-    parameter [24:0] FRAMEBUFFER1_HIGH_HALFWORD_BASE = 25'h1e0c000
+    parameter [24:0] FRAMEBUFFER1_HIGH_HALFWORD_BASE = 25'h1e0c000,
+    parameter [24:0] GUI_FRAMEBUFFER_HALFWORD_BASE =
+        FRAMEBUFFER0_HALFWORD_BASE + 25'h18000
 ) (
     input  wire        clk_sys,
     input  wire        rst_n_sys,
@@ -67,12 +75,22 @@ localparam STANDARD_SOURCE_WIDTH = 320;
 localparam STANDARD_SOURCE_HEIGHT = 200;
 localparam HIGH_SOURCE_WIDTH = 400;
 localparam HIGH_SOURCE_HEIGHT = 240;
+localparam GUI_SOURCE_WIDTH = 512;
+localparam GUI_SOURCE_HEIGHT = 300;
 localparam STANDARD_SOURCE_WORDS_PER_FRAME =
     STANDARD_SOURCE_WIDTH * STANDARD_SOURCE_HEIGHT / 2;
 localparam HIGH_SOURCE_WORDS_PER_FRAME =
     HIGH_SOURCE_WIDTH * HIGH_SOURCE_HEIGHT / 2;
+localparam GUI_SOURCE_WORDS_PER_FRAME =
+    GUI_SOURCE_WIDTH * GUI_SOURCE_HEIGHT / 4;
 localparam [16:0] STANDARD_BUFFER1_WORD_BASE = 17'd32768;
 localparam [16:0] HIGH_BUFFER1_WORD_BASE = 17'h0c000;
+localparam STANDARD_FRAME_RAM_BANKS = 64;
+localparam EXTENDED_FRAME_RAM_BANKS = 95;
+localparam FRAME_RAM_BANKS = EXTENDED_VIDEO_MODES
+    ? EXTENDED_FRAME_RAM_BANKS : STANDARD_FRAME_RAM_BANKS;
+wire [16:0] internal_buffer1_word_base = EXTENDED_VIDEO_MODES
+    ? HIGH_BUFFER1_WORD_BASE : STANDARD_BUFFER1_WORD_BASE;
 
 // Native SDRAM requests use halfword addresses. The board wrapper selects
 // staging-buffer offsets for its 64 MiB or 32 MiB external-memory profile.
@@ -93,6 +111,7 @@ localparam CONTROL_BUFFER   = 1;
 localparam CONTROL_PRESENT  = 2;
 localparam CONTROL_DIRECT   = 3;
 localparam CONTROL_HIGH_RES = 4;
+localparam CONTROL_GUI_RES  = 5;
 
 wire [3:0] apb_word_address = apbs_paddr[5:2];
 wire direct_data_access = apbs_psel && apbs_penable && apbs_pwrite
@@ -118,7 +137,9 @@ wire direct_low_write = direct_data_access && !direct_write_high_half;
 wire direct_high_write = direct_data_access && direct_write_high_half;
 wire direct_frame_write = direct_low_write || direct_high_write;
 
-ulx3s_frame_ram frame_ram_u (
+ulx3s_frame_ram #(
+    .BANK_COUNT (FRAME_RAM_BANKS)
+) frame_ram_u (
     .write_clk     (clk_sys),
     .write_enable  (frame_write_enable),
     .write_address (frame_write_address),
@@ -159,18 +180,21 @@ reg dma_source_buffer;
 reg dma_target_buffer;
 reg dma_indexed;
 reg dma_high_res;
+reg dma_gui_res;
 reg [31:0] dma_cycle_counter;
 reg [31:0] last_dma_cycles;
 reg [31:0] present_count_sys;
 reg control_indexed_sys;
 reg control_buffer_sys;
 reg control_high_res_sys;
+reg control_gui_res_sys;
 
 reg swap_toggle_sys;
 reg swap_buffer_sys;
 reg swap_source_sys;
 reg swap_indexed_sys;
 reg swap_high_res_sys;
+reg swap_gui_res_sys;
 
 (* async_reg = "true" *) reg swap_ack_sync0;
 (* async_reg = "true" *) reg swap_ack_sync1;
@@ -182,6 +206,8 @@ reg swap_high_res_sys;
 (* async_reg = "true" *) reg current_indexed_sync1;
 (* async_reg = "true" *) reg current_high_res_sync0;
 (* async_reg = "true" *) reg current_high_res_sync1;
+(* async_reg = "true" *) reg current_gui_res_sync0;
+(* async_reg = "true" *) reg current_gui_res_sync1;
 (* async_reg = "true" *) reg frame_valid_sync0;
 (* async_reg = "true" *) reg frame_valid_sync1;
 (* async_reg = "true" *) reg vblank_sync0;
@@ -194,6 +220,7 @@ reg active_internal_buffer_pix;
 reg current_source_buffer_pix;
 reg current_indexed_pix;
 reg current_high_res_pix;
+reg current_gui_res_pix;
 reg frame_valid_pix;
 wire vblank_pix;
 reg [31:0] frame_count_pix;
@@ -205,23 +232,29 @@ wire present_command = apb_write && apb_word_address == REG_CONTROL
     && apbs_pwdata[CONTROL_PRESENT];
 wire present_can_start = dma_state == DMA_IDLE && sdram_init_done;
 
-wire [24:0] selected_framebuffer_base = dma_source_buffer
-    ? (dma_high_res ? FRAMEBUFFER1_HIGH_HALFWORD_BASE
-        : FRAMEBUFFER1_HALFWORD_BASE)
-    : FRAMEBUFFER0_HALFWORD_BASE;
-wire [15:0] dma_words_per_frame = dma_high_res
-    ? HIGH_SOURCE_WORDS_PER_FRAME : STANDARD_SOURCE_WORDS_PER_FRAME;
+wire [24:0] selected_framebuffer_base = dma_gui_res
+    ? GUI_FRAMEBUFFER_HALFWORD_BASE
+    : (dma_source_buffer
+        ? (dma_high_res ? FRAMEBUFFER1_HIGH_HALFWORD_BASE
+            : FRAMEBUFFER1_HALFWORD_BASE)
+        : FRAMEBUFFER0_HALFWORD_BASE);
+wire [15:0] dma_words_per_frame = dma_gui_res
+    ? GUI_SOURCE_WORDS_PER_FRAME
+    : (dma_high_res ? HIGH_SOURCE_WORDS_PER_FRAME
+        : STANDARD_SOURCE_WORDS_PER_FRAME);
 wire [16:0] dma_target_base = dma_target_buffer
-    ? HIGH_BUFFER1_WORD_BASE : 17'd0;
+    ? internal_buffer1_word_base : 17'd0;
 assign sdram_req_valid = dma_state == DMA_REQUEST;
 assign sdram_req_addr = selected_framebuffer_base + {9'd0, dma_word};
 
-wire [16:0] direct_write_physical_address = direct_write_high_res
-    ? direct_write_address
-    : (direct_write_address >= STANDARD_BUFFER1_WORD_BASE
-        ? HIGH_BUFFER1_WORD_BASE +
-            (direct_write_address - STANDARD_BUFFER1_WORD_BASE)
-        : direct_write_address);
+wire [16:0] direct_write_physical_address = EXTENDED_VIDEO_MODES
+    ? (direct_write_high_res
+        ? direct_write_address
+        : (direct_write_address >= STANDARD_BUFFER1_WORD_BASE
+            ? HIGH_BUFFER1_WORD_BASE +
+                (direct_write_address - STANDARD_BUFFER1_WORD_BASE)
+            : direct_write_address))
+    : direct_write_address;
 
 wire dma_frame_write = dma_state == DMA_RESPONSE && sdram_rsp_valid;
 assign frame_write_enable = direct_frame_write || dma_frame_write;
@@ -245,6 +278,8 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
         current_indexed_sync1 <= 1'b0;
         current_high_res_sync0 <= 1'b0;
         current_high_res_sync1 <= 1'b0;
+        current_gui_res_sync0 <= 1'b0;
+        current_gui_res_sync1 <= 1'b0;
         frame_valid_sync0 <= 1'b0;
         frame_valid_sync1 <= 1'b0;
         vblank_sync0 <= 1'b0;
@@ -262,6 +297,8 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
         current_indexed_sync1 <= current_indexed_sync0;
         current_high_res_sync0 <= current_high_res_pix;
         current_high_res_sync1 <= current_high_res_sync0;
+        current_gui_res_sync0 <= current_gui_res_pix;
+        current_gui_res_sync1 <= current_gui_res_sync0;
         frame_valid_sync0 <= frame_valid_pix;
         frame_valid_sync1 <= frame_valid_sync0;
         vblank_sync0 <= vblank_pix;
@@ -281,12 +318,14 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
         control_indexed_sys <= 1'b0;
         control_buffer_sys <= 1'b0;
         control_high_res_sys <= 1'b0;
+        control_gui_res_sys <= 1'b0;
         dma_state <= DMA_WAIT_INIT;
         dma_word <= 16'd0;
         dma_source_buffer <= 1'b0;
         dma_target_buffer <= 1'b1;
         dma_indexed <= 1'b0;
         dma_high_res <= 1'b0;
+        dma_gui_res <= 1'b0;
         dma_cycle_counter <= 32'd0;
         last_dma_cycles <= 32'd0;
         present_count_sys <= 32'd0;
@@ -295,6 +334,7 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
         swap_source_sys <= 1'b0;
         swap_indexed_sys <= 1'b0;
         swap_high_res_sys <= 1'b0;
+        swap_gui_res_sys <= 1'b0;
     end else begin
         if (direct_low_write) begin
             direct_write_data <= apbs_pwdata;
@@ -306,7 +346,8 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
 
         if (apb_write && apb_word_address == REG_DIRECT_ADDRESS) begin
             direct_write_address <= apbs_pwdata[16:0];
-            direct_write_high_res <= apbs_pwdata[31];
+            direct_write_high_res <= EXTENDED_VIDEO_MODES
+                ? apbs_pwdata[31] : 1'b0;
         end
 
         if (apb_write && apb_word_address == REG_PALETTE_INDEX)
@@ -317,7 +358,10 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
         if (apb_write && apb_word_address == REG_CONTROL) begin
             control_indexed_sys <= apbs_pwdata[CONTROL_INDEXED];
             control_buffer_sys <= apbs_pwdata[CONTROL_BUFFER];
-            control_high_res_sys <= apbs_pwdata[CONTROL_HIGH_RES];
+            control_high_res_sys <= EXTENDED_VIDEO_MODES
+                ? apbs_pwdata[CONTROL_HIGH_RES] : 1'b0;
+            control_gui_res_sys <= EXTENDED_VIDEO_MODES
+                ? apbs_pwdata[CONTROL_GUI_RES] : 1'b0;
         end
 
         if (dma_state != DMA_IDLE && dma_state != DMA_WAIT_INIT)
@@ -333,7 +377,10 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
             if (present_command && present_can_start) begin
                 dma_source_buffer <= apbs_pwdata[CONTROL_BUFFER];
                 dma_indexed <= apbs_pwdata[CONTROL_INDEXED];
-                dma_high_res <= apbs_pwdata[CONTROL_HIGH_RES];
+                dma_high_res <= EXTENDED_VIDEO_MODES
+                    ? apbs_pwdata[CONTROL_HIGH_RES] : 1'b0;
+                dma_gui_res <= EXTENDED_VIDEO_MODES
+                    ? apbs_pwdata[CONTROL_GUI_RES] : 1'b0;
                 dma_cycle_counter <= 32'd0;
                 present_count_sys <= present_count_sys + 1'b1;
 
@@ -343,7 +390,10 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
                     swap_buffer_sys <= apbs_pwdata[CONTROL_BUFFER];
                     swap_source_sys <= apbs_pwdata[CONTROL_BUFFER];
                     swap_indexed_sys <= apbs_pwdata[CONTROL_INDEXED];
-                    swap_high_res_sys <= apbs_pwdata[CONTROL_HIGH_RES];
+                    swap_high_res_sys <= EXTENDED_VIDEO_MODES
+                        ? apbs_pwdata[CONTROL_HIGH_RES] : 1'b0;
+                    swap_gui_res_sys <= EXTENDED_VIDEO_MODES
+                        ? apbs_pwdata[CONTROL_GUI_RES] : 1'b0;
                     swap_toggle_sys <= !swap_toggle_sys;
                     dma_state <= DMA_WAIT_SWAP;
                 end else begin
@@ -367,6 +417,7 @@ always @ (posedge clk_sys or negedge rst_n_sys) begin
                     swap_source_sys <= dma_source_buffer;
                     swap_indexed_sys <= dma_indexed;
                     swap_high_res_sys <= dma_high_res;
+                    swap_gui_res_sys <= dma_gui_res;
                     swap_toggle_sys <= !swap_toggle_sys;
                     dma_state <= DMA_WAIT_SWAP;
                 end else begin
@@ -401,13 +452,16 @@ always @ (*) begin
         apbs_prdata[8] = swap_pending;
         apbs_prdata[9] = 1'b1; // Direct block-RAM write path supported.
         apbs_prdata[10] = direct_write_high_half;
-        apbs_prdata[11] = 1'b1; // Experimental 400x240 source supported.
+        apbs_prdata[11] = EXTENDED_VIDEO_MODES; // 400x240 source support.
         apbs_prdata[12] = current_high_res_sync1;
+        apbs_prdata[13] = EXTENDED_VIDEO_MODES; // Packed 512x300 GUI support.
+        apbs_prdata[14] = current_gui_res_sync1;
     end
     REG_CONTROL: begin
         apbs_prdata[CONTROL_INDEXED] = control_indexed_sys;
         apbs_prdata[CONTROL_BUFFER] = control_buffer_sys;
         apbs_prdata[CONTROL_HIGH_RES] = control_high_res_sys;
+        apbs_prdata[CONTROL_GUI_RES] = control_gui_res_sys;
     end
     REG_PALETTE_INDEX: apbs_prdata[8:0] = palette_address_sys;
     REG_FRAME_COUNT: apbs_prdata = frame_count_sync1;
@@ -427,7 +481,7 @@ end
 reg [10:0] pixel_x;
 reg [9:0] pixel_y;
 reg [8:0] source_x;
-reg [7:0] source_y;
+reg [8:0] source_y;
 reg [10:0] horizontal_phase;
 reg [9:0] vertical_phase;
 reg pixel_toggle;
@@ -443,6 +497,8 @@ reg swap_indexed_sync0;
 reg swap_indexed_sync1;
 reg swap_high_res_sync0;
 reg swap_high_res_sync1;
+reg swap_gui_res_sync0;
+reg swap_gui_res_sync1;
 
 wire active_video_now = pixel_x < H_ACTIVE && pixel_y < V_ACTIVE;
 wire hsync_now = pixel_x >= H_ACTIVE + H_FRONT
@@ -453,22 +509,29 @@ wire image_region_now = active_video_now;
 wire vblank_start = pixel_x == 0 && pixel_y == V_ACTIVE;
 assign vblank_pix = pixel_y >= V_ACTIVE;
 
-wire [15:0] standard_source_line_word_base = ({8'd0, source_y} << 7)
+wire [16:0] standard_source_line_word_base = ({8'd0, source_y} << 7)
     + ({8'd0, source_y} << 5);
-wire [15:0] high_source_line_word_base = ({8'd0, source_y} << 7)
+wire [16:0] high_source_line_word_base = ({8'd0, source_y} << 7)
     + ({8'd0, source_y} << 6) + ({8'd0, source_y} << 3);
-wire [15:0] source_line_word_base = current_high_res_pix
-    ? high_source_line_word_base : standard_source_line_word_base;
-wire [15:0] source_word_address = source_line_word_base
-    + {7'd0, source_x[8:1]};
+wire [16:0] gui_source_line_word_base = {source_y, 7'd0};
+wire [16:0] source_line_word_base = current_gui_res_pix
+    ? gui_source_line_word_base
+    : (current_high_res_pix ? high_source_line_word_base
+        : standard_source_line_word_base);
+wire [16:0] source_word_address = source_line_word_base
+    + (current_gui_res_pix
+        ? {10'd0, source_x[8:2]}
+        : {8'd0, source_x[8:1]});
 wire [16:0] frame_read_base = active_internal_buffer_pix
-    ? HIGH_BUFFER1_WORD_BASE : 17'd0;
-assign frame_read_address = frame_read_base + {1'b0, source_word_address};
+    ? internal_buffer1_word_base : 17'd0;
+assign frame_read_address = frame_read_base + source_word_address;
 
-wire [10:0] active_source_width = current_high_res_pix
-    ? HIGH_SOURCE_WIDTH : STANDARD_SOURCE_WIDTH;
-wire [9:0] active_source_height = current_high_res_pix
-    ? HIGH_SOURCE_HEIGHT : STANDARD_SOURCE_HEIGHT;
+wire [10:0] active_source_width = current_gui_res_pix
+    ? GUI_SOURCE_WIDTH
+    : (current_high_res_pix ? HIGH_SOURCE_WIDTH : STANDARD_SOURCE_WIDTH);
+wire [9:0] active_source_height = current_gui_res_pix
+    ? GUI_SOURCE_HEIGHT
+    : (current_high_res_pix ? HIGH_SOURCE_HEIGHT : STANDARD_SOURCE_HEIGHT);
 
 always @ (posedge clk_pix or negedge rst_n_pix) begin
     if (!rst_n_pix) begin
@@ -482,6 +545,8 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         swap_indexed_sync1 <= 1'b0;
         swap_high_res_sync0 <= 1'b0;
         swap_high_res_sync1 <= 1'b0;
+        swap_gui_res_sync0 <= 1'b0;
+        swap_gui_res_sync1 <= 1'b0;
     end else begin
         swap_toggle_sync0 <= swap_toggle_sys;
         swap_toggle_sync1 <= swap_toggle_sync0;
@@ -493,6 +558,8 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         swap_indexed_sync1 <= swap_indexed_sync0;
         swap_high_res_sync0 <= swap_high_res_sys;
         swap_high_res_sync1 <= swap_high_res_sync0;
+        swap_gui_res_sync0 <= swap_gui_res_sys;
+        swap_gui_res_sync1 <= swap_gui_res_sync0;
     end
 end
 
@@ -501,7 +568,7 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         pixel_x <= 11'd0;
         pixel_y <= 10'd0;
         source_x <= 9'd0;
-        source_y <= 8'd0;
+        source_y <= 9'd0;
         horizontal_phase <= 11'd0;
         vertical_phase <= 10'd0;
         pixel_toggle <= 1'b0;
@@ -511,6 +578,7 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         current_source_buffer_pix <= 1'b0;
         current_indexed_pix <= 1'b0;
         current_high_res_pix <= 1'b0;
+        current_gui_res_pix <= 1'b0;
         frame_valid_pix <= 1'b0;
         frame_count_pix <= 32'd0;
     end else begin
@@ -521,6 +589,7 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
             current_source_buffer_pix <= swap_source_sync1;
             current_indexed_pix <= swap_indexed_sync1;
             current_high_res_pix <= swap_high_res_sync1;
+            current_gui_res_pix <= swap_gui_res_sync1;
             frame_valid_pix <= 1'b1;
             swap_toggle_seen_pix <= swap_toggle_sync1;
             swap_ack_pix <= swap_toggle_sync1;
@@ -533,13 +602,18 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
 
             if (pixel_y == V_TOTAL - 1) begin
                 pixel_y <= 10'd0;
-                source_y <= 8'd0;
+                source_y <= 9'd0;
                 vertical_phase <= 10'd0;
                 frame_count_pix <= frame_count_pix + 1'b1;
             end else begin
                 pixel_y <= pixel_y + 1'b1;
                 if (pixel_y < V_ACTIVE - 1) begin
-                    if (vertical_phase + active_source_height >= V_ACTIVE) begin
+                    if (current_gui_res_pix) begin
+                        // 300 source lines map exactly to 600 panel lines.
+                        vertical_phase <= 10'd0;
+                        if (pixel_y[0])
+                            source_y <= source_y + 1'b1;
+                    end else if (vertical_phase + active_source_height >= V_ACTIVE) begin
                         vertical_phase <= vertical_phase +
                             active_source_height - V_ACTIVE;
                         source_y <= source_y + 1'b1;
@@ -551,7 +625,12 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         end else begin
             pixel_x <= pixel_x + 1'b1;
             if (pixel_x < H_ACTIVE - 1) begin
-                if (horizontal_phase + active_source_width >= H_ACTIVE) begin
+                if (current_gui_res_pix) begin
+                    // 512 source pixels map exactly to 1024 panel pixels.
+                    horizontal_phase <= 11'd0;
+                    if (pixel_x[0])
+                        source_x <= source_x + 1'b1;
+                end else if (horizontal_phase + active_source_width >= H_ACTIVE) begin
                     horizontal_phase <= horizontal_phase +
                         active_source_width - H_ACTIVE;
                     source_x <= source_x + 1'b1;
@@ -567,6 +646,8 @@ end
 // Block-RAM read pipeline, indexed palette lookup, and RGB332 expansion
 
 reg source_byte_select_stage1;
+reg [1:0] source_nibble_select_stage1;
+reg gui_res_stage1;
 reg image_region_stage1;
 reg frame_valid_stage1;
 reg active_video_stage1;
@@ -575,8 +656,20 @@ reg vsync_stage1;
 reg indexed_stage1;
 reg source_buffer_stage1;
 
-wire [7:0] frame_pixel_stage1 = source_byte_select_stage1
-    ? frame_read_data[15:8] : frame_read_data[7:0];
+reg [3:0] gui_nibble_stage1;
+always @ (*) begin
+    case (source_nibble_select_stage1)
+    2'd0: gui_nibble_stage1 = frame_read_data[3:0];
+    2'd1: gui_nibble_stage1 = frame_read_data[7:4];
+    2'd2: gui_nibble_stage1 = frame_read_data[11:8];
+    default: gui_nibble_stage1 = frame_read_data[15:12];
+    endcase
+end
+
+wire [7:0] frame_pixel_stage1 = gui_res_stage1
+    ? {4'd0, gui_nibble_stage1}
+    : (source_byte_select_stage1 ? frame_read_data[15:8]
+        : frame_read_data[7:0]);
 assign palette_read_address = {source_buffer_stage1, frame_pixel_stage1};
 
 reg [7:0] frame_pixel_stage2;
@@ -590,6 +683,8 @@ reg indexed_stage2;
 always @ (posedge clk_pix or negedge rst_n_pix) begin
     if (!rst_n_pix) begin
         source_byte_select_stage1 <= 1'b0;
+        source_nibble_select_stage1 <= 2'd0;
+        gui_res_stage1 <= 1'b0;
         image_region_stage1 <= 1'b0;
         frame_valid_stage1 <= 1'b0;
         active_video_stage1 <= 1'b0;
@@ -606,12 +701,14 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         indexed_stage2 <= 1'b0;
     end else begin
         source_byte_select_stage1 <= source_x[0];
+        source_nibble_select_stage1 <= source_x[1:0];
+        gui_res_stage1 <= current_gui_res_pix;
         image_region_stage1 <= image_region_now;
         frame_valid_stage1 <= frame_valid_pix;
         active_video_stage1 <= active_video_now;
         hsync_stage1 <= hsync_now;
         vsync_stage1 <= vsync_now;
-        indexed_stage1 <= current_indexed_pix;
+        indexed_stage1 <= current_indexed_pix || current_gui_res_pix;
         source_buffer_stage1 <= current_source_buffer_pix;
 
         frame_pixel_stage2 <= frame_pixel_stage1;
@@ -733,12 +830,14 @@ ulx3s_tmds_ddr_serialiser serialise_clock_u (
 
 endmodule
 
-// The high-resolution mode needs two 400x240x8 displayed frames. The second
-// physical bank is aligned at word 0xc000, matching the high-resolution SDRAM
-// staging layout. Each DP16KD is 1024x18; 95 banks cover both 48,000-word
-// frames plus the alignment gap. Legacy logical bank-1 writes at 0x8000 are
-// translated to the physical 0xc000 bank.
-module ulx3s_frame_ram (
+// Extended mode uses 95 banks for two 400x240x8 displayed frames. The packed
+// 512x300 GUI uses only 38,400 halfwords per frame, so it fits inside those
+// same banks. Standard mode uses 64 banks for two 320x200x8 frames and keeps
+// the second physical bank at word 0x8000. Extended mode aligns the second
+// physical bank at word 0xc000 and translates legacy 320x200 bank-1 writes.
+module ulx3s_frame_ram #(
+    parameter BANK_COUNT = 95
+) (
     input  wire        write_clk,
     input  wire        write_enable,
     input  wire [16:0] write_address,
@@ -748,7 +847,7 @@ module ulx3s_frame_ram (
     output reg  [15:0] read_data
 );
 
-wire [16*95-1:0] bank_read_data;
+wire [16*BANK_COUNT-1:0] bank_read_data;
 reg [6:0] read_bank_q;
 integer mux_index;
 
@@ -757,7 +856,7 @@ always @ (posedge read_clk)
 
 always @ (*) begin
     read_data = 16'd0;
-    for (mux_index = 0; mux_index < 95; mux_index = mux_index + 1) begin
+    for (mux_index = 0; mux_index < BANK_COUNT; mux_index = mux_index + 1) begin
         if (read_bank_q == mux_index)
             read_data = bank_read_data[mux_index*16 +: 16];
     end
@@ -765,7 +864,7 @@ end
 
 generate
 genvar frame_bank;
-for (frame_bank = 0; frame_bank < 95; frame_bank = frame_bank + 1) begin: frame_ram_bank
+for (frame_bank = 0; frame_bank < BANK_COUNT; frame_bank = frame_bank + 1) begin: frame_ram_bank
     localparam [6:0] BANK_NUMBER = frame_bank;
     wire bank_write_enable = write_enable
         && write_address[16:10] == BANK_NUMBER;

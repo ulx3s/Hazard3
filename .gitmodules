@@ -7,9 +7,39 @@
 [submodule "test/formal/riscv-formal"]
 	path = test/formal/riscv-formal/riscv-formal
 	url = https://github.com/Wren6991/riscv-formal.git
+
+# When changing libfpga, refresh and confirm:
+#
+#   git submodule sync -- example_soc/libfpga
+#
+#   As needed only:
+#   git -C example_soc/libfpga stash push -u -m "Hazard3 local changes before upstream update 20YY-MM-DD"
+#   git -C example_soc/libfpga switch ulx-doom-dev 2>/dev/null || git -C example_soc/libfpga switch -c ulx-doom-dev --track origin/ulx-doom-dev
+#
+#   Refresh init:
+#   git submodule update --init --remote example_soc/libfpga
+#
+#   View:
+#   git -C example_soc/libfpga remote -v
+#   git -C example_soc/libfpga branch --show-current
+#   git -C example_soc/libfpga log -1 --oneline
+
+# ulx3s release on ulx-doom branch
+# ------------------------------------------------------
 [submodule "example_soc/libfpga"]
 	path = example_soc/libfpga
-	url = https://github.com/Wren6991/libfpga.git
+	url = https://github.com/ulx3s/Hazard3-libfpga/
+	branch = ulx-doom
+	update = checkout
+
+# dev:
+# ------------------------------------------------------
+# [submodule "example_soc/libfpga"]
+#	path = example_soc/libfpga
+#	url = https://github.com/gojimmypi/Hazard3-libfpga/
+#	branch = ulx-doom-dev
+#	update = checkout
+
 [submodule "test/sim/riscv-tests/riscv-tests"]
 	path = test/sim/riscv-tests/riscv-tests
 	url = https://github.com/Wren6991/riscv-tests.git

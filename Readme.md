@@ -2,6 +2,48 @@
 
 This is the ULX3S fork of the [upstream Hazard3](https://github.com/Wren6991/Hazard3). See [additional documentation](./doc/ulx3s-ulx4m-build-and-validation.md).
 
+Note this fork also uses the [ULX3S fork of libfpga](https://github.com/ulx3s/Hazard3-libfpga/) submodule.
+
+Hazard3 git works best with:
+
+```bash
+git config core.symlinks true
+git config core.autocrlf false
+git config core.filemode false
+```
+
+There are 3 linked files that are sometimes problematic:
+
+```bash
+ln -s ../../../common/hazard3_csr.h \
+    test/sim/coremark/dist/barebones/hazard3_csr.h
+
+ln -s ../../../common/init.S \
+    test/sim/coremark/dist/barebones/init.S
+
+ln -s ../../../common/tb_cxxrtl_io.h \
+    test/sim/coremark/dist/barebones/tb_cxxrtl_io.h
+
+git ls-files -s -- \
+    test/sim/coremark/dist/barebones/hazard3_csr.h \
+    test/sim/coremark/dist/barebones/init.S \
+    test/sim/coremark/dist/barebones/tb_cxxrtl_io.h
+
+# expect:
+# 120000 ... hazard3_csr.h
+# 120000 ... init.S
+# 120000 ... tb_cxxrtl_io.h
+```
+
+Windows users may need to use this from a DOS prompt if Visual Studio has a problem with these files:
+
+```dos
+git restore --worktree -- ^
+    test/sim/coremark/dist/barebones/hazard3_csr.h ^
+    test/sim/coremark/dist/barebones/init.S ^
+    test/sim/coremark/dist/barebones/tb_cxxrtl_io.h
+```
+
 Hazard3 is a 3-stage RISC-V processor, implementing the `RV32I` or `RV32E` instruction set and the following optional extensions:
 
 * `M`: integer multiply/divide/modulo
@@ -475,3 +517,18 @@ seedcrc          : 0xe9f5
 Correct operation validated. See README.md for run and reporting rules.
 CoreMark 1.0 : 4.024469 / GCC15.1.0 -O3 -g -march=rv32ema_zba_zbb_zbc_zbkb_zbkx_zbs_zicsr_zifencei -mabi=ilp32e -mbranch-cost=1 -funroll-all-loops --param max-inline-insns-auto=200 -finline-limit=10000 -fno-code-hoisting -fno-if-conversion2 -falign-functions=4 -falign-jumps=4 -falign-loops=4 -DPERFORMANCE_RUN=1   / STACK
 ```
+
+## ULX3S Chat and support
+
+### Discord channel
+
+- [https://discord.gg/qwMUk6W](https://discord.gg/qwMUk6W) (problems/question/general chat)
+
+### Gitter channel
+
+- [https://gitter.im/ulx3s/Lobby](https://gitter.im/ulx3s/Lobby) (Focused on development)
+
+### Email
+
+- [ulx3s.fpga@gmail.com](ulx3s.fpga@gmail.com) (If you do not use chats)
+

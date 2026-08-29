@@ -191,10 +191,21 @@ module ulx3s_tmds_ddr_serialiser (
 	output wire       serial_out
 );
 
+// 12F timing optimization: localize the serializer reset to the TMDS x5
+// clock domain to reduce reset routing pressure and improve timing closure.
+`ifdef HAZARD3_ULX3S_12F
+    (* keep = 1'b1 *) reg rst_n_local = 1'b0;
+    always @ (posedge clk_tmds_x5) begin
+	    rst_n_local <= rst_n;
+    end
+`else
+    wire rst_n_local = rst_n;
+`endif
+
 reg [9:0] shift_reg;
 
-always @ (posedge clk_tmds_x5 or negedge rst_n) begin
-	if (!rst_n)
+always @ (posedge clk_tmds_x5 or negedge rst_n_local) begin
+	if (!rst_n_local)
 		shift_reg <= 10'd0;
 	else if (load_symbol)
 		shift_reg <= symbol;

@@ -12,12 +12,20 @@ module example_soc #(
 	parameter DTM_TYPE   = "JTAG",  // Can be "JTAG", "ECP5" or "XILINX7"
 	parameter SRAM_DEPTH = 1 << 15, // Default 32 kwords -> 128 kB
 	parameter SRAM_PRELOAD_FILE = "", // Optional resident firmware EBR image
+	parameter SRAM_HAS_WRITE_BUFFER = 1, // Zero-wait write/read forwarding
 	parameter CLK_MHZ    = 12,      // For timer timebase
 	parameter SDRAM_ENABLE = 0,     // Enable the external SDR SDRAM target
 	parameter LITEDRAM_ENABLE = 0,  // Use LiteDRAM DDR3 instead of SDR SDRAM
 	parameter ESP_SAO_UART_ENABLE = 0, // ESP32 UART sideband access to SAO
 	parameter SD_SPI_ENABLE = 0,     // Enable software-driven micro-SD SPI master
-	parameter SDRAM_COL_WIDTH = 10, // 10: ULX3S 64 MiB, 9: ULX4M-LS 32 MiB
+	parameter SDRAM_COL_WIDTH = 10, // 10: ULX3S 64 MiB, 9: 32 MiB profile
+	parameter SDRAM_CACHE_DEPTH = 1024,
+	parameter SDRAM_CACHE_TAG_PRELOAD = "../soc/cache_tags_zero.hex",
+`ifdef HAS_REGISTERED_READ_HITS
+	parameter SDRAM_CACHE_REGISTERED_READ_HITS = 0,
+`endif
+	parameter [31:0] SDRAM_UNCACHED_LOW_MASK = 32'hfff00000,
+	parameter [31:0] SDRAM_UNCACHED_LOW_BASE = 32'h20000000,
 	parameter [31:0] SDRAM_DIAGNOSTIC_ALIAS_MASK = 32'hfc000000,
 	parameter [31:0] SDRAM_VIDEO_APERTURE_BASE = 32'h23c00000,
 
@@ -680,8 +688,9 @@ apb_splitter #(
 // can boot without a debugger. Other targets retain the empty-file default.
 
 ahb_sync_sram #(
-	.DEPTH        (SRAM_DEPTH),
-	.PRELOAD_FILE (SRAM_PRELOAD_FILE)
+	.DEPTH            (SRAM_DEPTH),
+	.HAS_WRITE_BUFFER (SRAM_HAS_WRITE_BUFFER),
+	.PRELOAD_FILE     (SRAM_PRELOAD_FILE)
 ) sram0 (
 	.clk               (clk),
 	.rst_n             (rst_n),
@@ -702,11 +711,11 @@ ahb_sync_sram #(
 
 generate
 if (SDRAM_ENABLE) begin: sdram_enabled
-    // Cache normal Doom image, heap and IWAD accesses. Keep the physical
-    // first MiB, the diagnostic alias, and the four-MiB video aperture uncached.
-    // Board-level parameters select the 64 MiB ULX3S or 32 MiB ULX4M-LS map.
+    // Cache normal Doom image, heap and IWAD accesses. Keep the configured
+    // low window, diagnostic alias, and four-MiB video aperture uncached.
+    // Board-level parameters select the physical SDRAM profile and low window.
     wire sdram_diagnostic_aperture =
-        (sdram_haddr & 32'hfff00000) == 32'h20000000;
+        (sdram_haddr & SDRAM_UNCACHED_LOW_MASK) == SDRAM_UNCACHED_LOW_BASE;
     wire sdram_diagnostic_alias =
         (sdram_haddr & SDRAM_DIAGNOSTIC_ALIAS_MASK) == 32'h24000000;
     wire sdram_video_aperture =
@@ -721,16 +730,19 @@ if (SDRAM_ENABLE) begin: sdram_enabled
         sdram_hprot[1:0]
     };
 
-    // 64 KiB, two-way unified cache with 32-byte lines. A single unified cache
-    // keeps freshly uploaded executable bytes coherent with instruction fetch
-    // without requiring a separate cache-maintenance mechanism.
+    // Two-way unified cache with 32-byte lines. A single unified cache keeps
+    // freshly uploaded executable bytes coherent with instruction fetch. The
+    // default remains 64 KiB; compact targets may select a smaller depth.
     ahb_cache_writeback #(
         .N_WAYS (2),
         .W_ADDR (W_ADDR),
         .W_DATA (W_DATA),
         .W_LINE        (256),
-        .DEPTH         (1024),
-        .TMEM_PRELOAD ("../soc/cache_tags_zero.hex")
+        .DEPTH         (SDRAM_CACHE_DEPTH),
+        .TMEM_PRELOAD (SDRAM_CACHE_TAG_PRELOAD),
+`ifdef HAS_REGISTERED_READ_HITS
+        .REGISTERED_READ_HITS (SDRAM_CACHE_REGISTERED_READ_HITS)
+`endif
     ) sdram_cache_u (
         .clk             (clk),
         .rst_n           (rst_n),

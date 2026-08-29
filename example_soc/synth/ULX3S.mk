@@ -8,6 +8,13 @@ CHIPNAME=fpga_ulx3s
 TOP=fpga_ulx3s
 DOTF=../fpga/fpga_ulx3s.f
 
+HAZARD3_HDMI_EXTENDED_MODES ?= 1
+ifeq ($(HAZARD3_HDMI_EXTENDED_MODES),1)
+DEFINES += HAZARD3_HDMI_EXTENDED_MODES
+else ifneq ($(HAZARD3_HDMI_EXTENDED_MODES),0)
+$(error HAZARD3_HDMI_EXTENDED_MODES must be 0 or 1)
+endif
+
 SYNTH_OPT=-abc9
 # Bring-up target: timing failures remain visible in the nextpnr report.
 PNR_OPT=--timing-allow-fail

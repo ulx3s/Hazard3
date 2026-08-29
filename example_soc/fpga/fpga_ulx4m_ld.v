@@ -120,7 +120,11 @@ always @(*) begin
     endcase
 end
 
-ulx3s_hdmi_framebuffer hdmi_framebuffer_u (
+// LiteDRAM leaves insufficient EBR for the extended 400x240/512x300
+// framebuffer on the 85F. Keep ULX4M-LD on the standard 320x200 mode.
+ulx3s_hdmi_framebuffer #(
+    .EXTENDED_VIDEO_MODES (1'b0)
+) hdmi_framebuffer_u (
     .clk_sys          (clk_sys),
     .rst_n_sys        (rst_n_sys),
     .clk_pix          (clk_video_pix),
@@ -190,6 +194,7 @@ wire [1:0]  unused_ddram_dqs_n;
 example_soc #(
     .DTM_TYPE           ("ECP5"),
     .SRAM_DEPTH         (1 << 15),
+    .SRAM_PRELOAD_FILE  ("../soc/hazard3-boot-monitor.hex"),
     .CLK_MHZ            (50),
     .SDRAM_ENABLE       (1),
     .LITEDRAM_ENABLE     (1),

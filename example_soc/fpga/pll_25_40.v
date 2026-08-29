@@ -1,13 +1,36 @@
-// diamond 3.7 accepts this PLL
-// diamond 3.8-3.9 is untested
-// diamond 3.10 or higher is likely to abort with error about unable to use feedback signal
-// cause of this could be from wrong CPHASE/FPHASE parameters
+`default_nettype none
+
+/*
+ * PLL is using CLKOP itself as the feedback clock.
+ * The phase detector therefore sees:
+ *
+ *   reference: 25 MHz / 5 = 5 MHz
+ *   feedback:  40 MHz / 8 = 5 MHz
+ *
+ *   CLKOP_DIV = 12
+ *   CLKOP     = 40 MHz
+ *   VCO       = 40 * 12 = 480 MHz
+ *
+ *   CPHASE = floor((DIV - 1) / 2)
+ *
+ *   DIV 12:
+ *       floor((12 - 1) / 2) = 5
+ *
+ * Developed with yosys and nextpnr-ecp5. These notes from upstream:
+ *
+ *   diamond 3.7 accepts this PLL
+ *   diamond 3.8-3.9 is untested
+ *   diamond 3.10 or higher is likely to abort with error about unable to use feedback signal
+ *   cause of this could be from wrong CPHASE/FPHASE parameters
+ */
+
 module pll_25_40
 (
-    input clkin, // 25 MHz, 0 deg
-    output clkout0, // 40 MHz, 0 deg
-    output locked
+    input  wire clkin, // 25 MHz reference clock
+    output wire clkout0, // 40 MHz, nominal 0 deg PLL output phase
+    output wire locked
 );
+
 (* FREQUENCY_PIN_CLKI="25" *)
 (* FREQUENCY_PIN_CLKOP="40" *)
 (* ICP_CURRENT="12" *) (* LPF_RESISTOR="8" *) (* MFG_ENABLE_FILTEROPAMP="1" *) (* MFG_GMCREF_SEL="2" *)
@@ -22,8 +45,8 @@ EHXPLLL #(
         .OUTDIVIDER_MUXD("DIVD"),
         .CLKI_DIV(5),
         .CLKOP_ENABLE("ENABLED"),
-        .CLKOP_DIV(15),
-        .CLKOP_CPHASE(7),
+        .CLKOP_DIV(12),
+        .CLKOP_CPHASE(5),
         .CLKOP_FPHASE(0),
         .FEEDBK_PATH("CLKOP"),
         .CLKFB_DIV(8)
@@ -42,5 +65,8 @@ EHXPLLL #(
         .PLLWAKESYNC(1'b0),
         .ENCLKOP(1'b0),
         .LOCK(locked)
-	);
+);
+
 endmodule
+
+`default_nettype wire

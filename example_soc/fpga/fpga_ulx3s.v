@@ -49,11 +49,38 @@ wire clk_sys;
 wire pll_sys_locked;
 wire rst_n_sys;
 
+`ifdef HAZARD3_ULX3S_12F
+/*
+ * The ULX3S 12F is a compact board with a 40 MHz system clock. The 12F
+ * has a smaller EBR profile than the 85F, so the video framebuffer must
+ * be implemented in SDRAM. The 12F has a smaller SDRAM chip than the 85F,
+ * so the framebuffer is limited to 32 MiB and the SDRAM cache is limited
+ * to 32 KiB.
+ *
+ * With limited resources, when HAS_REGISTERED_READ_HITS is not defined,
+ * the timing closure will not likely succeed even at the lower 40MHz.
+ */
+`define HAS_REGISTERED_READ_HITS
+pll_25_40 pll_sys (
+	.clkin   (clk_osc),
+	.clkout0 (clk_sys),
+	.locked  (pll_sys_locked)
+);
+`else
+/* The ULX3S 85F has a 50 MHz system clock. The 85F has a larger EBR profile than
+ * the 12F, so the video framebuffer can be implemented in EBR. The 85F has
+ * a larger SDRAM chip than the 12F, so the framebuffer is limited to 64 MiB
+ * and the SDRAM cache is limited to 64 KiB.
+ *
+ * The HAS_REGISTERED_READ_HITS is optional here. The timing closure will likely
+ * succeed at 50MHz with or without it.
+ */
 pll_25_50 pll_sys (
 	.clkin   (clk_osc),
 	.clkout0 (clk_sys),
 	.locked  (pll_sys_locked)
 );
+`endif
 
 fpga_reset #(
 	.SHIFT (3)
@@ -162,10 +189,64 @@ assign sao_gpio1 = sao_gpio1_oe ? sao_gpio1_o : 1'bz;
 assign sao_gpio2 = sao_gpio2_oe ? sao_gpio2_o : 1'bz;
 
 // Runtime IDs use the same APB slots as ULX4M-LD so one monitor firmware can
-// verify either board without compile-time board selection.
-localparam [31:0] FPGA_BUILD_ID          = 32'h554c5035; // ASCII "ULP5"
-localparam [31:0] MEMORY_CORE_BUILD_ID   = 32'h53445235; // ASCII "SDR5"
+// verify either board without compile-time board selection. The ULX3S 12F is
+// the same board-level design with a compact EBR profile; pins, peripherals,
+// clocks and CPU ISA remain shared with the 85F target.
+localparam [31:0] MEMORY_CORE_BUILD_ID    = 32'h53445235; // ASCII "SDR5"
 localparam [31:0] MEMORY_ADAPTER_BUILD_ID = 32'h41485335; // ASCII "AHS5"
+
+`ifdef HAZARD3_ULX3S_12F
+localparam integer SOC_CLK_MHZ = 40;
+localparam [31:0] FPGA_BUILD_ID = 32'h554c3132; // ASCII "UL12"
+localparam ULX3S_SDRAM_SCANOUT = 1'b1;
+localparam HDMI_EXTENDED_VIDEO_MODES = 1'b0;
+localparam integer SOC_SRAM_DEPTH = 1 << 8;
+localparam SOC_SRAM_PRELOAD_FILE = "../soc/hazard3-12f-bootstrap.hex";
+localparam integer SOC_SDRAM_CACHE_DEPTH = 512; // 32 KiB, two-way unified
+localparam SOC_SDRAM_CACHE_TAG_PRELOAD = "../soc/cache_tags_zero_12f.hex";
+
+`ifdef HAS_REGISTERED_READ_HITS
+    localparam SOC_SDRAM_CACHE_REGISTERED_READ_HITS = 1'b1;
+`endif
+
+localparam [31:0] SOC_SDRAM_UNCACHED_LOW_MASK = 32'hfffc0000;
+localparam [31:0] SOC_SDRAM_UNCACHED_LOW_BASE = 32'h20000000;
+`ifdef HAZARD3_SDRAM_32MB
+localparam [24:0] VIDEO_FRAMEBUFFER0_HALFWORD_BASE = 25'h0e00000;
+localparam [24:0] VIDEO_FRAMEBUFFER1_HALFWORD_BASE = 25'h0e08000;
+localparam [31:0] SOC_VIDEO_APERTURE_BASE = 32'h21c00000;
+localparam integer SOC_SDRAM_COLUMN_WIDTH = 9;
+`else
+localparam [24:0] VIDEO_FRAMEBUFFER0_HALFWORD_BASE = 25'h1e00000;
+localparam [24:0] VIDEO_FRAMEBUFFER1_HALFWORD_BASE = 25'h1e08000;
+localparam [31:0] SOC_VIDEO_APERTURE_BASE = 32'h23c00000;
+localparam integer SOC_SDRAM_COLUMN_WIDTH = 10;
+`endif /* HAZARD3_SDRAM_32MB */
+
+`else /* ! HAZARD3_ULX3S_12F */
+localparam integer SOC_CLK_MHZ = 50;
+localparam [31:0] FPGA_BUILD_ID = 32'h554c5035; // ASCII "ULP5"
+localparam ULX3S_SDRAM_SCANOUT = 1'b0;
+`ifdef HAZARD3_HDMI_EXTENDED_MODES
+localparam HDMI_EXTENDED_VIDEO_MODES = 1'b1;
+`else
+localparam HDMI_EXTENDED_VIDEO_MODES = 1'b0;
+`endif
+localparam integer SOC_SRAM_DEPTH = 1 << 15;
+localparam SOC_SRAM_PRELOAD_FILE = "../soc/hazard3-boot-monitor.hex";
+localparam integer SOC_SDRAM_CACHE_DEPTH = 1024; // established 64 KiB cache
+localparam SOC_SDRAM_CACHE_TAG_PRELOAD = "../soc/cache_tags_zero.hex";
+`ifdef HAS_REGISTERED_READ_HITS
+    localparam SOC_SDRAM_CACHE_REGISTERED_READ_HITS = 1'b0;
+`endif
+localparam [31:0] SOC_SDRAM_UNCACHED_LOW_MASK = 32'hfff00000;
+localparam [31:0] SOC_SDRAM_UNCACHED_LOW_BASE = 32'h20000000;
+localparam [31:0] SOC_VIDEO_APERTURE_BASE = 32'h23c00000;
+localparam integer SOC_SDRAM_COLUMN_WIDTH = 10;
+localparam [24:0] VIDEO_FRAMEBUFFER0_HALFWORD_BASE = 25'h1e00000;
+localparam [24:0] VIDEO_FRAMEBUFFER1_HALFWORD_BASE = 25'h1e08000;
+`endif /* 12F or 85F */
+
 wire [31:0] memory_status = {
     16'h5344,                 // ASCII "SD"
     11'd0,
@@ -186,7 +267,73 @@ always @(*) begin
     endcase
 end
 
-ulx3s_hdmi_framebuffer hdmi_framebuffer_u (
+`ifdef HAZARD3_ULX3S_12F
+generate
+if (ULX3S_SDRAM_SCANOUT) begin: compact_video
+    ulx3s_hdmi_sdram_scanout #(
+        .FRAMEBUFFER0_HALFWORD_BASE (VIDEO_FRAMEBUFFER0_HALFWORD_BASE),
+        .FRAMEBUFFER1_HALFWORD_BASE (VIDEO_FRAMEBUFFER1_HALFWORD_BASE)
+    ) hdmi_video_u (
+	.clk_sys          (clk_sys),
+	.rst_n_sys        (rst_n_sys),
+	.clk_pix          (clk_video_pix),
+	.rst_n_pix        (rst_n_video_pix),
+	.clk_tmds_x5      (clk_tmds_x5),
+	.rst_n_tmds_x5    (rst_n_tmds_x5),
+
+	.sdram_req_valid  (video_sdram_req_valid),
+	.sdram_req_ready  (video_sdram_req_ready),
+	.sdram_req_addr   (video_sdram_req_addr),
+	.sdram_rsp_valid  (video_sdram_rsp_valid),
+	.sdram_rsp_rdata  (video_sdram_rsp_rdata),
+	.sdram_init_done  (video_sdram_init_done),
+
+	.apbs_psel        (video_apb_psel),
+	.apbs_penable     (video_apb_penable),
+	.apbs_pwrite      (video_apb_pwrite),
+	.apbs_paddr       (video_apb_paddr),
+	.apbs_pwdata      (video_apb_pwdata),
+	.apbs_prdata      (video_apb_prdata_framebuffer),
+	.apbs_pready      (video_apb_pready),
+	.apbs_pslverr     (video_apb_pslverr),
+
+	.gpdi_dp          (gpdi_dp)
+    );
+end else begin: full_ebr_video
+    ulx3s_hdmi_framebuffer #(
+        .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES)
+    ) hdmi_video_u (
+	.clk_sys          (clk_sys),
+	.rst_n_sys        (rst_n_sys),
+	.clk_pix          (clk_video_pix),
+	.rst_n_pix        (rst_n_video_pix),
+	.clk_tmds_x5      (clk_tmds_x5),
+	.rst_n_tmds_x5    (rst_n_tmds_x5),
+
+	.sdram_req_valid  (video_sdram_req_valid),
+	.sdram_req_ready  (video_sdram_req_ready),
+	.sdram_req_addr   (video_sdram_req_addr),
+	.sdram_rsp_valid  (video_sdram_rsp_valid),
+	.sdram_rsp_rdata  (video_sdram_rsp_rdata),
+	.sdram_init_done  (video_sdram_init_done),
+
+	.apbs_psel        (video_apb_psel),
+	.apbs_penable     (video_apb_penable),
+	.apbs_pwrite      (video_apb_pwrite),
+	.apbs_paddr       (video_apb_paddr),
+	.apbs_pwdata      (video_apb_pwdata),
+	.apbs_prdata      (video_apb_prdata_framebuffer),
+	.apbs_pready      (video_apb_pready),
+	.apbs_pslverr     (video_apb_pslverr),
+
+	.gpdi_dp          (gpdi_dp)
+    );
+end
+endgenerate
+`else
+ulx3s_hdmi_framebuffer #(
+    .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES)
+) hdmi_framebuffer_u (
 	.clk_sys          (clk_sys),
 	.rst_n_sys        (rst_n_sys),
 	.clk_pix          (clk_video_pix),
@@ -212,6 +359,7 @@ ulx3s_hdmi_framebuffer hdmi_framebuffer_u (
 
 	.gpdi_dp          (gpdi_dp)
 );
+`endif
 
 // Forward an inverted copy of the 50 MHz system clock. Commands and data are
 // launched on clk_sys rising edges and reach the SDRAM half a cycle before
@@ -226,15 +374,24 @@ ddr_out sdram_clock_u (
 );
 
 example_soc #(
-	.DTM_TYPE            ("ECP5"),
-	.SRAM_DEPTH          (1 << 15),
-	.SRAM_PRELOAD_FILE   ("../soc/hazard3-boot-monitor.hex"),
-	.CLK_MHZ             (50),
-	.SDRAM_ENABLE        (1),
-	.LITEDRAM_ENABLE     (0),
-	.ESP_SAO_UART_ENABLE (1),
-	.SD_SPI_ENABLE       (1),
-	.SDRAM_COL_WIDTH     (10),
+	.DTM_TYPE                    ("ECP5"),
+	.SRAM_DEPTH                  (SOC_SRAM_DEPTH),
+	.SRAM_PRELOAD_FILE           (SOC_SRAM_PRELOAD_FILE),
+	.SRAM_HAS_WRITE_BUFFER       (1),
+	.CLK_MHZ                     (SOC_CLK_MHZ),
+	.SDRAM_ENABLE                (1),
+	.LITEDRAM_ENABLE             (0),
+	.ESP_SAO_UART_ENABLE         (1),
+	.SD_SPI_ENABLE               (1),
+	.SDRAM_COL_WIDTH             (SOC_SDRAM_COLUMN_WIDTH),
+	.SDRAM_CACHE_DEPTH           (SOC_SDRAM_CACHE_DEPTH),
+	.SDRAM_CACHE_TAG_PRELOAD     (SOC_SDRAM_CACHE_TAG_PRELOAD),
+`ifdef HAS_REGISTERED_READ_HITS
+	.SDRAM_CACHE_REGISTERED_READ_HITS (SOC_SDRAM_CACHE_REGISTERED_READ_HITS),
+`endif
+	.SDRAM_UNCACHED_LOW_MASK     (SOC_SDRAM_UNCACHED_LOW_MASK),
+	.SDRAM_UNCACHED_LOW_BASE     (SOC_SDRAM_UNCACHED_LOW_BASE),
+	.SDRAM_VIDEO_APERTURE_BASE   (SOC_VIDEO_APERTURE_BASE),
 
 	.EXTENSION_M         (1),
 	.EXTENSION_A         (0),
