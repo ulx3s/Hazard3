@@ -1,0 +1,16 @@
+cpu: serv
+cpu_variant: standard
+uart: fifo
+device: LFE5UM-85F-8BG381C
+memtype: DDR3
+sdram_module: MT41K256M16
+sdram_module_nb: 2
+sdram_rank_nb: 1
+sdram_phy: ECP5DDRPHY
+input_clk_freq: 25e6
+sys_clk_freq: 75e6
+init_clk_freq: 25e6
+user_ports:
+  wb:
+    type: wishbone
+    data_width: 128

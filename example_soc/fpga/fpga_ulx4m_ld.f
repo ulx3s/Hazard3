@@ -13,7 +13,7 @@ file ../libfpga/video/tmds_encode.v
 
 list ../soc/soc.f
 file ../soc/ahb_litedram.v
-file ../third_party/LiteDRAM/generated/litedram_ulx4m_cpu.v
+file ../third_party/LiteDRAM/litedram_ulx4m_cpu.v
 
 # ECP5 DTM is not in the main SoC list because the JTAGG primitive does not
 # exist on most platforms.
