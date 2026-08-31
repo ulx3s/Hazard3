@@ -3,7 +3,7 @@ cpu_variant: minimal
 uart: fifo
 device: LFE5UM-85F-8BG381C
 memtype: DDR3
-sdram_module: MT41K256M16
+sdram_module: MT41K512M16
 sdram_module_nb: 2
 sdram_rank_nb: 1
 sdram_phy: ECP5DDRPHY

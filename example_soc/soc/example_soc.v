@@ -87,7 +87,7 @@ module example_soc #(
 	// Optional ULX4M-LD LiteDRAM DDR3 interface. LITEDRAM_ENABLE selects this
 	// target while retaining the shared cached AHB and video interfaces.
 	input  wire              litedram_ref_clk,
-	output wire [14:0]       ddram_a,
+	output wire [15:0]       ddram_a,
 	output wire [2:0]        ddram_ba,
 	output wire              ddram_cas_n,
 	output wire              ddram_cke,
@@ -868,7 +868,7 @@ if (SDRAM_ENABLE) begin: sdram_enabled
             .sdram_wen         (sdram_wen)
         );
 
-        assign ddram_a = 15'd0;
+        assign ddram_a = 16'd0;
         assign ddram_ba = 3'd0;
         assign ddram_cas_n = 1'b1;
         assign ddram_cke = 1'b0;
@@ -908,7 +908,7 @@ end else begin: sdram_disabled
     assign video_sdram_rsp_rdata = 16'd0;
     assign video_sdram_init_done = 1'b0;
 
-    assign ddram_a = 15'd0;
+    assign ddram_a = 16'd0;
     assign ddram_ba = 3'd0;
     assign ddram_cas_n = 1'b1;
     assign ddram_cke = 1'b0;

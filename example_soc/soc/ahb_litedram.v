@@ -12,7 +12,7 @@
 //   LiteDRAM 2024.12
 //   LiteX    2024.12
 //   PHY      ECP5DDRPHY, 75 MHz system clock, DDR3-300 data rate
-//   Memory   MT41K256M16-class, 4 Gbit x16, 512 MiB
+//   Memory   MT41K512M16HA-125, 8 Gbit x16, 1 GiB
 //
 // The LiteDRAM core contains a small VexRiscv BIOS that performs JEDEC DDR3
 // initialization, read leveling and a memory test. The external Wishbone port
@@ -53,7 +53,7 @@ module ahb_litedram #(
     output reg  [15:0]       video_rsp_rdata,
     output wire              video_init_done,
 
-    output wire [14:0]       ddram_a,
+    output wire [15:0]       ddram_a,
     output wire [2:0]        ddram_ba,
     output wire              ddram_cas_n,
     output wire              ddram_cke,
@@ -82,7 +82,7 @@ localparam [2:0]
 reg [2:0] state;
 reg       request_owner_video;
 reg       request_write;
-reg [24:0] request_line_addr;
+reg [25:0] request_line_addr;
 reg [1:0] request_word_index;
 reg [2:0] request_halfword_index;
 reg [3:0] request_byte_offset;
@@ -116,7 +116,7 @@ wire litedram_uart_rx_ready_unused;
 wire litedram_wb_ack;
 wire [127:0] litedram_wb_dat_r;
 wire litedram_wb_err;
-reg [24:0] user_wb_adr;
+reg [25:0] user_wb_adr;
 reg [127:0] user_wb_dat_w;
 reg [15:0] user_wb_sel;
 reg user_wb_we;
@@ -181,7 +181,7 @@ assign video_init_done = calib_complete;
 
 always @(posedge litedram_user_clk) begin
     if (litedram_user_rst) begin
-        user_wb_adr <= 25'd0;
+        user_wb_adr <= 26'd0;
         user_wb_dat_w <= 128'd0;
         user_wb_sel <= 16'd0;
         user_wb_we <= 1'b0;
@@ -220,8 +220,10 @@ always @(posedge litedram_user_clk) begin
     end
 end
 
-// MT41K256M16 geometry is 15 row bits, 10 column bits and 3 bank bits.
+// MT41K512M16 geometry is 16 row bits, 10 column bits and 3 bank bits.
 // The generated LiteDRAM port is one 128-bit Wishbone word per DDR3 BL8 burst.
+// Its 1 GiB geometry exposes a 26-bit Wishbone word address. The current
+// Hazard3/Doom 64 MiB window keeps the upper four word-address bits at zero.
 litedram_ulx4m_cpu litedram_u (
     .clk                  (litedram_ref_clk),
     .rst                  (!rst_n),
@@ -308,7 +310,7 @@ always @(posedge clk or negedge rst_n) begin
         state <= ST_IDLE;
         request_owner_video <= 1'b0;
         request_write <= 1'b0;
-        request_line_addr <= 25'd0;
+        request_line_addr <= 26'd0;
         request_word_index <= 2'd0;
         request_halfword_index <= 3'd0;
         request_byte_offset <= 4'd0;
@@ -335,7 +337,7 @@ always @(posedge clk or negedge rst_n) begin
             if (accept_video) begin
                 request_owner_video <= 1'b1;
                 request_write <= 1'b0;
-                request_line_addr <= {3'b000, video_req_addr[24:3]};
+                request_line_addr <= {4'b0000, video_req_addr[24:3]};
                 request_halfword_index <= video_req_addr[2:0];
                 request_wdata <= 128'd0;
                 request_sel <= 16'd0;
@@ -345,7 +347,7 @@ always @(posedge clk or negedge rst_n) begin
             end else if (accept_ahb) begin
                 request_owner_video <= 1'b0;
                 request_write <= ahbls_hwrite;
-                request_line_addr <= {3'b000, ahbls_haddr[25:4]};
+                request_line_addr <= {4'b0000, ahbls_haddr[25:4]};
                 request_word_index <= ahbls_haddr[3:2];
                 request_byte_offset <= ahbls_haddr[3:0];
                 request_hsize <= ahbls_hsize;

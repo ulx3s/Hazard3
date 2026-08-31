@@ -20,7 +20,7 @@ module fpga_ulx4m_ld (
 
     output wire [3:0]  gpdi_dp,
 
-    output wire [14:0] ddram_a,
+    output wire [15:0] ddram_a,
     output wire [2:0]  ddram_ba,
     output wire        ddram_cas_n,
     output wire        ddram_cke,

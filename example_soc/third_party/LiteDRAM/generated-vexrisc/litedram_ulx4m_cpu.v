@@ -15,7 +15,7 @@
 // Filename   : litedram_ulx4m_cpu.v
 // Device     : LFE5UM-85F-8BG381C
 // LiteX sha1 : --------
-// Date       : 2026-08-30 10:46:46
+// Date       : 2026-08-31 16:12:08
 //------------------------------------------------------------------------------
 
 `timescale 1ns / 1ps
@@ -26,7 +26,7 @@
 
 module litedram_ulx4m_cpu (
     input  wire          clk,
-    output wire   [14:0] ddram_a,
+    output wire   [15:0] ddram_a,
     output wire    [2:0] ddram_ba,
     output wire          ddram_cas_n,
     output wire          ddram_cke,
@@ -53,7 +53,7 @@ module litedram_ulx4m_cpu (
     output wire          uart_tx_valid,
     output wire          user_clk,
     output wire          user_port_wb_ack,
-    input  wire   [24:0] user_port_wb_adr,
+    input  wire   [25:0] user_port_wb_adr,
     input  wire          user_port_wb_cyc,
     output wire  [127:0] user_port_wb_dat_r,
     input  wire  [127:0] user_port_wb_dat_w,
@@ -133,6 +133,8 @@ LiteDRAMCore
 │    └─── [DELAYG]
 │    └─── [IDDRX2DQA]
 │    └─── [TSHX2DQA]
+│    └─── [DELAYG]
+│    └─── [ODDRX2F]
 │    └─── [DELAYG]
 │    └─── [ODDRX2F]
 │    └─── [DELAYG]
@@ -451,7 +453,7 @@ LiteDRAMCore
 
 wire   [13:0] builder_adr;
 reg     [2:0] builder_array_muxed0 = 3'd0;
-reg    [14:0] builder_array_muxed1 = 15'd0;
+reg    [15:0] builder_array_muxed1 = 16'd0;
 reg           builder_array_muxed10 = 1'd0;
 reg           builder_array_muxed11 = 1'd0;
 reg           builder_array_muxed12 = 1'd0;
@@ -462,7 +464,7 @@ reg           builder_array_muxed4 = 1'd0;
 reg           builder_array_muxed5 = 1'd0;
 reg           builder_array_muxed6 = 1'd0;
 reg     [2:0] builder_array_muxed7 = 3'd0;
-reg    [14:0] builder_array_muxed8 = 15'd0;
+reg    [15:0] builder_array_muxed8 = 16'd0;
 reg           builder_array_muxed9 = 1'd0;
 reg    [19:0] builder_count = 20'd1000000;
 wire   [31:0] builder_csrbank0_bus_errors_r;
@@ -500,9 +502,9 @@ wire    [3:0] builder_csrbank3_dfii_control0_r;
 reg           builder_csrbank3_dfii_control0_re = 1'd0;
 wire    [3:0] builder_csrbank3_dfii_control0_w;
 reg           builder_csrbank3_dfii_control0_we = 1'd0;
-wire   [14:0] builder_csrbank3_dfii_pi0_address0_r;
+wire   [15:0] builder_csrbank3_dfii_pi0_address0_r;
 reg           builder_csrbank3_dfii_pi0_address0_re = 1'd0;
-wire   [14:0] builder_csrbank3_dfii_pi0_address0_w;
+wire   [15:0] builder_csrbank3_dfii_pi0_address0_w;
 reg           builder_csrbank3_dfii_pi0_address0_we = 1'd0;
 wire    [2:0] builder_csrbank3_dfii_pi0_baddress0_r;
 reg           builder_csrbank3_dfii_pi0_baddress0_re = 1'd0;
@@ -528,9 +530,9 @@ wire   [31:0] builder_csrbank3_dfii_pi0_wrdata1_r;
 reg           builder_csrbank3_dfii_pi0_wrdata1_re = 1'd0;
 wire   [31:0] builder_csrbank3_dfii_pi0_wrdata1_w;
 reg           builder_csrbank3_dfii_pi0_wrdata1_we = 1'd0;
-wire   [14:0] builder_csrbank3_dfii_pi1_address0_r;
+wire   [15:0] builder_csrbank3_dfii_pi1_address0_r;
 reg           builder_csrbank3_dfii_pi1_address0_re = 1'd0;
-wire   [14:0] builder_csrbank3_dfii_pi1_address0_w;
+wire   [15:0] builder_csrbank3_dfii_pi1_address0_w;
 reg           builder_csrbank3_dfii_pi1_address0_we = 1'd0;
 wire    [2:0] builder_csrbank3_dfii_pi1_baddress0_r;
 reg           builder_csrbank3_dfii_pi1_baddress0_re = 1'd0;
@@ -798,43 +800,43 @@ reg           builder_rhs_array_muxed11 = 1'd0;
 reg           builder_rhs_array_muxed12 = 1'd0;
 reg           builder_rhs_array_muxed13 = 1'd0;
 reg           builder_rhs_array_muxed14 = 1'd0;
-reg    [14:0] builder_rhs_array_muxed15 = 15'd0;
+reg    [15:0] builder_rhs_array_muxed15 = 16'd0;
 reg     [2:0] builder_rhs_array_muxed16 = 3'd0;
 reg           builder_rhs_array_muxed17 = 1'd0;
 reg           builder_rhs_array_muxed18 = 1'd0;
 reg           builder_rhs_array_muxed19 = 1'd0;
 reg     [3:0] builder_rhs_array_muxed2 = 4'd0;
-reg    [21:0] builder_rhs_array_muxed20 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed20 = 23'd0;
 reg           builder_rhs_array_muxed21 = 1'd0;
 reg           builder_rhs_array_muxed22 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed23 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed23 = 23'd0;
 reg           builder_rhs_array_muxed24 = 1'd0;
 reg           builder_rhs_array_muxed25 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed26 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed26 = 23'd0;
 reg           builder_rhs_array_muxed27 = 1'd0;
 reg           builder_rhs_array_muxed28 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed29 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed29 = 23'd0;
 reg           builder_rhs_array_muxed3 = 1'd0;
 reg           builder_rhs_array_muxed30 = 1'd0;
 reg           builder_rhs_array_muxed31 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed32 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed32 = 23'd0;
 reg           builder_rhs_array_muxed33 = 1'd0;
 reg           builder_rhs_array_muxed34 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed35 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed35 = 23'd0;
 reg           builder_rhs_array_muxed36 = 1'd0;
 reg           builder_rhs_array_muxed37 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed38 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed38 = 23'd0;
 reg           builder_rhs_array_muxed39 = 1'd0;
 reg           builder_rhs_array_muxed4 = 1'd0;
 reg           builder_rhs_array_muxed40 = 1'd0;
-reg    [21:0] builder_rhs_array_muxed41 = 22'd0;
+reg    [22:0] builder_rhs_array_muxed41 = 23'd0;
 reg           builder_rhs_array_muxed42 = 1'd0;
 reg           builder_rhs_array_muxed43 = 1'd0;
 reg           builder_rhs_array_muxed5 = 1'd0;
 reg     [2:0] builder_rhs_array_muxed6 = 3'd0;
 reg     [1:0] builder_rhs_array_muxed7 = 2'd0;
 reg           builder_rhs_array_muxed8 = 1'd0;
-reg    [14:0] builder_rhs_array_muxed9 = 15'd0;
+reg    [15:0] builder_rhs_array_muxed9 = 16'd0;
 reg           builder_shared_ack = 1'd0;
 wire   [29:0] builder_shared_adr;
 wire    [1:0] builder_shared_bte;
@@ -861,7 +863,7 @@ reg     [1:0] builder_wishbone2csr_state = 2'd0;
 wire          init_clk;
 wire          init_rst;
 wire          main_cmd_last;
-wire   [24:0] main_cmd_payload_addr;
+wire   [25:0] main_cmd_payload_addr;
 wire          main_cmd_payload_we;
 wire          main_cmd_ready;
 reg           main_cmd_valid = 1'd0;
@@ -959,7 +961,7 @@ wire    [1:0] main_ddrphy_datavalid;
 wire          main_ddrphy_delay0;
 wire          main_ddrphy_delay1;
 wire          main_ddrphy_dfi_p0_act_n;
-wire   [14:0] main_ddrphy_dfi_p0_address;
+wire   [15:0] main_ddrphy_dfi_p0_address;
 wire    [2:0] main_ddrphy_dfi_p0_bank;
 wire          main_ddrphy_dfi_p0_cas_n;
 wire          main_ddrphy_dfi_p0_cke;
@@ -975,7 +977,7 @@ wire   [63:0] main_ddrphy_dfi_p0_wrdata;
 wire          main_ddrphy_dfi_p0_wrdata_en;
 wire    [7:0] main_ddrphy_dfi_p0_wrdata_mask;
 wire          main_ddrphy_dfi_p1_act_n;
-wire   [14:0] main_ddrphy_dfi_p1_address;
+wire   [15:0] main_ddrphy_dfi_p1_address;
 wire    [2:0] main_ddrphy_dfi_p1_bank;
 wire          main_ddrphy_dfi_p1_cas_n;
 wire          main_ddrphy_dfi_p1_cke;
@@ -1183,6 +1185,7 @@ wire          main_ddrphy_pad_oddrx2f22;
 wire          main_ddrphy_pad_oddrx2f23;
 wire          main_ddrphy_pad_oddrx2f24;
 wire          main_ddrphy_pad_oddrx2f25;
+wire          main_ddrphy_pad_oddrx2f26;
 wire          main_ddrphy_pad_oddrx2f3;
 wire          main_ddrphy_pad_oddrx2f4;
 wire          main_ddrphy_pad_oddrx2f5;
@@ -1323,7 +1326,7 @@ reg           main_litedramcore_pending_re = 1'd0;
 reg           main_litedramcore_pending_status = 1'd0;
 wire          main_litedramcore_pending_we;
 wire          main_litedramcore_port_cmd_last;
-wire   [24:0] main_litedramcore_port_cmd_payload_addr;
+wire   [25:0] main_litedramcore_port_cmd_payload_addr;
 wire          main_litedramcore_port_cmd_payload_we;
 wire          main_litedramcore_port_cmd_ready;
 reg           main_litedramcore_port_cmd_valid = 1'd0;
@@ -1359,7 +1362,7 @@ reg     [1:0] main_litedramcore_reset_storage = 2'd0;
 reg           main_litedramcore_scratch_re = 1'd0;
 reg    [31:0] main_litedramcore_scratch_storage = 32'd305419896;
 reg           main_litedramcore_sdram_bankmachine0_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine0_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine0_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine0_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine0_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_cmd_payload_is_cmd = 1'd0;
@@ -1373,39 +1376,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine0_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine0_do_read;
 wire          main_litedramcore_sdram_bankmachine0_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine0_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine0_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine0_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine0_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine0_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine0_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine0_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine0_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine0_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine0_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_refresh_req;
 reg           main_litedramcore_sdram_bankmachine0_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_req_addr;
 wire          main_litedramcore_sdram_bankmachine0_req_lock;
 reg           main_litedramcore_sdram_bankmachine0_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_req_ready;
 wire          main_litedramcore_sdram_bankmachine0_req_valid;
 reg           main_litedramcore_sdram_bankmachine0_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine0_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine0_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine0_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_row_hit;
@@ -1413,30 +1416,30 @@ reg           main_litedramcore_sdram_bankmachine0_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine0_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_sink_ready;
 wire          main_litedramcore_sdram_bankmachine0_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine0_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine0_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine0_sink_valid;
 wire          main_litedramcore_sdram_bankmachine0_source_first;
 wire          main_litedramcore_sdram_bankmachine0_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_source_ready;
 wire          main_litedramcore_sdram_bankmachine0_source_source_first;
 wire          main_litedramcore_sdram_bankmachine0_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine0_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine0_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine0_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine0_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine0_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine0_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine0_syncfifo0_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine0_syncfifo0_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine0_syncfifo0_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine0_syncfifo0_dout;
 wire          main_litedramcore_sdram_bankmachine0_syncfifo0_re;
 wire          main_litedramcore_sdram_bankmachine0_syncfifo0_readable;
 wire          main_litedramcore_sdram_bankmachine0_syncfifo0_we;
@@ -1451,11 +1454,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine0_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine0_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine0_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine0_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine0_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine0_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine0_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine0_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine0_wrport_we;
 reg           main_litedramcore_sdram_bankmachine1_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine1_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine1_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine1_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine1_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_cmd_payload_is_cmd = 1'd0;
@@ -1469,39 +1472,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine1_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine1_do_read;
 wire          main_litedramcore_sdram_bankmachine1_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine1_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine1_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine1_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine1_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine1_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine1_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine1_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine1_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine1_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine1_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_refresh_req;
 reg           main_litedramcore_sdram_bankmachine1_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_req_addr;
 wire          main_litedramcore_sdram_bankmachine1_req_lock;
 reg           main_litedramcore_sdram_bankmachine1_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_req_ready;
 wire          main_litedramcore_sdram_bankmachine1_req_valid;
 reg           main_litedramcore_sdram_bankmachine1_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine1_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine1_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine1_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_row_hit;
@@ -1509,30 +1512,30 @@ reg           main_litedramcore_sdram_bankmachine1_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine1_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_sink_ready;
 wire          main_litedramcore_sdram_bankmachine1_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine1_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine1_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine1_sink_valid;
 wire          main_litedramcore_sdram_bankmachine1_source_first;
 wire          main_litedramcore_sdram_bankmachine1_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_source_ready;
 wire          main_litedramcore_sdram_bankmachine1_source_source_first;
 wire          main_litedramcore_sdram_bankmachine1_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine1_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine1_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine1_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine1_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine1_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine1_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine1_syncfifo1_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine1_syncfifo1_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine1_syncfifo1_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine1_syncfifo1_dout;
 wire          main_litedramcore_sdram_bankmachine1_syncfifo1_re;
 wire          main_litedramcore_sdram_bankmachine1_syncfifo1_readable;
 wire          main_litedramcore_sdram_bankmachine1_syncfifo1_we;
@@ -1547,11 +1550,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine1_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine1_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine1_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine1_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine1_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine1_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine1_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine1_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine1_wrport_we;
 reg           main_litedramcore_sdram_bankmachine2_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine2_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine2_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine2_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine2_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_cmd_payload_is_cmd = 1'd0;
@@ -1565,39 +1568,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine2_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine2_do_read;
 wire          main_litedramcore_sdram_bankmachine2_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine2_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine2_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine2_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine2_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine2_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine2_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine2_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine2_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine2_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine2_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_refresh_req;
 reg           main_litedramcore_sdram_bankmachine2_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_req_addr;
 wire          main_litedramcore_sdram_bankmachine2_req_lock;
 reg           main_litedramcore_sdram_bankmachine2_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_req_ready;
 wire          main_litedramcore_sdram_bankmachine2_req_valid;
 reg           main_litedramcore_sdram_bankmachine2_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine2_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine2_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine2_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_row_hit;
@@ -1605,30 +1608,30 @@ reg           main_litedramcore_sdram_bankmachine2_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine2_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_sink_ready;
 wire          main_litedramcore_sdram_bankmachine2_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine2_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine2_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine2_sink_valid;
 wire          main_litedramcore_sdram_bankmachine2_source_first;
 wire          main_litedramcore_sdram_bankmachine2_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_source_ready;
 wire          main_litedramcore_sdram_bankmachine2_source_source_first;
 wire          main_litedramcore_sdram_bankmachine2_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine2_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine2_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine2_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine2_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine2_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine2_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine2_syncfifo2_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine2_syncfifo2_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine2_syncfifo2_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine2_syncfifo2_dout;
 wire          main_litedramcore_sdram_bankmachine2_syncfifo2_re;
 wire          main_litedramcore_sdram_bankmachine2_syncfifo2_readable;
 wire          main_litedramcore_sdram_bankmachine2_syncfifo2_we;
@@ -1643,11 +1646,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine2_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine2_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine2_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine2_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine2_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine2_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine2_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine2_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine2_wrport_we;
 reg           main_litedramcore_sdram_bankmachine3_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine3_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine3_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine3_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine3_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_cmd_payload_is_cmd = 1'd0;
@@ -1661,39 +1664,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine3_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine3_do_read;
 wire          main_litedramcore_sdram_bankmachine3_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine3_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine3_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine3_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine3_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine3_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine3_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine3_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine3_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine3_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine3_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_refresh_req;
 reg           main_litedramcore_sdram_bankmachine3_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_req_addr;
 wire          main_litedramcore_sdram_bankmachine3_req_lock;
 reg           main_litedramcore_sdram_bankmachine3_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_req_ready;
 wire          main_litedramcore_sdram_bankmachine3_req_valid;
 reg           main_litedramcore_sdram_bankmachine3_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine3_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine3_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine3_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_row_hit;
@@ -1701,30 +1704,30 @@ reg           main_litedramcore_sdram_bankmachine3_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine3_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_sink_ready;
 wire          main_litedramcore_sdram_bankmachine3_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine3_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine3_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine3_sink_valid;
 wire          main_litedramcore_sdram_bankmachine3_source_first;
 wire          main_litedramcore_sdram_bankmachine3_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_source_ready;
 wire          main_litedramcore_sdram_bankmachine3_source_source_first;
 wire          main_litedramcore_sdram_bankmachine3_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine3_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine3_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine3_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine3_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine3_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine3_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine3_syncfifo3_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine3_syncfifo3_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine3_syncfifo3_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine3_syncfifo3_dout;
 wire          main_litedramcore_sdram_bankmachine3_syncfifo3_re;
 wire          main_litedramcore_sdram_bankmachine3_syncfifo3_readable;
 wire          main_litedramcore_sdram_bankmachine3_syncfifo3_we;
@@ -1739,11 +1742,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine3_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine3_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine3_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine3_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine3_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine3_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine3_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine3_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine3_wrport_we;
 reg           main_litedramcore_sdram_bankmachine4_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine4_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine4_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine4_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine4_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_cmd_payload_is_cmd = 1'd0;
@@ -1757,39 +1760,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine4_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine4_do_read;
 wire          main_litedramcore_sdram_bankmachine4_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine4_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine4_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine4_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine4_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine4_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine4_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine4_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine4_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine4_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine4_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_refresh_req;
 reg           main_litedramcore_sdram_bankmachine4_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_req_addr;
 wire          main_litedramcore_sdram_bankmachine4_req_lock;
 reg           main_litedramcore_sdram_bankmachine4_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_req_ready;
 wire          main_litedramcore_sdram_bankmachine4_req_valid;
 reg           main_litedramcore_sdram_bankmachine4_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine4_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine4_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine4_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_row_hit;
@@ -1797,30 +1800,30 @@ reg           main_litedramcore_sdram_bankmachine4_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine4_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_sink_ready;
 wire          main_litedramcore_sdram_bankmachine4_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine4_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine4_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine4_sink_valid;
 wire          main_litedramcore_sdram_bankmachine4_source_first;
 wire          main_litedramcore_sdram_bankmachine4_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_source_ready;
 wire          main_litedramcore_sdram_bankmachine4_source_source_first;
 wire          main_litedramcore_sdram_bankmachine4_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine4_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine4_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine4_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine4_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine4_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine4_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine4_syncfifo4_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine4_syncfifo4_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine4_syncfifo4_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine4_syncfifo4_dout;
 wire          main_litedramcore_sdram_bankmachine4_syncfifo4_re;
 wire          main_litedramcore_sdram_bankmachine4_syncfifo4_readable;
 wire          main_litedramcore_sdram_bankmachine4_syncfifo4_we;
@@ -1835,11 +1838,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine4_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine4_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine4_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine4_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine4_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine4_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine4_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine4_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine4_wrport_we;
 reg           main_litedramcore_sdram_bankmachine5_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine5_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine5_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine5_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine5_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_cmd_payload_is_cmd = 1'd0;
@@ -1853,39 +1856,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine5_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine5_do_read;
 wire          main_litedramcore_sdram_bankmachine5_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine5_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine5_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine5_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine5_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine5_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine5_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine5_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine5_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine5_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine5_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_refresh_req;
 reg           main_litedramcore_sdram_bankmachine5_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_req_addr;
 wire          main_litedramcore_sdram_bankmachine5_req_lock;
 reg           main_litedramcore_sdram_bankmachine5_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_req_ready;
 wire          main_litedramcore_sdram_bankmachine5_req_valid;
 reg           main_litedramcore_sdram_bankmachine5_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine5_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine5_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine5_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_row_hit;
@@ -1893,30 +1896,30 @@ reg           main_litedramcore_sdram_bankmachine5_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine5_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_sink_ready;
 wire          main_litedramcore_sdram_bankmachine5_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine5_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine5_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine5_sink_valid;
 wire          main_litedramcore_sdram_bankmachine5_source_first;
 wire          main_litedramcore_sdram_bankmachine5_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_source_ready;
 wire          main_litedramcore_sdram_bankmachine5_source_source_first;
 wire          main_litedramcore_sdram_bankmachine5_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine5_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine5_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine5_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine5_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine5_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine5_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine5_syncfifo5_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine5_syncfifo5_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine5_syncfifo5_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine5_syncfifo5_dout;
 wire          main_litedramcore_sdram_bankmachine5_syncfifo5_re;
 wire          main_litedramcore_sdram_bankmachine5_syncfifo5_readable;
 wire          main_litedramcore_sdram_bankmachine5_syncfifo5_we;
@@ -1931,11 +1934,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine5_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine5_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine5_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine5_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine5_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine5_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine5_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine5_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine5_wrport_we;
 reg           main_litedramcore_sdram_bankmachine6_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine6_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine6_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine6_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine6_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd = 1'd0;
@@ -1949,39 +1952,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine6_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine6_do_read;
 wire          main_litedramcore_sdram_bankmachine6_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine6_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine6_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine6_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine6_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine6_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine6_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine6_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine6_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine6_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine6_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_refresh_req;
 reg           main_litedramcore_sdram_bankmachine6_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_req_addr;
 wire          main_litedramcore_sdram_bankmachine6_req_lock;
 reg           main_litedramcore_sdram_bankmachine6_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_req_ready;
 wire          main_litedramcore_sdram_bankmachine6_req_valid;
 reg           main_litedramcore_sdram_bankmachine6_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine6_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine6_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine6_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_row_hit;
@@ -1989,30 +1992,30 @@ reg           main_litedramcore_sdram_bankmachine6_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine6_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_sink_ready;
 wire          main_litedramcore_sdram_bankmachine6_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine6_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine6_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine6_sink_valid;
 wire          main_litedramcore_sdram_bankmachine6_source_first;
 wire          main_litedramcore_sdram_bankmachine6_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_source_ready;
 wire          main_litedramcore_sdram_bankmachine6_source_source_first;
 wire          main_litedramcore_sdram_bankmachine6_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine6_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine6_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine6_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine6_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine6_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine6_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine6_syncfifo6_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine6_syncfifo6_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine6_syncfifo6_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine6_syncfifo6_dout;
 wire          main_litedramcore_sdram_bankmachine6_syncfifo6_re;
 wire          main_litedramcore_sdram_bankmachine6_syncfifo6_readable;
 wire          main_litedramcore_sdram_bankmachine6_syncfifo6_we;
@@ -2027,11 +2030,11 @@ reg     [2:0] main_litedramcore_sdram_bankmachine6_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine6_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine6_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine6_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine6_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine6_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine6_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine6_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine6_wrport_we;
 reg           main_litedramcore_sdram_bankmachine7_auto_precharge = 1'd0;
-reg    [14:0] main_litedramcore_sdram_bankmachine7_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine7_cmd_payload_a = 16'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine7_cmd_payload_ba;
 reg           main_litedramcore_sdram_bankmachine7_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_cmd_payload_is_cmd = 1'd0;
@@ -2045,39 +2048,39 @@ reg     [2:0] main_litedramcore_sdram_bankmachine7_consume = 3'd0;
 wire          main_litedramcore_sdram_bankmachine7_do_read;
 wire          main_litedramcore_sdram_bankmachine7_fifo_in_first;
 wire          main_litedramcore_sdram_bankmachine7_fifo_in_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_fifo_in_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_fifo_in_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_fifo_in_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_fifo_out_first;
 wire          main_litedramcore_sdram_bankmachine7_fifo_out_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_fifo_out_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_fifo_out_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_fifo_out_payload_we;
 reg     [3:0] main_litedramcore_sdram_bankmachine7_level = 4'd0;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_sink_first;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_pipe_valid_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_pipe_valid_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_sink_ready;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_sink_valid;
 reg           main_litedramcore_sdram_bankmachine7_pipe_valid_source_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_pipe_valid_source_last = 1'd0;
-reg    [21:0] main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_addr = 22'd0;
+reg    [22:0] main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_addr = 23'd0;
 reg           main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_we = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_pipe_valid_source_ready;
 reg           main_litedramcore_sdram_bankmachine7_pipe_valid_source_valid = 1'd0;
 reg     [2:0] main_litedramcore_sdram_bankmachine7_produce = 3'd0;
 wire    [2:0] main_litedramcore_sdram_bankmachine7_rdport_adr;
-wire   [24:0] main_litedramcore_sdram_bankmachine7_rdport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine7_rdport_dat_r;
 reg           main_litedramcore_sdram_bankmachine7_refresh_gnt = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_refresh_req;
 reg           main_litedramcore_sdram_bankmachine7_replace = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_req_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_req_addr;
 wire          main_litedramcore_sdram_bankmachine7_req_lock;
 reg           main_litedramcore_sdram_bankmachine7_req_rdata_valid = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_req_ready;
 wire          main_litedramcore_sdram_bankmachine7_req_valid;
 reg           main_litedramcore_sdram_bankmachine7_req_wdata_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_req_we;
-reg    [14:0] main_litedramcore_sdram_bankmachine7_row = 15'd0;
+reg    [15:0] main_litedramcore_sdram_bankmachine7_row = 16'd0;
 reg           main_litedramcore_sdram_bankmachine7_row_close = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_row_hit;
@@ -2085,30 +2088,30 @@ reg           main_litedramcore_sdram_bankmachine7_row_open = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_row_opened = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_sink_first = 1'd0;
 reg           main_litedramcore_sdram_bankmachine7_sink_last = 1'd0;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_sink_ready;
 wire          main_litedramcore_sdram_bankmachine7_sink_sink_first;
 wire          main_litedramcore_sdram_bankmachine7_sink_sink_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_sink_sink_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_sink_sink_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_sink_sink_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_sink_sink_ready;
 wire          main_litedramcore_sdram_bankmachine7_sink_sink_valid;
 wire          main_litedramcore_sdram_bankmachine7_sink_valid;
 wire          main_litedramcore_sdram_bankmachine7_source_first;
 wire          main_litedramcore_sdram_bankmachine7_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_source_ready;
 wire          main_litedramcore_sdram_bankmachine7_source_source_first;
 wire          main_litedramcore_sdram_bankmachine7_source_source_last;
-wire   [21:0] main_litedramcore_sdram_bankmachine7_source_source_payload_addr;
+wire   [22:0] main_litedramcore_sdram_bankmachine7_source_source_payload_addr;
 wire          main_litedramcore_sdram_bankmachine7_source_source_payload_we;
 wire          main_litedramcore_sdram_bankmachine7_source_source_ready;
 wire          main_litedramcore_sdram_bankmachine7_source_source_valid;
 wire          main_litedramcore_sdram_bankmachine7_source_valid;
-wire   [24:0] main_litedramcore_sdram_bankmachine7_syncfifo7_din;
-wire   [24:0] main_litedramcore_sdram_bankmachine7_syncfifo7_dout;
+wire   [25:0] main_litedramcore_sdram_bankmachine7_syncfifo7_din;
+wire   [25:0] main_litedramcore_sdram_bankmachine7_syncfifo7_dout;
 wire          main_litedramcore_sdram_bankmachine7_syncfifo7_re;
 wire          main_litedramcore_sdram_bankmachine7_syncfifo7_readable;
 wire          main_litedramcore_sdram_bankmachine7_syncfifo7_we;
@@ -2123,12 +2126,12 @@ reg     [2:0] main_litedramcore_sdram_bankmachine7_twtpcon_count = 3'd0;
 reg           main_litedramcore_sdram_bankmachine7_twtpcon_ready = 1'd0;
 wire          main_litedramcore_sdram_bankmachine7_twtpcon_valid;
 reg     [2:0] main_litedramcore_sdram_bankmachine7_wrport_adr = 3'd0;
-wire   [24:0] main_litedramcore_sdram_bankmachine7_wrport_dat_r;
-wire   [24:0] main_litedramcore_sdram_bankmachine7_wrport_dat_w;
+wire   [25:0] main_litedramcore_sdram_bankmachine7_wrport_dat_r;
+wire   [25:0] main_litedramcore_sdram_bankmachine7_wrport_dat_w;
 wire          main_litedramcore_sdram_bankmachine7_wrport_we;
 wire          main_litedramcore_sdram_cas_allowed;
 wire          main_litedramcore_sdram_choose_cmd_ce;
-wire   [14:0] main_litedramcore_sdram_choose_cmd_cmd_payload_a;
+wire   [15:0] main_litedramcore_sdram_choose_cmd_cmd_payload_a;
 wire    [2:0] main_litedramcore_sdram_choose_cmd_cmd_payload_ba;
 reg           main_litedramcore_sdram_choose_cmd_cmd_payload_cas = 1'd0;
 wire          main_litedramcore_sdram_choose_cmd_cmd_payload_is_cmd;
@@ -2146,7 +2149,7 @@ reg           main_litedramcore_sdram_choose_cmd_want_cmds = 1'd0;
 reg           main_litedramcore_sdram_choose_cmd_want_reads = 1'd0;
 reg           main_litedramcore_sdram_choose_cmd_want_writes = 1'd0;
 wire          main_litedramcore_sdram_choose_req_ce;
-wire   [14:0] main_litedramcore_sdram_choose_req_cmd_payload_a;
+wire   [15:0] main_litedramcore_sdram_choose_req_cmd_payload_a;
 wire    [2:0] main_litedramcore_sdram_choose_req_cmd_payload_ba;
 reg           main_litedramcore_sdram_choose_req_cmd_payload_cas = 1'd0;
 wire          main_litedramcore_sdram_choose_req_cmd_payload_is_cmd;
@@ -2165,7 +2168,7 @@ reg           main_litedramcore_sdram_choose_req_want_reads = 1'd0;
 reg           main_litedramcore_sdram_choose_req_want_writes = 1'd0;
 wire          main_litedramcore_sdram_cke;
 reg           main_litedramcore_sdram_cmd_last = 1'd0;
-reg    [14:0] main_litedramcore_sdram_cmd_payload_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_cmd_payload_a = 16'd0;
 reg     [2:0] main_litedramcore_sdram_cmd_payload_ba = 3'd0;
 reg           main_litedramcore_sdram_cmd_payload_cas = 1'd0;
 reg           main_litedramcore_sdram_cmd_payload_is_read = 1'd0;
@@ -2175,7 +2178,7 @@ reg           main_litedramcore_sdram_cmd_payload_we = 1'd0;
 reg           main_litedramcore_sdram_cmd_ready = 1'd0;
 reg           main_litedramcore_sdram_cmd_valid = 1'd0;
 reg           main_litedramcore_sdram_csr_dfi_p0_act_n = 1'd1;
-wire   [14:0] main_litedramcore_sdram_csr_dfi_p0_address;
+wire   [15:0] main_litedramcore_sdram_csr_dfi_p0_address;
 wire    [2:0] main_litedramcore_sdram_csr_dfi_p0_bank;
 reg           main_litedramcore_sdram_csr_dfi_p0_cas_n = 1'd1;
 reg           main_litedramcore_sdram_csr_dfi_p0_cke = 1'd0;
@@ -2191,7 +2194,7 @@ wire   [63:0] main_litedramcore_sdram_csr_dfi_p0_wrdata;
 wire          main_litedramcore_sdram_csr_dfi_p0_wrdata_en;
 wire    [7:0] main_litedramcore_sdram_csr_dfi_p0_wrdata_mask;
 reg           main_litedramcore_sdram_csr_dfi_p1_act_n = 1'd1;
-wire   [14:0] main_litedramcore_sdram_csr_dfi_p1_address;
+wire   [15:0] main_litedramcore_sdram_csr_dfi_p1_address;
 wire    [2:0] main_litedramcore_sdram_csr_dfi_p1_bank;
 reg           main_litedramcore_sdram_csr_dfi_p1_cas_n = 1'd1;
 reg           main_litedramcore_sdram_csr_dfi_p1_cke = 1'd0;
@@ -2207,7 +2210,7 @@ wire   [63:0] main_litedramcore_sdram_csr_dfi_p1_wrdata;
 wire          main_litedramcore_sdram_csr_dfi_p1_wrdata_en;
 wire    [7:0] main_litedramcore_sdram_csr_dfi_p1_wrdata_mask;
 reg           main_litedramcore_sdram_dfi_p0_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_dfi_p0_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_dfi_p0_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_dfi_p0_bank = 3'd0;
 reg           main_litedramcore_sdram_dfi_p0_cas_n = 1'd1;
 wire          main_litedramcore_sdram_dfi_p0_cke;
@@ -2223,7 +2226,7 @@ wire   [63:0] main_litedramcore_sdram_dfi_p0_wrdata;
 reg           main_litedramcore_sdram_dfi_p0_wrdata_en = 1'd0;
 wire    [7:0] main_litedramcore_sdram_dfi_p0_wrdata_mask;
 reg           main_litedramcore_sdram_dfi_p1_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_dfi_p1_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_dfi_p1_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_dfi_p1_bank = 3'd0;
 reg           main_litedramcore_sdram_dfi_p1_cas_n = 1'd1;
 wire          main_litedramcore_sdram_dfi_p1_cke;
@@ -2241,7 +2244,7 @@ wire    [7:0] main_litedramcore_sdram_dfi_p1_wrdata_mask;
 reg           main_litedramcore_sdram_en0 = 1'd0;
 reg           main_litedramcore_sdram_en1 = 1'd0;
 reg           main_litedramcore_sdram_ext_dfi_p0_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_ext_dfi_p0_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_ext_dfi_p0_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_ext_dfi_p0_bank = 3'd0;
 reg           main_litedramcore_sdram_ext_dfi_p0_cas_n = 1'd1;
 reg           main_litedramcore_sdram_ext_dfi_p0_cke = 1'd0;
@@ -2257,7 +2260,7 @@ reg    [63:0] main_litedramcore_sdram_ext_dfi_p0_wrdata = 64'd0;
 reg           main_litedramcore_sdram_ext_dfi_p0_wrdata_en = 1'd0;
 reg     [7:0] main_litedramcore_sdram_ext_dfi_p0_wrdata_mask = 8'd0;
 reg           main_litedramcore_sdram_ext_dfi_p1_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_ext_dfi_p1_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_ext_dfi_p1_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_ext_dfi_p1_bank = 3'd0;
 reg           main_litedramcore_sdram_ext_dfi_p1_cas_n = 1'd1;
 reg           main_litedramcore_sdram_ext_dfi_p1_cke = 1'd0;
@@ -2274,56 +2277,56 @@ reg           main_litedramcore_sdram_ext_dfi_p1_wrdata_en = 1'd0;
 reg     [7:0] main_litedramcore_sdram_ext_dfi_p1_wrdata_mask = 8'd0;
 reg           main_litedramcore_sdram_ext_dfi_sel = 1'd0;
 wire          main_litedramcore_sdram_go_to_refresh;
-wire   [21:0] main_litedramcore_sdram_interface_bank0_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank0_addr;
 wire          main_litedramcore_sdram_interface_bank0_lock;
 wire          main_litedramcore_sdram_interface_bank0_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank0_ready;
 wire          main_litedramcore_sdram_interface_bank0_valid;
 wire          main_litedramcore_sdram_interface_bank0_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank0_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank1_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank1_addr;
 wire          main_litedramcore_sdram_interface_bank1_lock;
 wire          main_litedramcore_sdram_interface_bank1_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank1_ready;
 wire          main_litedramcore_sdram_interface_bank1_valid;
 wire          main_litedramcore_sdram_interface_bank1_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank1_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank2_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank2_addr;
 wire          main_litedramcore_sdram_interface_bank2_lock;
 wire          main_litedramcore_sdram_interface_bank2_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank2_ready;
 wire          main_litedramcore_sdram_interface_bank2_valid;
 wire          main_litedramcore_sdram_interface_bank2_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank2_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank3_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank3_addr;
 wire          main_litedramcore_sdram_interface_bank3_lock;
 wire          main_litedramcore_sdram_interface_bank3_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank3_ready;
 wire          main_litedramcore_sdram_interface_bank3_valid;
 wire          main_litedramcore_sdram_interface_bank3_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank3_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank4_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank4_addr;
 wire          main_litedramcore_sdram_interface_bank4_lock;
 wire          main_litedramcore_sdram_interface_bank4_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank4_ready;
 wire          main_litedramcore_sdram_interface_bank4_valid;
 wire          main_litedramcore_sdram_interface_bank4_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank4_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank5_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank5_addr;
 wire          main_litedramcore_sdram_interface_bank5_lock;
 wire          main_litedramcore_sdram_interface_bank5_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank5_ready;
 wire          main_litedramcore_sdram_interface_bank5_valid;
 wire          main_litedramcore_sdram_interface_bank5_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank5_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank6_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank6_addr;
 wire          main_litedramcore_sdram_interface_bank6_lock;
 wire          main_litedramcore_sdram_interface_bank6_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank6_ready;
 wire          main_litedramcore_sdram_interface_bank6_valid;
 wire          main_litedramcore_sdram_interface_bank6_wdata_ready;
 wire          main_litedramcore_sdram_interface_bank6_we;
-wire   [21:0] main_litedramcore_sdram_interface_bank7_addr;
+wire   [22:0] main_litedramcore_sdram_interface_bank7_addr;
 wire          main_litedramcore_sdram_interface_bank7_lock;
 wire          main_litedramcore_sdram_interface_bank7_rdata_valid;
 wire          main_litedramcore_sdram_interface_bank7_ready;
@@ -2334,7 +2337,7 @@ wire  [127:0] main_litedramcore_sdram_interface_rdata;
 reg   [127:0] main_litedramcore_sdram_interface_wdata = 128'd0;
 reg    [15:0] main_litedramcore_sdram_interface_wdata_we = 16'd0;
 reg           main_litedramcore_sdram_master_p0_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_master_p0_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_master_p0_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_master_p0_bank = 3'd0;
 reg           main_litedramcore_sdram_master_p0_cas_n = 1'd1;
 reg           main_litedramcore_sdram_master_p0_cke = 1'd0;
@@ -2350,7 +2353,7 @@ reg    [63:0] main_litedramcore_sdram_master_p0_wrdata = 64'd0;
 reg           main_litedramcore_sdram_master_p0_wrdata_en = 1'd0;
 reg     [7:0] main_litedramcore_sdram_master_p0_wrdata_mask = 8'd0;
 reg           main_litedramcore_sdram_master_p1_act_n = 1'd1;
-reg    [14:0] main_litedramcore_sdram_master_p1_address = 15'd0;
+reg    [15:0] main_litedramcore_sdram_master_p1_address = 16'd0;
 reg     [2:0] main_litedramcore_sdram_master_p1_bank = 3'd0;
 reg           main_litedramcore_sdram_master_p1_cas_n = 1'd1;
 reg           main_litedramcore_sdram_master_p1_cke = 1'd0;
@@ -2367,11 +2370,11 @@ reg           main_litedramcore_sdram_master_p1_wrdata_en = 1'd0;
 reg     [7:0] main_litedramcore_sdram_master_p1_wrdata_mask = 8'd0;
 wire          main_litedramcore_sdram_max_time0;
 wire          main_litedramcore_sdram_max_time1;
-reg    [14:0] main_litedramcore_sdram_nop_a = 15'd0;
+reg    [15:0] main_litedramcore_sdram_nop_a = 16'd0;
 reg     [2:0] main_litedramcore_sdram_nop_ba = 3'd0;
 wire          main_litedramcore_sdram_odt;
 reg           main_litedramcore_sdram_phaseinjector0_address_re = 1'd0;
-reg    [14:0] main_litedramcore_sdram_phaseinjector0_address_storage = 15'd0;
+reg    [15:0] main_litedramcore_sdram_phaseinjector0_address_storage = 16'd0;
 reg           main_litedramcore_sdram_phaseinjector0_baddress_re = 1'd0;
 reg     [2:0] main_litedramcore_sdram_phaseinjector0_baddress_storage = 3'd0;
 wire          main_litedramcore_sdram_phaseinjector0_command_issue_r;
@@ -2394,7 +2397,7 @@ wire          main_litedramcore_sdram_phaseinjector0_rddata_we;
 reg           main_litedramcore_sdram_phaseinjector0_wrdata_re = 1'd0;
 reg    [63:0] main_litedramcore_sdram_phaseinjector0_wrdata_storage = 64'd0;
 reg           main_litedramcore_sdram_phaseinjector1_address_re = 1'd0;
-reg    [14:0] main_litedramcore_sdram_phaseinjector1_address_storage = 15'd0;
+reg    [15:0] main_litedramcore_sdram_phaseinjector1_address_storage = 16'd0;
 reg           main_litedramcore_sdram_phaseinjector1_baddress_re = 1'd0;
 reg     [2:0] main_litedramcore_sdram_phaseinjector1_baddress_storage = 3'd0;
 wire          main_litedramcore_sdram_phaseinjector1_command_issue_r;
@@ -2425,13 +2428,13 @@ wire          main_litedramcore_sdram_read_available;
 wire          main_litedramcore_sdram_reset_n;
 wire          main_litedramcore_sdram_sel;
 reg           main_litedramcore_sdram_sequencer_count = 1'd0;
-reg     [6:0] main_litedramcore_sdram_sequencer_counter = 7'd0;
+reg     [7:0] main_litedramcore_sdram_sequencer_counter = 8'd0;
 wire          main_litedramcore_sdram_sequencer_done0;
 reg           main_litedramcore_sdram_sequencer_done1 = 1'd0;
 reg           main_litedramcore_sdram_sequencer_start0 = 1'd0;
 wire          main_litedramcore_sdram_sequencer_start1;
 wire          main_litedramcore_sdram_slave_p0_act_n;
-wire   [14:0] main_litedramcore_sdram_slave_p0_address;
+wire   [15:0] main_litedramcore_sdram_slave_p0_address;
 wire    [2:0] main_litedramcore_sdram_slave_p0_bank;
 wire          main_litedramcore_sdram_slave_p0_cas_n;
 wire          main_litedramcore_sdram_slave_p0_cke;
@@ -2447,7 +2450,7 @@ wire   [63:0] main_litedramcore_sdram_slave_p0_wrdata;
 wire          main_litedramcore_sdram_slave_p0_wrdata_en;
 wire    [7:0] main_litedramcore_sdram_slave_p0_wrdata_mask;
 wire          main_litedramcore_sdram_slave_p1_act_n;
-wire   [14:0] main_litedramcore_sdram_slave_p1_address;
+wire   [15:0] main_litedramcore_sdram_slave_p1_address;
 wire    [2:0] main_litedramcore_sdram_slave_p1_bank;
 wire          main_litedramcore_sdram_slave_p1_cas_n;
 wire          main_litedramcore_sdram_slave_p1_cke;
@@ -2649,7 +2652,7 @@ wire          main_uart_interface_source_valid;
 reg           main_user_enable = 1'd0;
 wire          main_wait;
 reg           main_wb_port_ack = 1'd0;
-wire   [24:0] main_wb_port_adr;
+wire   [25:0] main_wb_port_adr;
 wire          main_wb_port_cyc;
 reg   [127:0] main_wb_port_dat_r = 128'd0;
 wire  [127:0] main_wb_port_dat_w;
@@ -3621,6 +3624,18 @@ assign main_litedramcore_sdram_slave_p1_rddata_en = main_litedramcore_sdram_dfi_
 assign main_litedramcore_sdram_dfi_p1_rddata = main_litedramcore_sdram_slave_p1_rddata;
 assign main_litedramcore_sdram_dfi_p1_rddata_valid = main_litedramcore_sdram_slave_p1_rddata_valid;
 always @(*) begin
+    main_litedramcore_sdram_master_p1_rddata_en <= 1'd0;
+    if (main_litedramcore_sdram_sel) begin
+        if (main_litedramcore_sdram_ext_dfi_sel) begin
+            main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_ext_dfi_p1_rddata_en;
+        end else begin
+            main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_slave_p1_rddata_en;
+        end
+    end else begin
+        main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_csr_dfi_p1_rddata_en;
+    end
+end
+always @(*) begin
     main_litedramcore_sdram_ext_dfi_p1_rddata <= 64'd0;
     if (main_litedramcore_sdram_sel) begin
         if (main_litedramcore_sdram_ext_dfi_sel) begin
@@ -3695,7 +3710,7 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_master_p0_address <= 15'd0;
+    main_litedramcore_sdram_master_p0_address <= 16'd0;
     if (main_litedramcore_sdram_sel) begin
         if (main_litedramcore_sdram_ext_dfi_sel) begin
             main_litedramcore_sdram_master_p0_address <= main_litedramcore_sdram_ext_dfi_p0_address;
@@ -3746,10 +3761,15 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_csr_dfi_p1_rddata <= 64'd0;
+    main_litedramcore_sdram_master_p1_act_n <= 1'd1;
     if (main_litedramcore_sdram_sel) begin
+        if (main_litedramcore_sdram_ext_dfi_sel) begin
+            main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_ext_dfi_p1_act_n;
+        end else begin
+            main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_slave_p1_act_n;
+        end
     end else begin
-        main_litedramcore_sdram_csr_dfi_p1_rddata <= main_litedramcore_sdram_master_p1_rddata;
+        main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_csr_dfi_p1_act_n;
     end
 end
 always @(*) begin
@@ -3765,10 +3785,10 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_csr_dfi_p1_rddata_valid <= 1'd0;
+    main_litedramcore_sdram_csr_dfi_p1_rddata <= 64'd0;
     if (main_litedramcore_sdram_sel) begin
     end else begin
-        main_litedramcore_sdram_csr_dfi_p1_rddata_valid <= main_litedramcore_sdram_master_p1_rddata_valid;
+        main_litedramcore_sdram_csr_dfi_p1_rddata <= main_litedramcore_sdram_master_p1_rddata;
     end
 end
 always @(*) begin
@@ -3781,6 +3801,13 @@ always @(*) begin
         end
     end else begin
         main_litedramcore_sdram_master_p0_we_n <= main_litedramcore_sdram_csr_dfi_p0_we_n;
+    end
+end
+always @(*) begin
+    main_litedramcore_sdram_csr_dfi_p1_rddata_valid <= 1'd0;
+    if (main_litedramcore_sdram_sel) begin
+    end else begin
+        main_litedramcore_sdram_csr_dfi_p1_rddata_valid <= main_litedramcore_sdram_master_p1_rddata_valid;
     end
 end
 always @(*) begin
@@ -3880,7 +3907,7 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_master_p1_address <= 15'd0;
+    main_litedramcore_sdram_master_p1_address <= 16'd0;
     if (main_litedramcore_sdram_sel) begin
         if (main_litedramcore_sdram_ext_dfi_sel) begin
             main_litedramcore_sdram_master_p1_address <= main_litedramcore_sdram_ext_dfi_p1_address;
@@ -4011,18 +4038,6 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_master_p1_act_n <= 1'd1;
-    if (main_litedramcore_sdram_sel) begin
-        if (main_litedramcore_sdram_ext_dfi_sel) begin
-            main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_ext_dfi_p1_act_n;
-        end else begin
-            main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_slave_p1_act_n;
-        end
-    end else begin
-        main_litedramcore_sdram_master_p1_act_n <= main_litedramcore_sdram_csr_dfi_p1_act_n;
-    end
-end
-always @(*) begin
     main_litedramcore_sdram_master_p1_wrdata <= 64'd0;
     if (main_litedramcore_sdram_sel) begin
         if (main_litedramcore_sdram_ext_dfi_sel) begin
@@ -4059,18 +4074,6 @@ always @(*) begin
     end
 end
 always @(*) begin
-    main_litedramcore_sdram_master_p1_rddata_en <= 1'd0;
-    if (main_litedramcore_sdram_sel) begin
-        if (main_litedramcore_sdram_ext_dfi_sel) begin
-            main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_ext_dfi_p1_rddata_en;
-        end else begin
-            main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_slave_p1_rddata_en;
-        end
-    end else begin
-        main_litedramcore_sdram_master_p1_rddata_en <= main_litedramcore_sdram_csr_dfi_p1_rddata_en;
-    end
-end
-always @(*) begin
     main_litedramcore_sdram_csr_dfi_p0_cke <= 1'd0;
     main_litedramcore_sdram_csr_dfi_p0_cke <= main_litedramcore_sdram_cke;
 end
@@ -4088,22 +4091,6 @@ always @(*) begin
 end
 assign main_litedramcore_sdram_csr_dfi_p0_reset_n = main_litedramcore_sdram_reset_n;
 assign main_litedramcore_sdram_csr_dfi_p1_reset_n = main_litedramcore_sdram_reset_n;
-always @(*) begin
-    main_litedramcore_sdram_csr_dfi_p0_cs_n <= 1'd1;
-    if (main_litedramcore_sdram_phaseinjector0_command_issue_re) begin
-        if (main_litedramcore_sdram_phaseinjector0_csrfield_cs_top) begin
-            main_litedramcore_sdram_csr_dfi_p0_cs_n <= 2'd2;
-        end else begin
-            if (main_litedramcore_sdram_phaseinjector0_csrfield_cs_bottom) begin
-                main_litedramcore_sdram_csr_dfi_p0_cs_n <= 1'd1;
-            end else begin
-                main_litedramcore_sdram_csr_dfi_p0_cs_n <= {1{(~main_litedramcore_sdram_phaseinjector0_csrfield_cs)}};
-            end
-        end
-    end else begin
-        main_litedramcore_sdram_csr_dfi_p0_cs_n <= {1{1'd1}};
-    end
-end
 always @(*) begin
     main_litedramcore_sdram_csr_dfi_p0_ras_n <= 1'd1;
     if (main_litedramcore_sdram_phaseinjector0_command_issue_re) begin
@@ -4128,28 +4115,28 @@ always @(*) begin
         main_litedramcore_sdram_csr_dfi_p0_cas_n <= 1'd1;
     end
 end
+always @(*) begin
+    main_litedramcore_sdram_csr_dfi_p0_cs_n <= 1'd1;
+    if (main_litedramcore_sdram_phaseinjector0_command_issue_re) begin
+        if (main_litedramcore_sdram_phaseinjector0_csrfield_cs_top) begin
+            main_litedramcore_sdram_csr_dfi_p0_cs_n <= 2'd2;
+        end else begin
+            if (main_litedramcore_sdram_phaseinjector0_csrfield_cs_bottom) begin
+                main_litedramcore_sdram_csr_dfi_p0_cs_n <= 1'd1;
+            end else begin
+                main_litedramcore_sdram_csr_dfi_p0_cs_n <= {1{(~main_litedramcore_sdram_phaseinjector0_csrfield_cs)}};
+            end
+        end
+    end else begin
+        main_litedramcore_sdram_csr_dfi_p0_cs_n <= {1{1'd1}};
+    end
+end
 assign main_litedramcore_sdram_csr_dfi_p0_address = main_litedramcore_sdram_phaseinjector0_address_storage;
 assign main_litedramcore_sdram_csr_dfi_p0_bank = main_litedramcore_sdram_phaseinjector0_baddress_storage;
 assign main_litedramcore_sdram_csr_dfi_p0_wrdata_en = (main_litedramcore_sdram_phaseinjector0_command_issue_re & main_litedramcore_sdram_phaseinjector0_csrfield_wren);
 assign main_litedramcore_sdram_csr_dfi_p0_rddata_en = (main_litedramcore_sdram_phaseinjector0_command_issue_re & main_litedramcore_sdram_phaseinjector0_csrfield_rden);
 assign main_litedramcore_sdram_csr_dfi_p0_wrdata = main_litedramcore_sdram_phaseinjector0_wrdata_storage;
 assign main_litedramcore_sdram_csr_dfi_p0_wrdata_mask = 1'd0;
-always @(*) begin
-    main_litedramcore_sdram_csr_dfi_p1_cs_n <= 1'd1;
-    if (main_litedramcore_sdram_phaseinjector1_command_issue_re) begin
-        if (main_litedramcore_sdram_phaseinjector1_csrfield_cs_top) begin
-            main_litedramcore_sdram_csr_dfi_p1_cs_n <= 2'd2;
-        end else begin
-            if (main_litedramcore_sdram_phaseinjector1_csrfield_cs_bottom) begin
-                main_litedramcore_sdram_csr_dfi_p1_cs_n <= 1'd1;
-            end else begin
-                main_litedramcore_sdram_csr_dfi_p1_cs_n <= {1{(~main_litedramcore_sdram_phaseinjector1_csrfield_cs)}};
-            end
-        end
-    end else begin
-        main_litedramcore_sdram_csr_dfi_p1_cs_n <= {1{1'd1}};
-    end
-end
 always @(*) begin
     main_litedramcore_sdram_csr_dfi_p1_ras_n <= 1'd1;
     if (main_litedramcore_sdram_phaseinjector1_command_issue_re) begin
@@ -4172,6 +4159,22 @@ always @(*) begin
         main_litedramcore_sdram_csr_dfi_p1_cas_n <= (~main_litedramcore_sdram_phaseinjector1_csrfield_cas);
     end else begin
         main_litedramcore_sdram_csr_dfi_p1_cas_n <= 1'd1;
+    end
+end
+always @(*) begin
+    main_litedramcore_sdram_csr_dfi_p1_cs_n <= 1'd1;
+    if (main_litedramcore_sdram_phaseinjector1_command_issue_re) begin
+        if (main_litedramcore_sdram_phaseinjector1_csrfield_cs_top) begin
+            main_litedramcore_sdram_csr_dfi_p1_cs_n <= 2'd2;
+        end else begin
+            if (main_litedramcore_sdram_phaseinjector1_csrfield_cs_bottom) begin
+                main_litedramcore_sdram_csr_dfi_p1_cs_n <= 1'd1;
+            end else begin
+                main_litedramcore_sdram_csr_dfi_p1_cs_n <= {1{(~main_litedramcore_sdram_phaseinjector1_csrfield_cs)}};
+            end
+        end
+    end else begin
+        main_litedramcore_sdram_csr_dfi_p1_cs_n <= {1{1'd1}};
     end
 end
 assign main_litedramcore_sdram_csr_dfi_p1_address = main_litedramcore_sdram_phaseinjector1_address_storage;
@@ -4375,12 +4378,12 @@ assign main_litedramcore_sdram_bankmachine0_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine0_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine0_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine0_source_source_ready = (main_litedramcore_sdram_bankmachine0_req_wdata_ready | main_litedramcore_sdram_bankmachine0_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine0_req_lock = (main_litedramcore_sdram_bankmachine0_source_valid | main_litedramcore_sdram_bankmachine0_source_source_valid);
-assign main_litedramcore_sdram_bankmachine0_row_hit = (main_litedramcore_sdram_bankmachine0_row == main_litedramcore_sdram_bankmachine0_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine0_row_hit = (main_litedramcore_sdram_bankmachine0_row == main_litedramcore_sdram_bankmachine0_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine0_cmd_payload_ba = 1'd0;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine0_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine0_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine0_cmd_payload_a <= main_litedramcore_sdram_bankmachine0_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine0_cmd_payload_a <= main_litedramcore_sdram_bankmachine0_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine0_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine0_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine0_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -4391,7 +4394,7 @@ assign main_litedramcore_sdram_bankmachine0_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine0_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine0_source_valid & main_litedramcore_sdram_bankmachine0_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine0_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine0_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine0_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine0_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine0_auto_precharge <= (main_litedramcore_sdram_bankmachine0_row_close == 1'd0);
         end
     end
@@ -4490,6 +4493,121 @@ always @(*) begin
                         end
                     end else begin
                         builder_litedramcore_bankmachine0_next_state <= 2'd3;
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine0_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine0_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine0_cmd_payload_cas <= 1'd0;
+    case (builder_litedramcore_bankmachine0_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine0_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine0_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine0_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine0_row_hit) begin
+                            main_litedramcore_sdram_bankmachine0_cmd_payload_cas <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd0;
+    case (builder_litedramcore_bankmachine0_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine0_twtpcon_ready & main_litedramcore_sdram_bankmachine0_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine0_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd0;
+    case (builder_litedramcore_bankmachine0_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine0_twtpcon_ready & main_litedramcore_sdram_bankmachine0_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine0_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine0_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine0_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine0_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine0_source_source_payload_we) begin
+                                main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd1;
+                            end else begin
+                            end
+                        end else begin
+                        end
+                    end else begin
                     end
                 end
             end
@@ -4761,121 +4879,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine0_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine0_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine0_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine0_cmd_payload_cas <= 1'd0;
-    case (builder_litedramcore_bankmachine0_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine0_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine0_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine0_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine0_row_hit) begin
-                            main_litedramcore_sdram_bankmachine0_cmd_payload_cas <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd0;
-    case (builder_litedramcore_bankmachine0_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine0_twtpcon_ready & main_litedramcore_sdram_bankmachine0_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine0_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine0_cmd_payload_ras <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd0;
-    case (builder_litedramcore_bankmachine0_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine0_twtpcon_ready & main_litedramcore_sdram_bankmachine0_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine0_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine0_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine0_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine0_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine0_source_source_payload_we) begin
-                                main_litedramcore_sdram_bankmachine0_cmd_payload_we <= 1'd1;
-                            end else begin
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
 assign main_litedramcore_sdram_bankmachine1_sink_valid = main_litedramcore_sdram_bankmachine1_req_valid;
 assign main_litedramcore_sdram_bankmachine1_req_ready = main_litedramcore_sdram_bankmachine1_sink_ready;
 assign main_litedramcore_sdram_bankmachine1_sink_payload_we = main_litedramcore_sdram_bankmachine1_req_we;
@@ -4888,12 +4891,12 @@ assign main_litedramcore_sdram_bankmachine1_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine1_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine1_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine1_source_source_ready = (main_litedramcore_sdram_bankmachine1_req_wdata_ready | main_litedramcore_sdram_bankmachine1_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine1_req_lock = (main_litedramcore_sdram_bankmachine1_source_valid | main_litedramcore_sdram_bankmachine1_source_source_valid);
-assign main_litedramcore_sdram_bankmachine1_row_hit = (main_litedramcore_sdram_bankmachine1_row == main_litedramcore_sdram_bankmachine1_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine1_row_hit = (main_litedramcore_sdram_bankmachine1_row == main_litedramcore_sdram_bankmachine1_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine1_cmd_payload_ba = 1'd1;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine1_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine1_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine1_cmd_payload_a <= main_litedramcore_sdram_bankmachine1_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine1_cmd_payload_a <= main_litedramcore_sdram_bankmachine1_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine1_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine1_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine1_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -4904,7 +4907,7 @@ assign main_litedramcore_sdram_bankmachine1_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine1_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine1_source_valid & main_litedramcore_sdram_bankmachine1_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine1_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine1_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine1_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine1_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine1_auto_precharge <= (main_litedramcore_sdram_bankmachine1_row_close == 1'd0);
         end
     end
@@ -5003,196 +5006,6 @@ always @(*) begin
                         end
                     end else begin
                         builder_litedramcore_bankmachine1_next_state <= 2'd3;
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_req_rdata_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine1_source_source_payload_we) begin
-                            end else begin
-                                main_litedramcore_sdram_bankmachine1_req_rdata_valid <= main_litedramcore_sdram_bankmachine1_cmd_ready;
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_refresh_gnt <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            if (main_litedramcore_sdram_bankmachine1_twtpcon_ready) begin
-                main_litedramcore_sdram_bankmachine1_refresh_gnt <= 1'd1;
-            end
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_row_open <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine1_row_open <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine1_twtpcon_ready & main_litedramcore_sdram_bankmachine1_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
-                            main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_row_close <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine1_cmd_payload_cas <= 1'd0;
-    case (builder_litedramcore_bankmachine1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
-                            main_litedramcore_sdram_bankmachine1_cmd_payload_cas <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
                     end
                 end
             end
@@ -5389,6 +5202,196 @@ always @(*) begin
         end
     endcase
 end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_req_rdata_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine1_source_source_payload_we) begin
+                            end else begin
+                                main_litedramcore_sdram_bankmachine1_req_rdata_valid <= main_litedramcore_sdram_bankmachine1_cmd_ready;
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_refresh_gnt <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            if (main_litedramcore_sdram_bankmachine1_twtpcon_ready) begin
+                main_litedramcore_sdram_bankmachine1_refresh_gnt <= 1'd1;
+            end
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_row_open <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine1_row_open <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine1_twtpcon_ready & main_litedramcore_sdram_bankmachine1_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
+                            main_litedramcore_sdram_bankmachine1_cmd_valid <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_row_close <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine1_row_close <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine1_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine1_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine1_cmd_payload_cas <= 1'd0;
+    case (builder_litedramcore_bankmachine1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine1_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine1_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine1_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine1_row_hit) begin
+                            main_litedramcore_sdram_bankmachine1_cmd_payload_cas <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
 assign main_litedramcore_sdram_bankmachine2_sink_valid = main_litedramcore_sdram_bankmachine2_req_valid;
 assign main_litedramcore_sdram_bankmachine2_req_ready = main_litedramcore_sdram_bankmachine2_sink_ready;
 assign main_litedramcore_sdram_bankmachine2_sink_payload_we = main_litedramcore_sdram_bankmachine2_req_we;
@@ -5401,12 +5404,12 @@ assign main_litedramcore_sdram_bankmachine2_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine2_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine2_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine2_source_source_ready = (main_litedramcore_sdram_bankmachine2_req_wdata_ready | main_litedramcore_sdram_bankmachine2_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine2_req_lock = (main_litedramcore_sdram_bankmachine2_source_valid | main_litedramcore_sdram_bankmachine2_source_source_valid);
-assign main_litedramcore_sdram_bankmachine2_row_hit = (main_litedramcore_sdram_bankmachine2_row == main_litedramcore_sdram_bankmachine2_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine2_row_hit = (main_litedramcore_sdram_bankmachine2_row == main_litedramcore_sdram_bankmachine2_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine2_cmd_payload_ba = 2'd2;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine2_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine2_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine2_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine2_cmd_payload_a <= main_litedramcore_sdram_bankmachine2_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine2_cmd_payload_a <= main_litedramcore_sdram_bankmachine2_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine2_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine2_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine2_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -5417,7 +5420,7 @@ assign main_litedramcore_sdram_bankmachine2_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine2_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine2_source_valid & main_litedramcore_sdram_bankmachine2_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine2_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine2_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine2_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine2_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine2_auto_precharge <= (main_litedramcore_sdram_bankmachine2_row_close == 1'd0);
         end
     end
@@ -5519,6 +5522,211 @@ always @(*) begin
                     end
                 end
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_cmd_payload_is_write <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
+                                main_litedramcore_sdram_bankmachine2_cmd_payload_is_write <= 1'd1;
+                            end else begin
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_req_wdata_ready <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
+                                main_litedramcore_sdram_bankmachine2_req_wdata_ready <= main_litedramcore_sdram_bankmachine2_cmd_ready;
+                            end else begin
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_req_rdata_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
+                            end else begin
+                                main_litedramcore_sdram_bankmachine2_req_rdata_valid <= main_litedramcore_sdram_bankmachine2_cmd_ready;
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_refresh_gnt <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            if (main_litedramcore_sdram_bankmachine2_twtpcon_ready) begin
+                main_litedramcore_sdram_bankmachine2_refresh_gnt <= 1'd1;
+            end
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine2_twtpcon_ready & main_litedramcore_sdram_bankmachine2_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine2_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
+                            main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_row_close <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine2_row_open <= 1'd0;
+    case (builder_litedramcore_bankmachine2_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine2_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine2_row_open <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
         end
     endcase
 end
@@ -5697,211 +5905,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_cmd_payload_is_write <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
-                                main_litedramcore_sdram_bankmachine2_cmd_payload_is_write <= 1'd1;
-                            end else begin
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_row_open <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine2_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine2_row_open <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_req_wdata_ready <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
-                                main_litedramcore_sdram_bankmachine2_req_wdata_ready <= main_litedramcore_sdram_bankmachine2_cmd_ready;
-                            end else begin
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_req_rdata_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine2_source_source_payload_we) begin
-                            end else begin
-                                main_litedramcore_sdram_bankmachine2_req_rdata_valid <= main_litedramcore_sdram_bankmachine2_cmd_ready;
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_refresh_gnt <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            if (main_litedramcore_sdram_bankmachine2_twtpcon_ready) begin
-                main_litedramcore_sdram_bankmachine2_refresh_gnt <= 1'd1;
-            end
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine2_twtpcon_ready & main_litedramcore_sdram_bankmachine2_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine2_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine2_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine2_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine2_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine2_row_hit) begin
-                            main_litedramcore_sdram_bankmachine2_cmd_valid <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine2_row_close <= 1'd0;
-    case (builder_litedramcore_bankmachine2_state)
-        1'd1: begin
-            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine2_row_close <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
 assign main_litedramcore_sdram_bankmachine3_sink_valid = main_litedramcore_sdram_bankmachine3_req_valid;
 assign main_litedramcore_sdram_bankmachine3_req_ready = main_litedramcore_sdram_bankmachine3_sink_ready;
 assign main_litedramcore_sdram_bankmachine3_sink_payload_we = main_litedramcore_sdram_bankmachine3_req_we;
@@ -5914,12 +5917,12 @@ assign main_litedramcore_sdram_bankmachine3_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine3_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine3_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine3_source_source_ready = (main_litedramcore_sdram_bankmachine3_req_wdata_ready | main_litedramcore_sdram_bankmachine3_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine3_req_lock = (main_litedramcore_sdram_bankmachine3_source_valid | main_litedramcore_sdram_bankmachine3_source_source_valid);
-assign main_litedramcore_sdram_bankmachine3_row_hit = (main_litedramcore_sdram_bankmachine3_row == main_litedramcore_sdram_bankmachine3_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine3_row_hit = (main_litedramcore_sdram_bankmachine3_row == main_litedramcore_sdram_bankmachine3_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine3_cmd_payload_ba = 2'd3;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine3_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine3_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine3_cmd_payload_a <= main_litedramcore_sdram_bankmachine3_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine3_cmd_payload_a <= main_litedramcore_sdram_bankmachine3_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine3_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine3_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine3_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -5930,7 +5933,7 @@ assign main_litedramcore_sdram_bankmachine3_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine3_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine3_source_valid & main_litedramcore_sdram_bankmachine3_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine3_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine3_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine3_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine3_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine3_auto_precharge <= (main_litedramcore_sdram_bankmachine3_row_close == 1'd0);
         end
     end
@@ -6032,6 +6035,131 @@ always @(*) begin
                     end
                 end
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine3_refresh_gnt <= 1'd0;
+    case (builder_litedramcore_bankmachine3_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            if (main_litedramcore_sdram_bankmachine3_twtpcon_ready) begin
+                main_litedramcore_sdram_bankmachine3_refresh_gnt <= 1'd1;
+            end
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine3_row_open <= 1'd0;
+    case (builder_litedramcore_bankmachine3_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine3_row_open <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine3_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine3_twtpcon_ready & main_litedramcore_sdram_bankmachine3_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine3_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine3_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine3_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine3_row_hit) begin
+                            main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine3_row_close <= 1'd0;
+    case (builder_litedramcore_bankmachine3_state)
+        1'd1: begin
+            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine3_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
         end
     endcase
 end
@@ -6290,131 +6418,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine3_refresh_gnt <= 1'd0;
-    case (builder_litedramcore_bankmachine3_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            if (main_litedramcore_sdram_bankmachine3_twtpcon_ready) begin
-                main_litedramcore_sdram_bankmachine3_refresh_gnt <= 1'd1;
-            end
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine3_row_open <= 1'd0;
-    case (builder_litedramcore_bankmachine3_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine3_row_open <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine3_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine3_twtpcon_ready & main_litedramcore_sdram_bankmachine3_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine3_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine3_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine3_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine3_row_hit) begin
-                            main_litedramcore_sdram_bankmachine3_cmd_valid <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine3_row_close <= 1'd0;
-    case (builder_litedramcore_bankmachine3_state)
-        1'd1: begin
-            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine3_row_close <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine3_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine3_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine3_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
 assign main_litedramcore_sdram_bankmachine4_sink_valid = main_litedramcore_sdram_bankmachine4_req_valid;
 assign main_litedramcore_sdram_bankmachine4_req_ready = main_litedramcore_sdram_bankmachine4_sink_ready;
 assign main_litedramcore_sdram_bankmachine4_sink_payload_we = main_litedramcore_sdram_bankmachine4_req_we;
@@ -6427,12 +6430,12 @@ assign main_litedramcore_sdram_bankmachine4_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine4_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine4_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine4_source_source_ready = (main_litedramcore_sdram_bankmachine4_req_wdata_ready | main_litedramcore_sdram_bankmachine4_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine4_req_lock = (main_litedramcore_sdram_bankmachine4_source_valid | main_litedramcore_sdram_bankmachine4_source_source_valid);
-assign main_litedramcore_sdram_bankmachine4_row_hit = (main_litedramcore_sdram_bankmachine4_row == main_litedramcore_sdram_bankmachine4_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine4_row_hit = (main_litedramcore_sdram_bankmachine4_row == main_litedramcore_sdram_bankmachine4_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine4_cmd_payload_ba = 3'd4;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine4_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine4_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine4_cmd_payload_a <= main_litedramcore_sdram_bankmachine4_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine4_cmd_payload_a <= main_litedramcore_sdram_bankmachine4_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine4_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine4_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine4_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -6443,7 +6446,7 @@ assign main_litedramcore_sdram_bankmachine4_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine4_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine4_source_valid & main_litedramcore_sdram_bankmachine4_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine4_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine4_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine4_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine4_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine4_auto_precharge <= (main_litedramcore_sdram_bankmachine4_row_close == 1'd0);
         end
     end
@@ -6542,6 +6545,121 @@ always @(*) begin
                         end
                     end else begin
                         builder_litedramcore_bankmachine4_next_state <= 2'd3;
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine4_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine4_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine4_cmd_payload_cas <= 1'd0;
+    case (builder_litedramcore_bankmachine4_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine4_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine4_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine4_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine4_row_hit) begin
+                            main_litedramcore_sdram_bankmachine4_cmd_payload_cas <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd0;
+    case (builder_litedramcore_bankmachine4_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine4_twtpcon_ready & main_litedramcore_sdram_bankmachine4_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine4_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd0;
+    case (builder_litedramcore_bankmachine4_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine4_twtpcon_ready & main_litedramcore_sdram_bankmachine4_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine4_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine4_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine4_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine4_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine4_source_source_payload_we) begin
+                                main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd1;
+                            end else begin
+                            end
+                        end else begin
+                        end
+                    end else begin
                     end
                 end
             end
@@ -6813,121 +6931,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine4_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine4_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine4_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine4_cmd_payload_cas <= 1'd0;
-    case (builder_litedramcore_bankmachine4_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine4_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine4_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine4_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine4_row_hit) begin
-                            main_litedramcore_sdram_bankmachine4_cmd_payload_cas <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd0;
-    case (builder_litedramcore_bankmachine4_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine4_twtpcon_ready & main_litedramcore_sdram_bankmachine4_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine4_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine4_cmd_payload_ras <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd0;
-    case (builder_litedramcore_bankmachine4_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine4_twtpcon_ready & main_litedramcore_sdram_bankmachine4_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine4_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine4_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine4_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine4_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine4_source_source_payload_we) begin
-                                main_litedramcore_sdram_bankmachine4_cmd_payload_we <= 1'd1;
-                            end else begin
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
 assign main_litedramcore_sdram_bankmachine5_sink_valid = main_litedramcore_sdram_bankmachine5_req_valid;
 assign main_litedramcore_sdram_bankmachine5_req_ready = main_litedramcore_sdram_bankmachine5_sink_ready;
 assign main_litedramcore_sdram_bankmachine5_sink_payload_we = main_litedramcore_sdram_bankmachine5_req_we;
@@ -6940,12 +6943,12 @@ assign main_litedramcore_sdram_bankmachine5_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine5_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine5_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine5_source_source_ready = (main_litedramcore_sdram_bankmachine5_req_wdata_ready | main_litedramcore_sdram_bankmachine5_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine5_req_lock = (main_litedramcore_sdram_bankmachine5_source_valid | main_litedramcore_sdram_bankmachine5_source_source_valid);
-assign main_litedramcore_sdram_bankmachine5_row_hit = (main_litedramcore_sdram_bankmachine5_row == main_litedramcore_sdram_bankmachine5_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine5_row_hit = (main_litedramcore_sdram_bankmachine5_row == main_litedramcore_sdram_bankmachine5_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine5_cmd_payload_ba = 3'd5;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine5_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine5_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine5_cmd_payload_a <= main_litedramcore_sdram_bankmachine5_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine5_cmd_payload_a <= main_litedramcore_sdram_bankmachine5_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine5_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine5_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine5_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -6956,7 +6959,7 @@ assign main_litedramcore_sdram_bankmachine5_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine5_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine5_source_valid & main_litedramcore_sdram_bankmachine5_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine5_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine5_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine5_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine5_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine5_auto_precharge <= (main_litedramcore_sdram_bankmachine5_row_close == 1'd0);
         end
     end
@@ -7055,196 +7058,6 @@ always @(*) begin
                         end
                     end else begin
                         builder_litedramcore_bankmachine5_next_state <= 2'd3;
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_req_rdata_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine5_source_source_payload_we) begin
-                            end else begin
-                                main_litedramcore_sdram_bankmachine5_req_rdata_valid <= main_litedramcore_sdram_bankmachine5_cmd_ready;
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_refresh_gnt <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            if (main_litedramcore_sdram_bankmachine5_twtpcon_ready) begin
-                main_litedramcore_sdram_bankmachine5_refresh_gnt <= 1'd1;
-            end
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_row_open <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine5_row_open <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine5_twtpcon_ready & main_litedramcore_sdram_bankmachine5_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
-                            main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_row_close <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine5_cmd_payload_cas <= 1'd0;
-    case (builder_litedramcore_bankmachine5_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
-                            main_litedramcore_sdram_bankmachine5_cmd_payload_cas <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
                     end
                 end
             end
@@ -7441,6 +7254,196 @@ always @(*) begin
         end
     endcase
 end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_req_rdata_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine5_source_source_payload_we) begin
+                            end else begin
+                                main_litedramcore_sdram_bankmachine5_req_rdata_valid <= main_litedramcore_sdram_bankmachine5_cmd_ready;
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_refresh_gnt <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            if (main_litedramcore_sdram_bankmachine5_twtpcon_ready) begin
+                main_litedramcore_sdram_bankmachine5_refresh_gnt <= 1'd1;
+            end
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_row_open <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine5_row_open <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine5_twtpcon_ready & main_litedramcore_sdram_bankmachine5_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
+                            main_litedramcore_sdram_bankmachine5_cmd_valid <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_row_close <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine5_row_close <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine5_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine5_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine5_cmd_payload_cas <= 1'd0;
+    case (builder_litedramcore_bankmachine5_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine5_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine5_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine5_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine5_row_hit) begin
+                            main_litedramcore_sdram_bankmachine5_cmd_payload_cas <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
 assign main_litedramcore_sdram_bankmachine6_sink_valid = main_litedramcore_sdram_bankmachine6_req_valid;
 assign main_litedramcore_sdram_bankmachine6_req_ready = main_litedramcore_sdram_bankmachine6_sink_ready;
 assign main_litedramcore_sdram_bankmachine6_sink_payload_we = main_litedramcore_sdram_bankmachine6_req_we;
@@ -7453,12 +7456,12 @@ assign main_litedramcore_sdram_bankmachine6_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine6_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine6_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine6_source_source_ready = (main_litedramcore_sdram_bankmachine6_req_wdata_ready | main_litedramcore_sdram_bankmachine6_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine6_req_lock = (main_litedramcore_sdram_bankmachine6_source_valid | main_litedramcore_sdram_bankmachine6_source_source_valid);
-assign main_litedramcore_sdram_bankmachine6_row_hit = (main_litedramcore_sdram_bankmachine6_row == main_litedramcore_sdram_bankmachine6_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine6_row_hit = (main_litedramcore_sdram_bankmachine6_row == main_litedramcore_sdram_bankmachine6_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine6_cmd_payload_ba = 3'd6;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine6_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine6_cmd_payload_a <= main_litedramcore_sdram_bankmachine6_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine6_cmd_payload_a <= main_litedramcore_sdram_bankmachine6_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine6_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine6_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine6_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -7469,7 +7472,7 @@ assign main_litedramcore_sdram_bankmachine6_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine6_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine6_source_valid & main_litedramcore_sdram_bankmachine6_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine6_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine6_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine6_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine6_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine6_auto_precharge <= (main_litedramcore_sdram_bankmachine6_row_close == 1'd0);
         end
     end
@@ -7568,181 +7571,6 @@ always @(*) begin
                         end
                     end else begin
                         builder_litedramcore_bankmachine6_next_state <= 2'd3;
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_cas <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
-                            main_litedramcore_sdram_bankmachine6_cmd_payload_cas <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine6_source_source_payload_we) begin
-                                main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd1;
-                            end else begin
-                            end
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
-            end
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine6_cmd_payload_is_read <= 1'd0;
-    case (builder_litedramcore_bankmachine6_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
-                            if (main_litedramcore_sdram_bankmachine6_source_source_payload_we) begin
-                            end else begin
-                                main_litedramcore_sdram_bankmachine6_cmd_payload_is_read <= 1'd1;
-                            end
-                        end else begin
-                        end
-                    end else begin
                     end
                 end
             end
@@ -7954,6 +7782,181 @@ always @(*) begin
         end
     endcase
 end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine6_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_cmd_payload_cas <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
+                            main_litedramcore_sdram_bankmachine6_cmd_payload_cas <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine6_cmd_payload_ras <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine6_source_source_payload_we) begin
+                                main_litedramcore_sdram_bankmachine6_cmd_payload_we <= 1'd1;
+                            end else begin
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine6_twtpcon_ready & main_litedramcore_sdram_bankmachine6_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine6_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
+            end
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine6_cmd_payload_is_cmd <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine6_cmd_payload_is_read <= 1'd0;
+    case (builder_litedramcore_bankmachine6_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine6_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine6_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine6_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine6_row_hit) begin
+                            if (main_litedramcore_sdram_bankmachine6_source_source_payload_we) begin
+                            end else begin
+                                main_litedramcore_sdram_bankmachine6_cmd_payload_is_read <= 1'd1;
+                            end
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
 assign main_litedramcore_sdram_bankmachine7_sink_valid = main_litedramcore_sdram_bankmachine7_req_valid;
 assign main_litedramcore_sdram_bankmachine7_req_ready = main_litedramcore_sdram_bankmachine7_sink_ready;
 assign main_litedramcore_sdram_bankmachine7_sink_payload_we = main_litedramcore_sdram_bankmachine7_req_we;
@@ -7966,12 +7969,12 @@ assign main_litedramcore_sdram_bankmachine7_sink_sink_payload_we = main_litedram
 assign main_litedramcore_sdram_bankmachine7_sink_sink_payload_addr = main_litedramcore_sdram_bankmachine7_source_payload_addr;
 assign main_litedramcore_sdram_bankmachine7_source_source_ready = (main_litedramcore_sdram_bankmachine7_req_wdata_ready | main_litedramcore_sdram_bankmachine7_req_rdata_valid);
 assign main_litedramcore_sdram_bankmachine7_req_lock = (main_litedramcore_sdram_bankmachine7_source_valid | main_litedramcore_sdram_bankmachine7_source_source_valid);
-assign main_litedramcore_sdram_bankmachine7_row_hit = (main_litedramcore_sdram_bankmachine7_row == main_litedramcore_sdram_bankmachine7_source_source_payload_addr[21:7]);
+assign main_litedramcore_sdram_bankmachine7_row_hit = (main_litedramcore_sdram_bankmachine7_row == main_litedramcore_sdram_bankmachine7_source_source_payload_addr[22:7]);
 assign main_litedramcore_sdram_bankmachine7_cmd_payload_ba = 3'd7;
 always @(*) begin
-    main_litedramcore_sdram_bankmachine7_cmd_payload_a <= 15'd0;
+    main_litedramcore_sdram_bankmachine7_cmd_payload_a <= 16'd0;
     if (main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel) begin
-        main_litedramcore_sdram_bankmachine7_cmd_payload_a <= main_litedramcore_sdram_bankmachine7_source_source_payload_addr[21:7];
+        main_litedramcore_sdram_bankmachine7_cmd_payload_a <= main_litedramcore_sdram_bankmachine7_source_source_payload_addr[22:7];
     end else begin
         main_litedramcore_sdram_bankmachine7_cmd_payload_a <= ((main_litedramcore_sdram_bankmachine7_auto_precharge <<< 4'd10) | {main_litedramcore_sdram_bankmachine7_source_source_payload_addr[6:0], {3{1'd0}}});
     end
@@ -7982,7 +7985,7 @@ assign main_litedramcore_sdram_bankmachine7_trascon_valid = ((main_litedramcore_
 always @(*) begin
     main_litedramcore_sdram_bankmachine7_auto_precharge <= 1'd0;
     if ((main_litedramcore_sdram_bankmachine7_source_valid & main_litedramcore_sdram_bankmachine7_source_source_valid)) begin
-        if ((main_litedramcore_sdram_bankmachine7_source_payload_addr[21:7] != main_litedramcore_sdram_bankmachine7_source_source_payload_addr[21:7])) begin
+        if ((main_litedramcore_sdram_bankmachine7_source_payload_addr[22:7] != main_litedramcore_sdram_bankmachine7_source_source_payload_addr[22:7])) begin
             main_litedramcore_sdram_bankmachine7_auto_precharge <= (main_litedramcore_sdram_bankmachine7_row_close == 1'd0);
         end
     end
@@ -8084,6 +8087,131 @@ always @(*) begin
                     end
                 end
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine7_refresh_gnt <= 1'd0;
+    case (builder_litedramcore_bankmachine7_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            if (main_litedramcore_sdram_bankmachine7_twtpcon_ready) begin
+                main_litedramcore_sdram_bankmachine7_refresh_gnt <= 1'd1;
+            end
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine7_row_open <= 1'd0;
+    case (builder_litedramcore_bankmachine7_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine7_row_open <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd0;
+    case (builder_litedramcore_bankmachine7_state)
+        1'd1: begin
+            if ((main_litedramcore_sdram_bankmachine7_twtpcon_ready & main_litedramcore_sdram_bankmachine7_trascon_ready)) begin
+                main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+            if (main_litedramcore_sdram_bankmachine7_refresh_req) begin
+            end else begin
+                if (main_litedramcore_sdram_bankmachine7_source_source_valid) begin
+                    if (main_litedramcore_sdram_bankmachine7_row_opened) begin
+                        if (main_litedramcore_sdram_bankmachine7_row_hit) begin
+                            main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
+                        end else begin
+                        end
+                    end else begin
+                    end
+                end
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine7_row_close <= 1'd0;
+    case (builder_litedramcore_bankmachine7_state)
+        1'd1: begin
+            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel <= 1'd0;
+    case (builder_litedramcore_bankmachine7_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
+                main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel <= 1'd1;
+            end
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        default: begin
         end
     endcase
 end
@@ -8342,131 +8470,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine7_refresh_gnt <= 1'd0;
-    case (builder_litedramcore_bankmachine7_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            if (main_litedramcore_sdram_bankmachine7_twtpcon_ready) begin
-                main_litedramcore_sdram_bankmachine7_refresh_gnt <= 1'd1;
-            end
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine7_row_open <= 1'd0;
-    case (builder_litedramcore_bankmachine7_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine7_row_open <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd0;
-    case (builder_litedramcore_bankmachine7_state)
-        1'd1: begin
-            if ((main_litedramcore_sdram_bankmachine7_twtpcon_ready & main_litedramcore_sdram_bankmachine7_trascon_ready)) begin
-                main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-            if (main_litedramcore_sdram_bankmachine7_refresh_req) begin
-            end else begin
-                if (main_litedramcore_sdram_bankmachine7_source_source_valid) begin
-                    if (main_litedramcore_sdram_bankmachine7_row_opened) begin
-                        if (main_litedramcore_sdram_bankmachine7_row_hit) begin
-                            main_litedramcore_sdram_bankmachine7_cmd_valid <= 1'd1;
-                        end else begin
-                        end
-                    end else begin
-                    end
-                end
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine7_row_close <= 1'd0;
-    case (builder_litedramcore_bankmachine7_state)
-        1'd1: begin
-            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-            main_litedramcore_sdram_bankmachine7_row_close <= 1'd1;
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel <= 1'd0;
-    case (builder_litedramcore_bankmachine7_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-            if (main_litedramcore_sdram_bankmachine7_trccon_ready) begin
-                main_litedramcore_sdram_bankmachine7_row_col_n_addr_sel <= 1'd1;
-            end
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        default: begin
-        end
-    endcase
-end
 assign main_litedramcore_sdram_trrdcon_valid = ((main_litedramcore_sdram_choose_cmd_cmd_valid & main_litedramcore_sdram_choose_cmd_cmd_ready) & ((main_litedramcore_sdram_choose_cmd_cmd_payload_ras & (~main_litedramcore_sdram_choose_cmd_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_cmd_cmd_payload_we)));
 assign main_litedramcore_sdram_tfawcon_valid = ((main_litedramcore_sdram_choose_cmd_cmd_valid & main_litedramcore_sdram_choose_cmd_cmd_ready) & ((main_litedramcore_sdram_choose_cmd_cmd_payload_ras & (~main_litedramcore_sdram_choose_cmd_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_cmd_cmd_payload_we)));
 assign main_litedramcore_sdram_ras_allowed = (main_litedramcore_sdram_trrdcon_ready & main_litedramcore_sdram_tfawcon_ready);
@@ -8713,6 +8716,91 @@ always @(*) begin
             if (main_litedramcore_sdram_go_to_refresh) begin
                 builder_litedramcore_multiplexer_next_state <= 2'd2;
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_choose_req_cmd_ready <= 1'd0;
+    case (builder_litedramcore_multiplexer_state)
+        1'd1: begin
+            if (1'd0) begin
+                main_litedramcore_sdram_choose_req_cmd_ready <= (main_litedramcore_sdram_cas_allowed & ((~((main_litedramcore_sdram_choose_req_cmd_payload_ras & (~main_litedramcore_sdram_choose_req_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_req_cmd_payload_we))) | main_litedramcore_sdram_ras_allowed));
+            end else begin
+                main_litedramcore_sdram_choose_req_cmd_ready <= main_litedramcore_sdram_cas_allowed;
+            end
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        3'd7: begin
+        end
+        4'd8: begin
+        end
+        4'd9: begin
+        end
+        4'd10: begin
+        end
+        4'd11: begin
+        end
+        4'd12: begin
+        end
+        4'd13: begin
+        end
+        4'd14: begin
+        end
+        4'd15: begin
+        end
+        default: begin
+            if (1'd0) begin
+                main_litedramcore_sdram_choose_req_cmd_ready <= (main_litedramcore_sdram_cas_allowed & ((~((main_litedramcore_sdram_choose_req_cmd_payload_ras & (~main_litedramcore_sdram_choose_req_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_req_cmd_payload_we))) | main_litedramcore_sdram_ras_allowed));
+            end else begin
+                main_litedramcore_sdram_choose_req_cmd_ready <= main_litedramcore_sdram_cas_allowed;
+            end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_en1 <= 1'd0;
+    case (builder_litedramcore_multiplexer_state)
+        1'd1: begin
+            main_litedramcore_sdram_en1 <= 1'd1;
+        end
+        2'd2: begin
+        end
+        2'd3: begin
+        end
+        3'd4: begin
+        end
+        3'd5: begin
+        end
+        3'd6: begin
+        end
+        3'd7: begin
+        end
+        4'd8: begin
+        end
+        4'd9: begin
+        end
+        4'd10: begin
+        end
+        4'd11: begin
+        end
+        4'd12: begin
+        end
+        4'd13: begin
+        end
+        4'd14: begin
+        end
+        4'd15: begin
+        end
+        default: begin
         end
     endcase
 end
@@ -9061,91 +9149,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_sdram_choose_req_cmd_ready <= 1'd0;
-    case (builder_litedramcore_multiplexer_state)
-        1'd1: begin
-            if (1'd0) begin
-                main_litedramcore_sdram_choose_req_cmd_ready <= (main_litedramcore_sdram_cas_allowed & ((~((main_litedramcore_sdram_choose_req_cmd_payload_ras & (~main_litedramcore_sdram_choose_req_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_req_cmd_payload_we))) | main_litedramcore_sdram_ras_allowed));
-            end else begin
-                main_litedramcore_sdram_choose_req_cmd_ready <= main_litedramcore_sdram_cas_allowed;
-            end
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        3'd7: begin
-        end
-        4'd8: begin
-        end
-        4'd9: begin
-        end
-        4'd10: begin
-        end
-        4'd11: begin
-        end
-        4'd12: begin
-        end
-        4'd13: begin
-        end
-        4'd14: begin
-        end
-        4'd15: begin
-        end
-        default: begin
-            if (1'd0) begin
-                main_litedramcore_sdram_choose_req_cmd_ready <= (main_litedramcore_sdram_cas_allowed & ((~((main_litedramcore_sdram_choose_req_cmd_payload_ras & (~main_litedramcore_sdram_choose_req_cmd_payload_cas)) & (~main_litedramcore_sdram_choose_req_cmd_payload_we))) | main_litedramcore_sdram_ras_allowed));
-            end else begin
-                main_litedramcore_sdram_choose_req_cmd_ready <= main_litedramcore_sdram_cas_allowed;
-            end
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_sdram_en1 <= 1'd0;
-    case (builder_litedramcore_multiplexer_state)
-        1'd1: begin
-            main_litedramcore_sdram_en1 <= 1'd1;
-        end
-        2'd2: begin
-        end
-        2'd3: begin
-        end
-        3'd4: begin
-        end
-        3'd5: begin
-        end
-        3'd6: begin
-        end
-        3'd7: begin
-        end
-        4'd8: begin
-        end
-        4'd9: begin
-        end
-        4'd10: begin
-        end
-        4'd11: begin
-        end
-        4'd12: begin
-        end
-        4'd13: begin
-        end
-        4'd14: begin
-        end
-        4'd15: begin
-        end
-        default: begin
-        end
-    endcase
-end
 assign builder_litedramcore_roundrobin0_request = {(((main_cmd_payload_addr[9:7] == 1'd0) & (~(((((((builder_litedramcore_locked1 | (main_litedramcore_sdram_interface_bank1_lock & (builder_litedramcore_roundrobin1_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank2_lock & (builder_litedramcore_roundrobin2_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank3_lock & (builder_litedramcore_roundrobin3_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank4_lock & (builder_litedramcore_roundrobin4_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank5_lock & (builder_litedramcore_roundrobin5_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank6_lock & (builder_litedramcore_roundrobin6_grant == 1'd1))) | (main_litedramcore_sdram_interface_bank7_lock & (builder_litedramcore_roundrobin7_grant == 1'd1))))) & main_cmd_valid), (((main_litedramcore_port_cmd_payload_addr[9:7] == 1'd0) & (~(((((((builder_litedramcore_locked0 | (main_litedramcore_sdram_interface_bank1_lock & (builder_litedramcore_roundrobin1_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank2_lock & (builder_litedramcore_roundrobin2_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank3_lock & (builder_litedramcore_roundrobin3_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank4_lock & (builder_litedramcore_roundrobin4_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank5_lock & (builder_litedramcore_roundrobin5_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank6_lock & (builder_litedramcore_roundrobin6_grant == 1'd0))) | (main_litedramcore_sdram_interface_bank7_lock & (builder_litedramcore_roundrobin7_grant == 1'd0))))) & main_litedramcore_port_cmd_valid)};
 assign builder_litedramcore_roundrobin0_ce = ((~main_litedramcore_sdram_interface_bank0_valid) & (~main_litedramcore_sdram_interface_bank0_lock));
 assign main_litedramcore_sdram_interface_bank0_addr = builder_rhs_array_muxed20;
@@ -9193,20 +9196,6 @@ assign main_wdata_ready = builder_litedramcore_new_master_wdata_ready7;
 assign main_litedramcore_port_rdata_valid = builder_litedramcore_new_master_rdata_valid13;
 assign main_rdata_valid = builder_litedramcore_new_master_rdata_valid27;
 always @(*) begin
-    main_litedramcore_sdram_interface_wdata_we <= 16'd0;
-    case ({builder_litedramcore_new_master_wdata_ready7, builder_litedramcore_new_master_wdata_ready3})
-        1'd1: begin
-            main_litedramcore_sdram_interface_wdata_we <= main_litedramcore_port_wdata_payload_we;
-        end
-        2'd2: begin
-            main_litedramcore_sdram_interface_wdata_we <= main_wdata_payload_we;
-        end
-        default: begin
-            main_litedramcore_sdram_interface_wdata_we <= 1'd0;
-        end
-    endcase
-end
-always @(*) begin
     main_litedramcore_sdram_interface_wdata <= 128'd0;
     case ({builder_litedramcore_new_master_wdata_ready7, builder_litedramcore_new_master_wdata_ready3})
         1'd1: begin
@@ -9217,6 +9206,20 @@ always @(*) begin
         end
         default: begin
             main_litedramcore_sdram_interface_wdata <= 1'd0;
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_sdram_interface_wdata_we <= 16'd0;
+    case ({builder_litedramcore_new_master_wdata_ready7, builder_litedramcore_new_master_wdata_ready3})
+        1'd1: begin
+            main_litedramcore_sdram_interface_wdata_we <= main_litedramcore_port_wdata_payload_we;
+        end
+        2'd2: begin
+            main_litedramcore_sdram_interface_wdata_we <= main_wdata_payload_we;
+        end
+        default: begin
+            main_litedramcore_sdram_interface_wdata_we <= 1'd0;
         end
     endcase
 end
@@ -9301,6 +9304,79 @@ always @(*) begin
             if ((main_litedramcore_wb_sdram_cyc & main_litedramcore_wb_sdram_stb)) begin
                 builder_fullmemorywe_next_state <= 1'd1;
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_interface_cyc <= 1'd0;
+    case (builder_fullmemorywe_state)
+        1'd1: begin
+        end
+        2'd2: begin
+            main_litedramcore_interface_cyc <= 1'd1;
+        end
+        2'd3: begin
+            main_litedramcore_interface_cyc <= 1'd1;
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_interface_stb <= 1'd0;
+    case (builder_fullmemorywe_state)
+        1'd1: begin
+        end
+        2'd2: begin
+            main_litedramcore_interface_stb <= 1'd1;
+        end
+        2'd3: begin
+            main_litedramcore_interface_stb <= 1'd1;
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_tag_port_we <= 1'd0;
+    case (builder_fullmemorywe_state)
+        1'd1: begin
+            if ((main_litedramcore_tag_do_tag == main_litedramcore_wb_sdram_adr[29:3])) begin
+                if (main_litedramcore_wb_sdram_we) begin
+                    main_litedramcore_tag_port_we <= 1'd1;
+                end
+            end else begin
+                if (main_litedramcore_tag_do_dirty) begin
+                end else begin
+                    main_litedramcore_tag_port_we <= 1'd1;
+                end
+            end
+        end
+        2'd2: begin
+            if (main_litedramcore_interface_ack) begin
+                if (1'd1) begin
+                    main_litedramcore_tag_port_we <= 1'd1;
+                end
+            end
+        end
+        2'd3: begin
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_interface_we <= 1'd0;
+    case (builder_fullmemorywe_state)
+        1'd1: begin
+        end
+        2'd2: begin
+            main_litedramcore_interface_we <= 1'd1;
+        end
+        2'd3: begin
+            main_litedramcore_interface_we <= 1'd0;
+        end
+        default: begin
         end
     endcase
 end
@@ -9401,79 +9477,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_interface_cyc <= 1'd0;
-    case (builder_fullmemorywe_state)
-        1'd1: begin
-        end
-        2'd2: begin
-            main_litedramcore_interface_cyc <= 1'd1;
-        end
-        2'd3: begin
-            main_litedramcore_interface_cyc <= 1'd1;
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_interface_stb <= 1'd0;
-    case (builder_fullmemorywe_state)
-        1'd1: begin
-        end
-        2'd2: begin
-            main_litedramcore_interface_stb <= 1'd1;
-        end
-        2'd3: begin
-            main_litedramcore_interface_stb <= 1'd1;
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_tag_port_we <= 1'd0;
-    case (builder_fullmemorywe_state)
-        1'd1: begin
-            if ((main_litedramcore_tag_do_tag == main_litedramcore_wb_sdram_adr[29:3])) begin
-                if (main_litedramcore_wb_sdram_we) begin
-                    main_litedramcore_tag_port_we <= 1'd1;
-                end
-            end else begin
-                if (main_litedramcore_tag_do_dirty) begin
-                end else begin
-                    main_litedramcore_tag_port_we <= 1'd1;
-                end
-            end
-        end
-        2'd2: begin
-            if (main_litedramcore_interface_ack) begin
-                if (1'd1) begin
-                    main_litedramcore_tag_port_we <= 1'd1;
-                end
-            end
-        end
-        2'd3: begin
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_interface_we <= 1'd0;
-    case (builder_fullmemorywe_state)
-        1'd1: begin
-        end
-        2'd2: begin
-            main_litedramcore_interface_we <= 1'd1;
-        end
-        2'd3: begin
-            main_litedramcore_interface_we <= 1'd0;
-        end
-        default: begin
-        end
-    endcase
-end
 assign main_litedramcore_port_cmd_payload_addr = (main_litedramcore_interface_adr - 27'd67108864);
 assign main_litedramcore_port_cmd_payload_we = main_litedramcore_interface_we;
 assign main_litedramcore_port_cmd_last = (~main_litedramcore_interface_we);
@@ -9511,6 +9514,49 @@ always @(*) begin
             if (((main_litedramcore_port_cmd_valid & main_litedramcore_port_cmd_ready) & (~main_litedramcore_interface_we))) begin
                 builder_litedramwishbone2native0_next_state <= 2'd2;
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_port_cmd_valid <= 1'd0;
+    case (builder_litedramwishbone2native0_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        default: begin
+            main_litedramcore_port_cmd_valid <= (main_litedramcore_interface_cyc & main_litedramcore_interface_stb);
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_interface_ack <= 1'd0;
+    case (builder_litedramwishbone2native0_state)
+        1'd1: begin
+            if ((main_litedramcore_port_wdata_valid & main_litedramcore_port_wdata_ready)) begin
+                main_litedramcore_interface_ack <= (main_litedramcore_interface_cyc & (~main_litedramcore_aborted));
+            end
+        end
+        2'd2: begin
+            if (main_litedramcore_port_rdata_valid) begin
+                main_litedramcore_interface_ack <= (main_litedramcore_interface_cyc & (~main_litedramcore_aborted));
+            end
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    main_litedramcore_interface_dat_r <= 128'd0;
+    case (builder_litedramwishbone2native0_state)
+        1'd1: begin
+        end
+        2'd2: begin
+            if (main_litedramcore_port_rdata_valid) begin
+                main_litedramcore_interface_dat_r <= main_litedramcore_port_rdata_payload_data;
+            end
+        end
+        default: begin
         end
     endcase
 end
@@ -9554,49 +9600,6 @@ always @(*) begin
         end
     endcase
 end
-always @(*) begin
-    main_litedramcore_interface_dat_r <= 128'd0;
-    case (builder_litedramwishbone2native0_state)
-        1'd1: begin
-        end
-        2'd2: begin
-            if (main_litedramcore_port_rdata_valid) begin
-                main_litedramcore_interface_dat_r <= main_litedramcore_port_rdata_payload_data;
-            end
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_port_cmd_valid <= 1'd0;
-    case (builder_litedramwishbone2native0_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        default: begin
-            main_litedramcore_port_cmd_valid <= (main_litedramcore_interface_cyc & main_litedramcore_interface_stb);
-        end
-    endcase
-end
-always @(*) begin
-    main_litedramcore_interface_ack <= 1'd0;
-    case (builder_litedramwishbone2native0_state)
-        1'd1: begin
-            if ((main_litedramcore_port_wdata_valid & main_litedramcore_port_wdata_ready)) begin
-                main_litedramcore_interface_ack <= (main_litedramcore_interface_cyc & (~main_litedramcore_aborted));
-            end
-        end
-        2'd2: begin
-            if (main_litedramcore_port_rdata_valid) begin
-                main_litedramcore_interface_ack <= (main_litedramcore_interface_cyc & (~main_litedramcore_aborted));
-            end
-        end
-        default: begin
-        end
-    endcase
-end
 assign main_cmd_payload_addr = (main_wb_port_adr - 1'd0);
 assign main_cmd_payload_we = main_wb_port_we;
 assign main_cmd_last = (~main_wb_port_we);
@@ -9634,6 +9637,18 @@ always @(*) begin
             if (((main_cmd_valid & main_cmd_ready) & (~main_wb_port_we))) begin
                 builder_litedramwishbone2native1_next_state <= 2'd2;
             end
+        end
+    endcase
+end
+always @(*) begin
+    main_cmd_valid <= 1'd0;
+    case (builder_litedramwishbone2native1_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        default: begin
+            main_cmd_valid <= (main_wb_port_cyc & main_wb_port_stb);
         end
     endcase
 end
@@ -9709,18 +9724,6 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    main_cmd_valid <= 1'd0;
-    case (builder_litedramwishbone2native1_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        default: begin
-            main_cmd_valid <= (main_wb_port_cyc & main_wb_port_stb);
-        end
-    endcase
-end
-always @(*) begin
     builder_wishbone2csr_next_state <= 2'd0;
     builder_wishbone2csr_next_state <= builder_wishbone2csr_state;
     case (builder_wishbone2csr_state)
@@ -9733,72 +9736,6 @@ always @(*) begin
         default: begin
             if ((builder_interface0_cyc & builder_interface0_stb)) begin
                 builder_wishbone2csr_next_state <= 1'd1;
-            end
-        end
-    endcase
-end
-always @(*) begin
-    builder_interface1_dat_w_wishbone2csr_next_value0 <= 32'd0;
-    case (builder_wishbone2csr_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        default: begin
-            builder_interface1_dat_w_wishbone2csr_next_value0 <= builder_interface0_dat_w;
-        end
-    endcase
-end
-always @(*) begin
-    builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd0;
-    case (builder_wishbone2csr_state)
-        1'd1: begin
-        end
-        2'd2: begin
-        end
-        default: begin
-            builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd1;
-        end
-    endcase
-end
-always @(*) begin
-    builder_interface0_dat_r <= 32'd0;
-    case (builder_wishbone2csr_state)
-        1'd1: begin
-        end
-        2'd2: begin
-            builder_interface0_dat_r <= builder_interface1_dat_r;
-        end
-        default: begin
-        end
-    endcase
-end
-always @(*) begin
-    builder_interface1_adr_wishbone2csr_next_value1 <= 14'd0;
-    case (builder_wishbone2csr_state)
-        1'd1: begin
-            builder_interface1_adr_wishbone2csr_next_value1 <= 1'd0;
-        end
-        2'd2: begin
-        end
-        default: begin
-            if ((builder_interface0_cyc & builder_interface0_stb)) begin
-                builder_interface1_adr_wishbone2csr_next_value1 <= builder_interface0_adr[29:0];
-            end
-        end
-    endcase
-end
-always @(*) begin
-    builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd0;
-    case (builder_wishbone2csr_state)
-        1'd1: begin
-            builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
-        end
-        2'd2: begin
-        end
-        default: begin
-            if ((builder_interface0_cyc & builder_interface0_stb)) begin
-                builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
             end
         end
     endcase
@@ -9875,44 +9812,110 @@ always @(*) begin
         end
     endcase
 end
+always @(*) begin
+    builder_interface1_dat_w_wishbone2csr_next_value0 <= 32'd0;
+    case (builder_wishbone2csr_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        default: begin
+            builder_interface1_dat_w_wishbone2csr_next_value0 <= builder_interface0_dat_w;
+        end
+    endcase
+end
+always @(*) begin
+    builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd0;
+    case (builder_wishbone2csr_state)
+        1'd1: begin
+        end
+        2'd2: begin
+        end
+        default: begin
+            builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd1;
+        end
+    endcase
+end
+always @(*) begin
+    builder_interface0_dat_r <= 32'd0;
+    case (builder_wishbone2csr_state)
+        1'd1: begin
+        end
+        2'd2: begin
+            builder_interface0_dat_r <= builder_interface1_dat_r;
+        end
+        default: begin
+        end
+    endcase
+end
+always @(*) begin
+    builder_interface1_adr_wishbone2csr_next_value1 <= 14'd0;
+    case (builder_wishbone2csr_state)
+        1'd1: begin
+            builder_interface1_adr_wishbone2csr_next_value1 <= 1'd0;
+        end
+        2'd2: begin
+        end
+        default: begin
+            if ((builder_interface0_cyc & builder_interface0_stb)) begin
+                builder_interface1_adr_wishbone2csr_next_value1 <= builder_interface0_adr[29:0];
+            end
+        end
+    endcase
+end
+always @(*) begin
+    builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd0;
+    case (builder_wishbone2csr_state)
+        1'd1: begin
+            builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
+        end
+        2'd2: begin
+        end
+        default: begin
+            if ((builder_interface0_cyc & builder_interface0_stb)) begin
+                builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
+            end
+        end
+    endcase
+end
 assign builder_csrbank0_sel = (builder_interface0_bank_bus_adr[13:9] == 1'd0);
 assign builder_csrbank0_reset0_r = builder_interface0_bank_bus_dat_w[1:0];
-always @(*) begin
-    builder_csrbank0_reset0_re <= 1'd0;
-    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csrbank0_reset0_re <= builder_interface0_bank_bus_we;
-    end
-end
 always @(*) begin
     builder_csrbank0_reset0_we <= 1'd0;
     if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd0))) begin
         builder_csrbank0_reset0_we <= builder_interface0_bank_bus_re;
     end
 end
-assign builder_csrbank0_scratch0_r = builder_interface0_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank0_scratch0_we <= 1'd0;
-    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd1))) begin
-        builder_csrbank0_scratch0_we <= builder_interface0_bank_bus_re;
+    builder_csrbank0_reset0_re <= 1'd0;
+    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd0))) begin
+        builder_csrbank0_reset0_re <= builder_interface0_bank_bus_we;
     end
 end
+assign builder_csrbank0_scratch0_r = builder_interface0_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank0_scratch0_re <= 1'd0;
     if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd1))) begin
         builder_csrbank0_scratch0_re <= builder_interface0_bank_bus_we;
     end
 end
-assign builder_csrbank0_bus_errors_r = builder_interface0_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank0_bus_errors_re <= 1'd0;
-    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 2'd2))) begin
-        builder_csrbank0_bus_errors_re <= builder_interface0_bank_bus_we;
+    builder_csrbank0_scratch0_we <= 1'd0;
+    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 1'd1))) begin
+        builder_csrbank0_scratch0_we <= builder_interface0_bank_bus_re;
     end
 end
+assign builder_csrbank0_bus_errors_r = builder_interface0_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank0_bus_errors_we <= 1'd0;
     if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 2'd2))) begin
         builder_csrbank0_bus_errors_we <= builder_interface0_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank0_bus_errors_re <= 1'd0;
+    if ((builder_csrbank0_sel & (builder_interface0_bank_bus_adr[8:0] == 2'd2))) begin
+        builder_csrbank0_bus_errors_re <= builder_interface0_bank_bus_we;
     end
 end
 always @(*) begin
@@ -9929,28 +9932,28 @@ assign main_litedramcore_bus_errors_we = builder_csrbank0_bus_errors_we;
 assign builder_csrbank1_sel = (builder_interface1_bank_bus_adr[13:9] == 1'd1);
 assign builder_csrbank1_init_done0_r = builder_interface1_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank1_init_done0_we <= 1'd0;
-    if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csrbank1_init_done0_we <= builder_interface1_bank_bus_re;
-    end
-end
-always @(*) begin
     builder_csrbank1_init_done0_re <= 1'd0;
     if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd0))) begin
         builder_csrbank1_init_done0_re <= builder_interface1_bank_bus_we;
     end
 end
-assign builder_csrbank1_init_error0_r = builder_interface1_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank1_init_error0_re <= 1'd0;
-    if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd1))) begin
-        builder_csrbank1_init_error0_re <= builder_interface1_bank_bus_we;
+    builder_csrbank1_init_done0_we <= 1'd0;
+    if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd0))) begin
+        builder_csrbank1_init_done0_we <= builder_interface1_bank_bus_re;
     end
 end
+assign builder_csrbank1_init_error0_r = builder_interface1_bank_bus_dat_w[0];
 always @(*) begin
     builder_csrbank1_init_error0_we <= 1'd0;
     if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd1))) begin
         builder_csrbank1_init_error0_we <= builder_interface1_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank1_init_error0_re <= 1'd0;
+    if ((builder_csrbank1_sel & (builder_interface1_bank_bus_adr[8:0] == 1'd1))) begin
+        builder_csrbank1_init_error0_re <= builder_interface1_bank_bus_we;
     end
 end
 assign builder_csrbank1_init_done0_w = main_init_done_storage;
@@ -9958,15 +9961,15 @@ assign builder_csrbank1_init_error0_w = main_init_error_storage;
 assign builder_csrbank2_sel = (builder_interface2_bank_bus_adr[13:9] == 2'd2);
 assign builder_csrbank2_dly_sel0_r = builder_interface2_bank_bus_dat_w[1:0];
 always @(*) begin
-    builder_csrbank2_dly_sel0_re <= 1'd0;
-    if ((builder_csrbank2_sel & (builder_interface2_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csrbank2_dly_sel0_re <= builder_interface2_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank2_dly_sel0_we <= 1'd0;
     if ((builder_csrbank2_sel & (builder_interface2_bank_bus_adr[8:0] == 1'd0))) begin
         builder_csrbank2_dly_sel0_we <= builder_interface2_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank2_dly_sel0_re <= 1'd0;
+    if ((builder_csrbank2_sel & (builder_interface2_bank_bus_adr[8:0] == 1'd0))) begin
+        builder_csrbank2_dly_sel0_re <= builder_interface2_bank_bus_we;
     end
 end
 assign main_ddrphy_rdly_dq_rst_r = builder_interface2_bank_bus_dat_w[0];
@@ -10053,15 +10056,15 @@ assign main_ddrphy_burstdet_seen_we = builder_csrbank2_burstdet_seen_we;
 assign builder_csrbank3_sel = (builder_interface3_bank_bus_adr[13:9] == 2'd3);
 assign builder_csrbank3_dfii_control0_r = builder_interface3_bank_bus_dat_w[3:0];
 always @(*) begin
-    builder_csrbank3_dfii_control0_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csrbank3_dfii_control0_re <= builder_interface3_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank3_dfii_control0_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 1'd0))) begin
         builder_csrbank3_dfii_control0_we <= builder_interface3_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank3_dfii_control0_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 1'd0))) begin
+        builder_csrbank3_dfii_control0_re <= builder_interface3_bank_bus_we;
     end
 end
 assign builder_csrbank3_dfii_pi0_command0_r = builder_interface3_bank_bus_dat_w[7:0];
@@ -10079,54 +10082,54 @@ always @(*) begin
 end
 assign main_litedramcore_sdram_phaseinjector0_command_issue_r = builder_interface3_bank_bus_dat_w[0];
 always @(*) begin
-    main_litedramcore_sdram_phaseinjector0_command_issue_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd2))) begin
-        main_litedramcore_sdram_phaseinjector0_command_issue_re <= builder_interface3_bank_bus_we;
-    end
-end
-always @(*) begin
     main_litedramcore_sdram_phaseinjector0_command_issue_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd2))) begin
         main_litedramcore_sdram_phaseinjector0_command_issue_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi0_address0_r = builder_interface3_bank_bus_dat_w[14:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi0_address0_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd3))) begin
-        builder_csrbank3_dfii_pi0_address0_we <= builder_interface3_bank_bus_re;
+    main_litedramcore_sdram_phaseinjector0_command_issue_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd2))) begin
+        main_litedramcore_sdram_phaseinjector0_command_issue_re <= builder_interface3_bank_bus_we;
     end
 end
+assign builder_csrbank3_dfii_pi0_address0_r = builder_interface3_bank_bus_dat_w[15:0];
 always @(*) begin
     builder_csrbank3_dfii_pi0_address0_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd3))) begin
         builder_csrbank3_dfii_pi0_address0_re <= builder_interface3_bank_bus_we;
     end
 end
-assign builder_csrbank3_dfii_pi0_baddress0_r = builder_interface3_bank_bus_dat_w[2:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi0_baddress0_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd4))) begin
-        builder_csrbank3_dfii_pi0_baddress0_re <= builder_interface3_bank_bus_we;
+    builder_csrbank3_dfii_pi0_address0_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 2'd3))) begin
+        builder_csrbank3_dfii_pi0_address0_we <= builder_interface3_bank_bus_re;
     end
 end
+assign builder_csrbank3_dfii_pi0_baddress0_r = builder_interface3_bank_bus_dat_w[2:0];
 always @(*) begin
     builder_csrbank3_dfii_pi0_baddress0_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd4))) begin
         builder_csrbank3_dfii_pi0_baddress0_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi0_wrdata1_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi0_wrdata1_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd5))) begin
-        builder_csrbank3_dfii_pi0_wrdata1_we <= builder_interface3_bank_bus_re;
+    builder_csrbank3_dfii_pi0_baddress0_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd4))) begin
+        builder_csrbank3_dfii_pi0_baddress0_re <= builder_interface3_bank_bus_we;
     end
 end
+assign builder_csrbank3_dfii_pi0_wrdata1_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank3_dfii_pi0_wrdata1_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd5))) begin
         builder_csrbank3_dfii_pi0_wrdata1_re <= builder_interface3_bank_bus_we;
+    end
+end
+always @(*) begin
+    builder_csrbank3_dfii_pi0_wrdata1_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd5))) begin
+        builder_csrbank3_dfii_pi0_wrdata1_we <= builder_interface3_bank_bus_re;
     end
 end
 assign builder_csrbank3_dfii_pi0_wrdata0_r = builder_interface3_bank_bus_dat_w[31:0];
@@ -10144,41 +10147,41 @@ always @(*) begin
 end
 assign builder_csrbank3_dfii_pi0_rddata1_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi0_rddata1_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd7))) begin
-        builder_csrbank3_dfii_pi0_rddata1_re <= builder_interface3_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank3_dfii_pi0_rddata1_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd7))) begin
         builder_csrbank3_dfii_pi0_rddata1_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi0_rddata0_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi0_rddata0_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd8))) begin
-        builder_csrbank3_dfii_pi0_rddata0_we <= builder_interface3_bank_bus_re;
+    builder_csrbank3_dfii_pi0_rddata1_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 3'd7))) begin
+        builder_csrbank3_dfii_pi0_rddata1_re <= builder_interface3_bank_bus_we;
     end
 end
+assign builder_csrbank3_dfii_pi0_rddata0_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank3_dfii_pi0_rddata0_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd8))) begin
         builder_csrbank3_dfii_pi0_rddata0_re <= builder_interface3_bank_bus_we;
     end
 end
-assign builder_csrbank3_dfii_pi1_command0_r = builder_interface3_bank_bus_dat_w[7:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi1_command0_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd9))) begin
-        builder_csrbank3_dfii_pi1_command0_we <= builder_interface3_bank_bus_re;
+    builder_csrbank3_dfii_pi0_rddata0_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd8))) begin
+        builder_csrbank3_dfii_pi0_rddata0_we <= builder_interface3_bank_bus_re;
     end
 end
+assign builder_csrbank3_dfii_pi1_command0_r = builder_interface3_bank_bus_dat_w[7:0];
 always @(*) begin
     builder_csrbank3_dfii_pi1_command0_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd9))) begin
         builder_csrbank3_dfii_pi1_command0_re <= builder_interface3_bank_bus_we;
+    end
+end
+always @(*) begin
+    builder_csrbank3_dfii_pi1_command0_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd9))) begin
+        builder_csrbank3_dfii_pi1_command0_we <= builder_interface3_bank_bus_re;
     end
 end
 assign main_litedramcore_sdram_phaseinjector1_command_issue_r = builder_interface3_bank_bus_dat_w[0];
@@ -10194,30 +10197,30 @@ always @(*) begin
         main_litedramcore_sdram_phaseinjector1_command_issue_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi1_address0_r = builder_interface3_bank_bus_dat_w[14:0];
-always @(*) begin
-    builder_csrbank3_dfii_pi1_address0_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd11))) begin
-        builder_csrbank3_dfii_pi1_address0_re <= builder_interface3_bank_bus_we;
-    end
-end
+assign builder_csrbank3_dfii_pi1_address0_r = builder_interface3_bank_bus_dat_w[15:0];
 always @(*) begin
     builder_csrbank3_dfii_pi1_address0_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd11))) begin
         builder_csrbank3_dfii_pi1_address0_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi1_baddress0_r = builder_interface3_bank_bus_dat_w[2:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi1_baddress0_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd12))) begin
-        builder_csrbank3_dfii_pi1_baddress0_we <= builder_interface3_bank_bus_re;
+    builder_csrbank3_dfii_pi1_address0_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd11))) begin
+        builder_csrbank3_dfii_pi1_address0_re <= builder_interface3_bank_bus_we;
     end
 end
+assign builder_csrbank3_dfii_pi1_baddress0_r = builder_interface3_bank_bus_dat_w[2:0];
 always @(*) begin
     builder_csrbank3_dfii_pi1_baddress0_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd12))) begin
         builder_csrbank3_dfii_pi1_baddress0_re <= builder_interface3_bank_bus_we;
+    end
+end
+always @(*) begin
+    builder_csrbank3_dfii_pi1_baddress0_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd12))) begin
+        builder_csrbank3_dfii_pi1_baddress0_we <= builder_interface3_bank_bus_re;
     end
 end
 assign builder_csrbank3_dfii_pi1_wrdata1_r = builder_interface3_bank_bus_dat_w[31:0];
@@ -10235,28 +10238,28 @@ always @(*) begin
 end
 assign builder_csrbank3_dfii_pi1_wrdata0_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi1_wrdata0_re <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd14))) begin
-        builder_csrbank3_dfii_pi1_wrdata0_re <= builder_interface3_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank3_dfii_pi1_wrdata0_we <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd14))) begin
         builder_csrbank3_dfii_pi1_wrdata0_we <= builder_interface3_bank_bus_re;
     end
 end
-assign builder_csrbank3_dfii_pi1_rddata1_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank3_dfii_pi1_rddata1_we <= 1'd0;
-    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd15))) begin
-        builder_csrbank3_dfii_pi1_rddata1_we <= builder_interface3_bank_bus_re;
+    builder_csrbank3_dfii_pi1_wrdata0_re <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd14))) begin
+        builder_csrbank3_dfii_pi1_wrdata0_re <= builder_interface3_bank_bus_we;
     end
 end
+assign builder_csrbank3_dfii_pi1_rddata1_r = builder_interface3_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank3_dfii_pi1_rddata1_re <= 1'd0;
     if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd15))) begin
         builder_csrbank3_dfii_pi1_rddata1_re <= builder_interface3_bank_bus_we;
+    end
+end
+always @(*) begin
+    builder_csrbank3_dfii_pi1_rddata1_we <= 1'd0;
+    if ((builder_csrbank3_sel & (builder_interface3_bank_bus_adr[8:0] == 4'd15))) begin
+        builder_csrbank3_dfii_pi1_rddata1_we <= builder_interface3_bank_bus_re;
     end
 end
 assign builder_csrbank3_dfii_pi1_rddata0_r = builder_interface3_bank_bus_dat_w[31:0];
@@ -10286,7 +10289,7 @@ assign main_litedramcore_sdram_phaseinjector0_csrfield_rden = main_litedramcore_
 assign main_litedramcore_sdram_phaseinjector0_csrfield_cs_top = main_litedramcore_sdram_phaseinjector0_command_storage[6];
 assign main_litedramcore_sdram_phaseinjector0_csrfield_cs_bottom = main_litedramcore_sdram_phaseinjector0_command_storage[7];
 assign builder_csrbank3_dfii_pi0_command0_w = main_litedramcore_sdram_phaseinjector0_command_storage[7:0];
-assign builder_csrbank3_dfii_pi0_address0_w = main_litedramcore_sdram_phaseinjector0_address_storage[14:0];
+assign builder_csrbank3_dfii_pi0_address0_w = main_litedramcore_sdram_phaseinjector0_address_storage[15:0];
 assign builder_csrbank3_dfii_pi0_baddress0_w = main_litedramcore_sdram_phaseinjector0_baddress_storage[2:0];
 assign builder_csrbank3_dfii_pi0_wrdata1_w = main_litedramcore_sdram_phaseinjector0_wrdata_storage[63:32];
 assign builder_csrbank3_dfii_pi0_wrdata0_w = main_litedramcore_sdram_phaseinjector0_wrdata_storage[31:0];
@@ -10302,7 +10305,7 @@ assign main_litedramcore_sdram_phaseinjector1_csrfield_rden = main_litedramcore_
 assign main_litedramcore_sdram_phaseinjector1_csrfield_cs_top = main_litedramcore_sdram_phaseinjector1_command_storage[6];
 assign main_litedramcore_sdram_phaseinjector1_csrfield_cs_bottom = main_litedramcore_sdram_phaseinjector1_command_storage[7];
 assign builder_csrbank3_dfii_pi1_command0_w = main_litedramcore_sdram_phaseinjector1_command_storage[7:0];
-assign builder_csrbank3_dfii_pi1_address0_w = main_litedramcore_sdram_phaseinjector1_address_storage[14:0];
+assign builder_csrbank3_dfii_pi1_address0_w = main_litedramcore_sdram_phaseinjector1_address_storage[15:0];
 assign builder_csrbank3_dfii_pi1_baddress0_w = main_litedramcore_sdram_phaseinjector1_baddress_storage[2:0];
 assign builder_csrbank3_dfii_pi1_wrdata1_w = main_litedramcore_sdram_phaseinjector1_wrdata_storage[63:32];
 assign builder_csrbank3_dfii_pi1_wrdata0_w = main_litedramcore_sdram_phaseinjector1_wrdata_storage[31:0];
@@ -10312,15 +10315,15 @@ assign main_litedramcore_sdram_phaseinjector1_rddata_we = builder_csrbank3_dfii_
 assign builder_csrbank4_sel = (builder_interface4_bank_bus_adr[13:9] == 3'd4);
 assign builder_csrbank4_load0_r = builder_interface4_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank4_load0_re <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csrbank4_load0_re <= builder_interface4_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank4_load0_we <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 1'd0))) begin
         builder_csrbank4_load0_we <= builder_interface4_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank4_load0_re <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 1'd0))) begin
+        builder_csrbank4_load0_re <= builder_interface4_bank_bus_we;
     end
 end
 assign builder_csrbank4_reload0_r = builder_interface4_bank_bus_dat_w[31:0];
@@ -10338,67 +10341,67 @@ always @(*) begin
 end
 assign builder_csrbank4_en0_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank4_en0_we <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd2))) begin
-        builder_csrbank4_en0_we <= builder_interface4_bank_bus_re;
-    end
-end
-always @(*) begin
     builder_csrbank4_en0_re <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd2))) begin
         builder_csrbank4_en0_re <= builder_interface4_bank_bus_we;
     end
 end
-assign builder_csrbank4_update_value0_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank4_update_value0_re <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd3))) begin
-        builder_csrbank4_update_value0_re <= builder_interface4_bank_bus_we;
+    builder_csrbank4_en0_we <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd2))) begin
+        builder_csrbank4_en0_we <= builder_interface4_bank_bus_re;
     end
 end
+assign builder_csrbank4_update_value0_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csrbank4_update_value0_we <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd3))) begin
         builder_csrbank4_update_value0_we <= builder_interface4_bank_bus_re;
     end
 end
-assign builder_csrbank4_value_r = builder_interface4_bank_bus_dat_w[31:0];
 always @(*) begin
-    builder_csrbank4_value_we <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd4))) begin
-        builder_csrbank4_value_we <= builder_interface4_bank_bus_re;
+    builder_csrbank4_update_value0_re <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 2'd3))) begin
+        builder_csrbank4_update_value0_re <= builder_interface4_bank_bus_we;
     end
 end
+assign builder_csrbank4_value_r = builder_interface4_bank_bus_dat_w[31:0];
 always @(*) begin
     builder_csrbank4_value_re <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd4))) begin
         builder_csrbank4_value_re <= builder_interface4_bank_bus_we;
     end
 end
-assign builder_csrbank4_ev_status_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank4_ev_status_we <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd5))) begin
-        builder_csrbank4_ev_status_we <= builder_interface4_bank_bus_re;
+    builder_csrbank4_value_we <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd4))) begin
+        builder_csrbank4_value_we <= builder_interface4_bank_bus_re;
     end
 end
+assign builder_csrbank4_ev_status_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csrbank4_ev_status_re <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd5))) begin
         builder_csrbank4_ev_status_re <= builder_interface4_bank_bus_we;
     end
 end
-assign builder_csrbank4_ev_pending_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank4_ev_pending_re <= 1'd0;
-    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd6))) begin
-        builder_csrbank4_ev_pending_re <= builder_interface4_bank_bus_we;
+    builder_csrbank4_ev_status_we <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd5))) begin
+        builder_csrbank4_ev_status_we <= builder_interface4_bank_bus_re;
     end
 end
+assign builder_csrbank4_ev_pending_r = builder_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csrbank4_ev_pending_we <= 1'd0;
     if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd6))) begin
         builder_csrbank4_ev_pending_we <= builder_interface4_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank4_ev_pending_re <= 1'd0;
+    if ((builder_csrbank4_sel & (builder_interface4_bank_bus_adr[8:0] == 3'd6))) begin
+        builder_csrbank4_ev_pending_re <= builder_interface4_bank_bus_we;
     end
 end
 assign builder_csrbank4_ev_enable0_r = builder_interface4_bank_bus_dat_w[0];
@@ -10463,15 +10466,15 @@ always @(*) begin
 end
 assign builder_csrbank5_rxempty_r = builder_interface5_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank5_rxempty_re <= 1'd0;
-    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 2'd2))) begin
-        builder_csrbank5_rxempty_re <= builder_interface5_bank_bus_we;
-    end
-end
-always @(*) begin
     builder_csrbank5_rxempty_we <= 1'd0;
     if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 2'd2))) begin
         builder_csrbank5_rxempty_we <= builder_interface5_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank5_rxempty_re <= 1'd0;
+    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 2'd2))) begin
+        builder_csrbank5_rxempty_re <= builder_interface5_bank_bus_we;
     end
 end
 assign builder_csrbank5_ev_status_r = builder_interface5_bank_bus_dat_w[1:0];
@@ -10489,28 +10492,28 @@ always @(*) begin
 end
 assign builder_csrbank5_ev_pending_r = builder_interface5_bank_bus_dat_w[1:0];
 always @(*) begin
-    builder_csrbank5_ev_pending_we <= 1'd0;
-    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd4))) begin
-        builder_csrbank5_ev_pending_we <= builder_interface5_bank_bus_re;
-    end
-end
-always @(*) begin
     builder_csrbank5_ev_pending_re <= 1'd0;
     if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd4))) begin
         builder_csrbank5_ev_pending_re <= builder_interface5_bank_bus_we;
     end
 end
-assign builder_csrbank5_ev_enable0_r = builder_interface5_bank_bus_dat_w[1:0];
 always @(*) begin
-    builder_csrbank5_ev_enable0_re <= 1'd0;
-    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd5))) begin
-        builder_csrbank5_ev_enable0_re <= builder_interface5_bank_bus_we;
+    builder_csrbank5_ev_pending_we <= 1'd0;
+    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd4))) begin
+        builder_csrbank5_ev_pending_we <= builder_interface5_bank_bus_re;
     end
 end
+assign builder_csrbank5_ev_enable0_r = builder_interface5_bank_bus_dat_w[1:0];
 always @(*) begin
     builder_csrbank5_ev_enable0_we <= 1'd0;
     if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd5))) begin
         builder_csrbank5_ev_enable0_we <= builder_interface5_bank_bus_re;
+    end
+end
+always @(*) begin
+    builder_csrbank5_ev_enable0_re <= 1'd0;
+    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd5))) begin
+        builder_csrbank5_ev_enable0_re <= builder_interface5_bank_bus_we;
     end
 end
 assign builder_csrbank5_txempty_r = builder_interface5_bank_bus_dat_w[0];
@@ -10528,15 +10531,15 @@ always @(*) begin
 end
 assign builder_csrbank5_rxfull_r = builder_interface5_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csrbank5_rxfull_we <= 1'd0;
-    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd7))) begin
-        builder_csrbank5_rxfull_we <= builder_interface5_bank_bus_re;
-    end
-end
-always @(*) begin
     builder_csrbank5_rxfull_re <= 1'd0;
     if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd7))) begin
         builder_csrbank5_rxfull_re <= builder_interface5_bank_bus_we;
+    end
+end
+always @(*) begin
+    builder_csrbank5_rxfull_we <= 1'd0;
+    if ((builder_csrbank5_sel & (builder_interface5_bank_bus_adr[8:0] == 3'd7))) begin
+        builder_csrbank5_rxfull_we <= builder_interface5_bank_bus_re;
     end
 end
 assign builder_csrbank5_txfull_w = main_uart4_status;
@@ -10712,7 +10715,7 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed9 <= 15'd0;
+    builder_rhs_array_muxed9 <= 16'd0;
     case (main_litedramcore_sdram_choose_cmd_grant)
         1'd0: begin
             builder_rhs_array_muxed9 <= main_litedramcore_sdram_bankmachine0_cmd_payload_a;
@@ -10973,7 +10976,7 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed15 <= 15'd0;
+    builder_rhs_array_muxed15 <= 16'd0;
     case (main_litedramcore_sdram_choose_req_grant)
         1'd0: begin
             builder_rhs_array_muxed15 <= main_litedramcore_sdram_bankmachine0_cmd_payload_a;
@@ -11205,13 +11208,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed20 <= 22'd0;
+    builder_rhs_array_muxed20 <= 23'd0;
     case (builder_litedramcore_roundrobin0_grant)
         1'd0: begin
-            builder_rhs_array_muxed20 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed20 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed20 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed20 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11238,13 +11241,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed23 <= 22'd0;
+    builder_rhs_array_muxed23 <= 23'd0;
     case (builder_litedramcore_roundrobin1_grant)
         1'd0: begin
-            builder_rhs_array_muxed23 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed23 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed23 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed23 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11271,13 +11274,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed26 <= 22'd0;
+    builder_rhs_array_muxed26 <= 23'd0;
     case (builder_litedramcore_roundrobin2_grant)
         1'd0: begin
-            builder_rhs_array_muxed26 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed26 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed26 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed26 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11304,13 +11307,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed29 <= 22'd0;
+    builder_rhs_array_muxed29 <= 23'd0;
     case (builder_litedramcore_roundrobin3_grant)
         1'd0: begin
-            builder_rhs_array_muxed29 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed29 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed29 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed29 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11337,13 +11340,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed32 <= 22'd0;
+    builder_rhs_array_muxed32 <= 23'd0;
     case (builder_litedramcore_roundrobin4_grant)
         1'd0: begin
-            builder_rhs_array_muxed32 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed32 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed32 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed32 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11370,13 +11373,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed35 <= 22'd0;
+    builder_rhs_array_muxed35 <= 23'd0;
     case (builder_litedramcore_roundrobin5_grant)
         1'd0: begin
-            builder_rhs_array_muxed35 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed35 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed35 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed35 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11403,13 +11406,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed38 <= 22'd0;
+    builder_rhs_array_muxed38 <= 23'd0;
     case (builder_litedramcore_roundrobin6_grant)
         1'd0: begin
-            builder_rhs_array_muxed38 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed38 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed38 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed38 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11436,13 +11439,13 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_rhs_array_muxed41 <= 22'd0;
+    builder_rhs_array_muxed41 <= 23'd0;
     case (builder_litedramcore_roundrobin7_grant)
         1'd0: begin
-            builder_rhs_array_muxed41 <= {main_litedramcore_port_cmd_payload_addr[24:10], main_litedramcore_port_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed41 <= {main_litedramcore_port_cmd_payload_addr[25:10], main_litedramcore_port_cmd_payload_addr[6:0]};
         end
         default: begin
-            builder_rhs_array_muxed41 <= {main_cmd_payload_addr[24:10], main_cmd_payload_addr[6:0]};
+            builder_rhs_array_muxed41 <= {main_cmd_payload_addr[25:10], main_cmd_payload_addr[6:0]};
         end
     endcase
 end
@@ -11486,7 +11489,7 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_array_muxed1 <= 15'd0;
+    builder_array_muxed1 <= 16'd0;
     case (main_litedramcore_sdram_steerer_sel0)
         1'd0: begin
             builder_array_muxed1 <= main_litedramcore_sdram_nop_a;
@@ -11605,7 +11608,7 @@ always @(*) begin
     endcase
 end
 always @(*) begin
-    builder_array_muxed8 <= 15'd0;
+    builder_array_muxed8 <= 16'd0;
     case (main_litedramcore_sdram_steerer_sel1)
         1'd0: begin
             builder_array_muxed8 <= main_litedramcore_sdram_nop_a;
@@ -12251,7 +12254,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_cmd_payload_ras <= 1'd1;
         main_litedramcore_sdram_cmd_payload_we <= 1'd0;
     end
-    if ((main_litedramcore_sdram_sequencer_counter == 7'd106)) begin
+    if ((main_litedramcore_sdram_sequencer_counter == 8'd142)) begin
         main_litedramcore_sdram_cmd_payload_a <= 1'd0;
         main_litedramcore_sdram_cmd_payload_ba <= 1'd0;
         main_litedramcore_sdram_cmd_payload_cas <= 1'd0;
@@ -12259,7 +12262,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_cmd_payload_we <= 1'd0;
         main_litedramcore_sdram_sequencer_done1 <= 1'd1;
     end
-    if ((main_litedramcore_sdram_sequencer_counter == 7'd106)) begin
+    if ((main_litedramcore_sdram_sequencer_counter == 8'd142)) begin
         main_litedramcore_sdram_sequencer_counter <= 1'd0;
     end else begin
         if ((main_litedramcore_sdram_sequencer_counter != 1'd0)) begin
@@ -12315,7 +12318,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine0_row_open) begin
             main_litedramcore_sdram_bankmachine0_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine0_row <= main_litedramcore_sdram_bankmachine0_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine0_row <= main_litedramcore_sdram_bankmachine0_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine0_syncfifo0_we & main_litedramcore_sdram_bankmachine0_syncfifo0_writable) & (~main_litedramcore_sdram_bankmachine0_replace))) begin
@@ -12391,7 +12394,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine1_row_open) begin
             main_litedramcore_sdram_bankmachine1_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine1_row <= main_litedramcore_sdram_bankmachine1_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine1_row <= main_litedramcore_sdram_bankmachine1_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine1_syncfifo1_we & main_litedramcore_sdram_bankmachine1_syncfifo1_writable) & (~main_litedramcore_sdram_bankmachine1_replace))) begin
@@ -12467,7 +12470,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine2_row_open) begin
             main_litedramcore_sdram_bankmachine2_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine2_row <= main_litedramcore_sdram_bankmachine2_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine2_row <= main_litedramcore_sdram_bankmachine2_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine2_syncfifo2_we & main_litedramcore_sdram_bankmachine2_syncfifo2_writable) & (~main_litedramcore_sdram_bankmachine2_replace))) begin
@@ -12543,7 +12546,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine3_row_open) begin
             main_litedramcore_sdram_bankmachine3_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine3_row <= main_litedramcore_sdram_bankmachine3_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine3_row <= main_litedramcore_sdram_bankmachine3_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine3_syncfifo3_we & main_litedramcore_sdram_bankmachine3_syncfifo3_writable) & (~main_litedramcore_sdram_bankmachine3_replace))) begin
@@ -12619,7 +12622,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine4_row_open) begin
             main_litedramcore_sdram_bankmachine4_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine4_row <= main_litedramcore_sdram_bankmachine4_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine4_row <= main_litedramcore_sdram_bankmachine4_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine4_syncfifo4_we & main_litedramcore_sdram_bankmachine4_syncfifo4_writable) & (~main_litedramcore_sdram_bankmachine4_replace))) begin
@@ -12695,7 +12698,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine5_row_open) begin
             main_litedramcore_sdram_bankmachine5_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine5_row <= main_litedramcore_sdram_bankmachine5_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine5_row <= main_litedramcore_sdram_bankmachine5_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine5_syncfifo5_we & main_litedramcore_sdram_bankmachine5_syncfifo5_writable) & (~main_litedramcore_sdram_bankmachine5_replace))) begin
@@ -12771,7 +12774,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine6_row_open) begin
             main_litedramcore_sdram_bankmachine6_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine6_row <= main_litedramcore_sdram_bankmachine6_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine6_row <= main_litedramcore_sdram_bankmachine6_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine6_syncfifo6_we & main_litedramcore_sdram_bankmachine6_syncfifo6_writable) & (~main_litedramcore_sdram_bankmachine6_replace))) begin
@@ -12847,7 +12850,7 @@ always @(posedge sys_clk) begin
     end else begin
         if (main_litedramcore_sdram_bankmachine7_row_open) begin
             main_litedramcore_sdram_bankmachine7_row_opened <= 1'd1;
-            main_litedramcore_sdram_bankmachine7_row <= main_litedramcore_sdram_bankmachine7_source_source_payload_addr[21:7];
+            main_litedramcore_sdram_bankmachine7_row <= main_litedramcore_sdram_bankmachine7_source_source_payload_addr[22:7];
         end
     end
     if (((main_litedramcore_sdram_bankmachine7_syncfifo7_we & main_litedramcore_sdram_bankmachine7_syncfifo7_writable) & (~main_litedramcore_sdram_bankmachine7_replace))) begin
@@ -13783,7 +13786,7 @@ always @(posedge sys_clk) begin
     end
     main_litedramcore_sdram_phaseinjector0_command_re <= builder_csrbank3_dfii_pi0_command0_re;
     if (builder_csrbank3_dfii_pi0_address0_re) begin
-        main_litedramcore_sdram_phaseinjector0_address_storage[14:0] <= builder_csrbank3_dfii_pi0_address0_r;
+        main_litedramcore_sdram_phaseinjector0_address_storage[15:0] <= builder_csrbank3_dfii_pi0_address0_r;
     end
     main_litedramcore_sdram_phaseinjector0_address_re <= builder_csrbank3_dfii_pi0_address0_re;
     if (builder_csrbank3_dfii_pi0_baddress0_re) begin
@@ -13803,7 +13806,7 @@ always @(posedge sys_clk) begin
     end
     main_litedramcore_sdram_phaseinjector1_command_re <= builder_csrbank3_dfii_pi1_command0_re;
     if (builder_csrbank3_dfii_pi1_address0_re) begin
-        main_litedramcore_sdram_phaseinjector1_address_storage[14:0] <= builder_csrbank3_dfii_pi1_address0_r;
+        main_litedramcore_sdram_phaseinjector1_address_storage[15:0] <= builder_csrbank3_dfii_pi1_address0_r;
     end
     main_litedramcore_sdram_phaseinjector1_address_re <= builder_csrbank3_dfii_pi1_address0_re;
     if (builder_csrbank3_dfii_pi1_baddress0_re) begin
@@ -14073,7 +14076,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_phaseinjector1_wrdata_re <= 1'd0;
         main_litedramcore_sdram_phaseinjector1_rddata_status <= 64'd0;
         main_litedramcore_sdram_phaseinjector1_rddata_re <= 1'd0;
-        main_litedramcore_sdram_dfi_p0_address <= 15'd0;
+        main_litedramcore_sdram_dfi_p0_address <= 16'd0;
         main_litedramcore_sdram_dfi_p0_bank <= 3'd0;
         main_litedramcore_sdram_dfi_p0_cas_n <= 1'd1;
         main_litedramcore_sdram_dfi_p0_cs_n <= 1'd1;
@@ -14081,7 +14084,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_dfi_p0_we_n <= 1'd1;
         main_litedramcore_sdram_dfi_p0_wrdata_en <= 1'd0;
         main_litedramcore_sdram_dfi_p0_rddata_en <= 1'd0;
-        main_litedramcore_sdram_dfi_p1_address <= 15'd0;
+        main_litedramcore_sdram_dfi_p1_address <= 16'd0;
         main_litedramcore_sdram_dfi_p1_bank <= 3'd0;
         main_litedramcore_sdram_dfi_p1_cas_n <= 1'd1;
         main_litedramcore_sdram_dfi_p1_cs_n <= 1'd1;
@@ -14089,7 +14092,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_dfi_p1_we_n <= 1'd1;
         main_litedramcore_sdram_dfi_p1_wrdata_en <= 1'd0;
         main_litedramcore_sdram_dfi_p1_rddata_en <= 1'd0;
-        main_litedramcore_sdram_cmd_payload_a <= 15'd0;
+        main_litedramcore_sdram_cmd_payload_a <= 16'd0;
         main_litedramcore_sdram_cmd_payload_ba <= 3'd0;
         main_litedramcore_sdram_cmd_payload_cas <= 1'd0;
         main_litedramcore_sdram_cmd_payload_ras <= 1'd0;
@@ -14098,7 +14101,7 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_postponer_req_o <= 1'd0;
         main_litedramcore_sdram_postponer_count <= 1'd0;
         main_litedramcore_sdram_sequencer_done1 <= 1'd0;
-        main_litedramcore_sdram_sequencer_counter <= 7'd0;
+        main_litedramcore_sdram_sequencer_counter <= 8'd0;
         main_litedramcore_sdram_sequencer_count <= 1'd0;
         main_litedramcore_sdram_zqcs_timer_count1 <= 27'd74999999;
         main_litedramcore_sdram_zqcs_executer_done <= 1'd0;
@@ -14108,8 +14111,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine0_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine0_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine0_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine0_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine0_row <= 16'd0;
         main_litedramcore_sdram_bankmachine0_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine0_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine0_twtpcon_count <= 3'd0;
@@ -14122,8 +14125,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine1_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine1_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine1_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine1_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine1_row <= 16'd0;
         main_litedramcore_sdram_bankmachine1_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine1_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine1_twtpcon_count <= 3'd0;
@@ -14136,8 +14139,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine2_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine2_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine2_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine2_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine2_row <= 16'd0;
         main_litedramcore_sdram_bankmachine2_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine2_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine2_twtpcon_count <= 3'd0;
@@ -14150,8 +14153,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine3_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine3_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine3_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine3_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine3_row <= 16'd0;
         main_litedramcore_sdram_bankmachine3_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine3_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine3_twtpcon_count <= 3'd0;
@@ -14164,8 +14167,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine4_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine4_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine4_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine4_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine4_row <= 16'd0;
         main_litedramcore_sdram_bankmachine4_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine4_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine4_twtpcon_count <= 3'd0;
@@ -14178,8 +14181,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine5_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine5_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine5_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine5_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine5_row <= 16'd0;
         main_litedramcore_sdram_bankmachine5_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine5_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine5_twtpcon_count <= 3'd0;
@@ -14192,8 +14195,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine6_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine6_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine6_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine6_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine6_row <= 16'd0;
         main_litedramcore_sdram_bankmachine6_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine6_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine6_twtpcon_count <= 3'd0;
@@ -14206,8 +14209,8 @@ always @(posedge sys_clk) begin
         main_litedramcore_sdram_bankmachine7_consume <= 3'd0;
         main_litedramcore_sdram_bankmachine7_pipe_valid_source_valid <= 1'd0;
         main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_we <= 1'd0;
-        main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_addr <= 22'd0;
-        main_litedramcore_sdram_bankmachine7_row <= 15'd0;
+        main_litedramcore_sdram_bankmachine7_pipe_valid_source_payload_addr <= 23'd0;
+        main_litedramcore_sdram_bankmachine7_row <= 16'd0;
         main_litedramcore_sdram_bankmachine7_row_opened <= 1'd0;
         main_litedramcore_sdram_bankmachine7_twtpcon_ready <= 1'd0;
         main_litedramcore_sdram_bankmachine7_twtpcon_count <= 3'd0;
@@ -14961,10 +14964,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_18(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_bank[0]),
-	.D1   (main_ddrphy_dfi_p0_bank[0]),
-	.D2   (main_ddrphy_dfi_p1_bank[0]),
-	.D3   (main_ddrphy_dfi_p1_bank[0]),
+	.D0   (main_ddrphy_dfi_p0_address[15]),
+	.D1   (main_ddrphy_dfi_p0_address[15]),
+	.D2   (main_ddrphy_dfi_p1_address[15]),
+	.D3   (main_ddrphy_dfi_p1_address[15]),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -14984,7 +14987,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f18),
 
 	// Outputs.
-	.Z (ddram_ba[0])
+	.Z (ddram_a[15])
 );
 
 //------------------------------------------------------------------------------
@@ -14992,10 +14995,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_19(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_bank[1]),
-	.D1   (main_ddrphy_dfi_p0_bank[1]),
-	.D2   (main_ddrphy_dfi_p1_bank[1]),
-	.D3   (main_ddrphy_dfi_p1_bank[1]),
+	.D0   (main_ddrphy_dfi_p0_bank[0]),
+	.D1   (main_ddrphy_dfi_p0_bank[0]),
+	.D2   (main_ddrphy_dfi_p1_bank[0]),
+	.D3   (main_ddrphy_dfi_p1_bank[0]),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15015,7 +15018,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f19),
 
 	// Outputs.
-	.Z (ddram_ba[1])
+	.Z (ddram_ba[0])
 );
 
 //------------------------------------------------------------------------------
@@ -15023,10 +15026,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_20(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_bank[2]),
-	.D1   (main_ddrphy_dfi_p0_bank[2]),
-	.D2   (main_ddrphy_dfi_p1_bank[2]),
-	.D3   (main_ddrphy_dfi_p1_bank[2]),
+	.D0   (main_ddrphy_dfi_p0_bank[1]),
+	.D1   (main_ddrphy_dfi_p0_bank[1]),
+	.D2   (main_ddrphy_dfi_p1_bank[1]),
+	.D3   (main_ddrphy_dfi_p1_bank[1]),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15046,7 +15049,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f20),
 
 	// Outputs.
-	.Z (ddram_ba[2])
+	.Z (ddram_ba[1])
 );
 
 //------------------------------------------------------------------------------
@@ -15054,10 +15057,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_21(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_ras_n),
-	.D1   (main_ddrphy_dfi_p0_ras_n),
-	.D2   (main_ddrphy_dfi_p1_ras_n),
-	.D3   (main_ddrphy_dfi_p1_ras_n),
+	.D0   (main_ddrphy_dfi_p0_bank[2]),
+	.D1   (main_ddrphy_dfi_p0_bank[2]),
+	.D2   (main_ddrphy_dfi_p1_bank[2]),
+	.D3   (main_ddrphy_dfi_p1_bank[2]),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15077,7 +15080,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f21),
 
 	// Outputs.
-	.Z (ddram_ras_n)
+	.Z (ddram_ba[2])
 );
 
 //------------------------------------------------------------------------------
@@ -15085,10 +15088,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_22(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_cas_n),
-	.D1   (main_ddrphy_dfi_p0_cas_n),
-	.D2   (main_ddrphy_dfi_p1_cas_n),
-	.D3   (main_ddrphy_dfi_p1_cas_n),
+	.D0   (main_ddrphy_dfi_p0_ras_n),
+	.D1   (main_ddrphy_dfi_p0_ras_n),
+	.D2   (main_ddrphy_dfi_p1_ras_n),
+	.D3   (main_ddrphy_dfi_p1_ras_n),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15108,7 +15111,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f22),
 
 	// Outputs.
-	.Z (ddram_cas_n)
+	.Z (ddram_ras_n)
 );
 
 //------------------------------------------------------------------------------
@@ -15116,10 +15119,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_23(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_we_n),
-	.D1   (main_ddrphy_dfi_p0_we_n),
-	.D2   (main_ddrphy_dfi_p1_we_n),
-	.D3   (main_ddrphy_dfi_p1_we_n),
+	.D0   (main_ddrphy_dfi_p0_cas_n),
+	.D1   (main_ddrphy_dfi_p0_cas_n),
+	.D2   (main_ddrphy_dfi_p1_cas_n),
+	.D3   (main_ddrphy_dfi_p1_cas_n),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15139,7 +15142,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f23),
 
 	// Outputs.
-	.Z (ddram_we_n)
+	.Z (ddram_cas_n)
 );
 
 //------------------------------------------------------------------------------
@@ -15147,10 +15150,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_24(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_cke),
-	.D1   (main_ddrphy_dfi_p0_cke),
-	.D2   (main_ddrphy_dfi_p1_cke),
-	.D3   (main_ddrphy_dfi_p1_cke),
+	.D0   (main_ddrphy_dfi_p0_we_n),
+	.D1   (main_ddrphy_dfi_p0_we_n),
+	.D2   (main_ddrphy_dfi_p1_we_n),
+	.D3   (main_ddrphy_dfi_p1_we_n),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15170,7 +15173,7 @@ DELAYG #(
 	.A (main_ddrphy_pad_oddrx2f24),
 
 	// Outputs.
-	.Z (ddram_cke)
+	.Z (ddram_we_n)
 );
 
 //------------------------------------------------------------------------------
@@ -15178,10 +15181,10 @@ DELAYG #(
 //------------------------------------------------------------------------------
 ODDRX2F ODDRX2F_25(
 	// Inputs.
-	.D0   (main_ddrphy_dfi_p0_odt),
-	.D1   (main_ddrphy_dfi_p0_odt),
-	.D2   (main_ddrphy_dfi_p1_odt),
-	.D3   (main_ddrphy_dfi_p1_odt),
+	.D0   (main_ddrphy_dfi_p0_cke),
+	.D1   (main_ddrphy_dfi_p0_cke),
+	.D2   (main_ddrphy_dfi_p1_cke),
+	.D3   (main_ddrphy_dfi_p1_cke),
 	.ECLK (sys2x_clk),
 	.RST  (sys_rst),
 	.SCLK (sys_clk),
@@ -15199,6 +15202,37 @@ DELAYG #(
 ) DELAYG_25 (
 	// Inputs.
 	.A (main_ddrphy_pad_oddrx2f25),
+
+	// Outputs.
+	.Z (ddram_cke)
+);
+
+//------------------------------------------------------------------------------
+// Instance ODDRX2F_26 of ODDRX2F Module.
+//------------------------------------------------------------------------------
+ODDRX2F ODDRX2F_26(
+	// Inputs.
+	.D0   (main_ddrphy_dfi_p0_odt),
+	.D1   (main_ddrphy_dfi_p0_odt),
+	.D2   (main_ddrphy_dfi_p1_odt),
+	.D3   (main_ddrphy_dfi_p1_odt),
+	.ECLK (sys2x_clk),
+	.RST  (sys_rst),
+	.SCLK (sys_clk),
+
+	// Outputs.
+	.Q    (main_ddrphy_pad_oddrx2f26)
+);
+
+//------------------------------------------------------------------------------
+// Instance DELAYG_26 of DELAYG Module.
+//------------------------------------------------------------------------------
+DELAYG #(
+	// Parameters.
+	.DEL_VALUE (1'd0)
+) DELAYG_26 (
+	// Inputs.
+	.A (main_ddrphy_pad_oddrx2f26),
 
 	// Outputs.
 	.Z (ddram_odt)
@@ -15318,12 +15352,12 @@ ODDRX2DQA ODDRX2DQA_1(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_26 of DELAYG Module.
+// Instance DELAYG_27 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_26 (
+) DELAYG_27 (
 	// Inputs.
 	.A (main_ddrphy_dq_i0),
 
@@ -15390,12 +15424,12 @@ ODDRX2DQA ODDRX2DQA_2(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_27 of DELAYG Module.
+// Instance DELAYG_28 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_27 (
+) DELAYG_28 (
 	// Inputs.
 	.A (main_ddrphy_dq_i1),
 
@@ -15462,12 +15496,12 @@ ODDRX2DQA ODDRX2DQA_3(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_28 of DELAYG Module.
+// Instance DELAYG_29 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_28 (
+) DELAYG_29 (
 	// Inputs.
 	.A (main_ddrphy_dq_i2),
 
@@ -15534,12 +15568,12 @@ ODDRX2DQA ODDRX2DQA_4(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_29 of DELAYG Module.
+// Instance DELAYG_30 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_29 (
+) DELAYG_30 (
 	// Inputs.
 	.A (main_ddrphy_dq_i3),
 
@@ -15606,12 +15640,12 @@ ODDRX2DQA ODDRX2DQA_5(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_30 of DELAYG Module.
+// Instance DELAYG_31 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_30 (
+) DELAYG_31 (
 	// Inputs.
 	.A (main_ddrphy_dq_i4),
 
@@ -15678,12 +15712,12 @@ ODDRX2DQA ODDRX2DQA_6(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_31 of DELAYG Module.
+// Instance DELAYG_32 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_31 (
+) DELAYG_32 (
 	// Inputs.
 	.A (main_ddrphy_dq_i5),
 
@@ -15750,12 +15784,12 @@ ODDRX2DQA ODDRX2DQA_7(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_32 of DELAYG Module.
+// Instance DELAYG_33 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_32 (
+) DELAYG_33 (
 	// Inputs.
 	.A (main_ddrphy_dq_i6),
 
@@ -15822,12 +15856,12 @@ ODDRX2DQA ODDRX2DQA_8(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_33 of DELAYG Module.
+// Instance DELAYG_34 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_33 (
+) DELAYG_34 (
 	// Inputs.
 	.A (main_ddrphy_dq_i7),
 
@@ -15989,12 +16023,12 @@ ODDRX2DQA ODDRX2DQA_10(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_34 of DELAYG Module.
+// Instance DELAYG_35 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_34 (
+) DELAYG_35 (
 	// Inputs.
 	.A (main_ddrphy_dq_i8),
 
@@ -16061,12 +16095,12 @@ ODDRX2DQA ODDRX2DQA_11(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_35 of DELAYG Module.
+// Instance DELAYG_36 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_35 (
+) DELAYG_36 (
 	// Inputs.
 	.A (main_ddrphy_dq_i9),
 
@@ -16133,12 +16167,12 @@ ODDRX2DQA ODDRX2DQA_12(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_36 of DELAYG Module.
+// Instance DELAYG_37 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_36 (
+) DELAYG_37 (
 	// Inputs.
 	.A (main_ddrphy_dq_i10),
 
@@ -16205,12 +16239,12 @@ ODDRX2DQA ODDRX2DQA_13(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_37 of DELAYG Module.
+// Instance DELAYG_38 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_37 (
+) DELAYG_38 (
 	// Inputs.
 	.A (main_ddrphy_dq_i11),
 
@@ -16277,12 +16311,12 @@ ODDRX2DQA ODDRX2DQA_14(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_38 of DELAYG Module.
+// Instance DELAYG_39 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_38 (
+) DELAYG_39 (
 	// Inputs.
 	.A (main_ddrphy_dq_i12),
 
@@ -16349,12 +16383,12 @@ ODDRX2DQA ODDRX2DQA_15(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_39 of DELAYG Module.
+// Instance DELAYG_40 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_39 (
+) DELAYG_40 (
 	// Inputs.
 	.A (main_ddrphy_dq_i13),
 
@@ -16421,12 +16455,12 @@ ODDRX2DQA ODDRX2DQA_16(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_40 of DELAYG Module.
+// Instance DELAYG_41 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_40 (
+) DELAYG_41 (
 	// Inputs.
 	.A (main_ddrphy_dq_i14),
 
@@ -16493,12 +16527,12 @@ ODDRX2DQA ODDRX2DQA_17(
 );
 
 //------------------------------------------------------------------------------
-// Instance DELAYG_41 of DELAYG Module.
+// Instance DELAYG_42 of DELAYG Module.
 //------------------------------------------------------------------------------
 DELAYG #(
 	// Parameters.
 	.DEL_MODE ("DQS_ALIGNED_X2")
-) DELAYG_41 (
+) DELAYG_42 (
 	// Inputs.
 	.A (main_ddrphy_dq_i15),
 
@@ -16547,12 +16581,12 @@ TSHX2DQA TSHX2DQA_15(
 );
 
 //------------------------------------------------------------------------------
-// Memory storage: 8-words x 25-bit
+// Memory storage: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage[0:7];
-reg [24:0] storage_dat0;
+reg [25:0] storage[0:7];
+reg [25:0] storage_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine0_wrport_we)
 		storage[main_litedramcore_sdram_bankmachine0_wrport_adr] <= main_litedramcore_sdram_bankmachine0_wrport_dat_w;
@@ -16565,12 +16599,12 @@ assign main_litedramcore_sdram_bankmachine0_rdport_dat_r = storage[main_litedram
 
 
 //------------------------------------------------------------------------------
-// Memory storage_1: 8-words x 25-bit
+// Memory storage_1: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_1[0:7];
-reg [24:0] storage_1_dat0;
+reg [25:0] storage_1[0:7];
+reg [25:0] storage_1_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine1_wrport_we)
 		storage_1[main_litedramcore_sdram_bankmachine1_wrport_adr] <= main_litedramcore_sdram_bankmachine1_wrport_dat_w;
@@ -16583,12 +16617,12 @@ assign main_litedramcore_sdram_bankmachine1_rdport_dat_r = storage_1[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_2: 8-words x 25-bit
+// Memory storage_2: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_2[0:7];
-reg [24:0] storage_2_dat0;
+reg [25:0] storage_2[0:7];
+reg [25:0] storage_2_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine2_wrport_we)
 		storage_2[main_litedramcore_sdram_bankmachine2_wrport_adr] <= main_litedramcore_sdram_bankmachine2_wrport_dat_w;
@@ -16601,12 +16635,12 @@ assign main_litedramcore_sdram_bankmachine2_rdport_dat_r = storage_2[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_3: 8-words x 25-bit
+// Memory storage_3: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_3[0:7];
-reg [24:0] storage_3_dat0;
+reg [25:0] storage_3[0:7];
+reg [25:0] storage_3_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine3_wrport_we)
 		storage_3[main_litedramcore_sdram_bankmachine3_wrport_adr] <= main_litedramcore_sdram_bankmachine3_wrport_dat_w;
@@ -16619,12 +16653,12 @@ assign main_litedramcore_sdram_bankmachine3_rdport_dat_r = storage_3[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_4: 8-words x 25-bit
+// Memory storage_4: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_4[0:7];
-reg [24:0] storage_4_dat0;
+reg [25:0] storage_4[0:7];
+reg [25:0] storage_4_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine4_wrport_we)
 		storage_4[main_litedramcore_sdram_bankmachine4_wrport_adr] <= main_litedramcore_sdram_bankmachine4_wrport_dat_w;
@@ -16637,12 +16671,12 @@ assign main_litedramcore_sdram_bankmachine4_rdport_dat_r = storage_4[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_5: 8-words x 25-bit
+// Memory storage_5: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_5[0:7];
-reg [24:0] storage_5_dat0;
+reg [25:0] storage_5[0:7];
+reg [25:0] storage_5_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine5_wrport_we)
 		storage_5[main_litedramcore_sdram_bankmachine5_wrport_adr] <= main_litedramcore_sdram_bankmachine5_wrport_dat_w;
@@ -16655,12 +16689,12 @@ assign main_litedramcore_sdram_bankmachine5_rdport_dat_r = storage_5[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_6: 8-words x 25-bit
+// Memory storage_6: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_6[0:7];
-reg [24:0] storage_6_dat0;
+reg [25:0] storage_6[0:7];
+reg [25:0] storage_6_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine6_wrport_we)
 		storage_6[main_litedramcore_sdram_bankmachine6_wrport_adr] <= main_litedramcore_sdram_bankmachine6_wrport_dat_w;
@@ -16673,12 +16707,12 @@ assign main_litedramcore_sdram_bankmachine6_rdport_dat_r = storage_6[main_litedr
 
 
 //------------------------------------------------------------------------------
-// Memory storage_7: 8-words x 25-bit
+// Memory storage_7: 8-words x 26-bit
 //------------------------------------------------------------------------------
-// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 25 
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 26 
 // Port 1 | Read: Async | Write: ---- | 
-reg [24:0] storage_7[0:7];
-reg [24:0] storage_7_dat0;
+reg [25:0] storage_7[0:7];
+reg [25:0] storage_7_dat0;
 always @(posedge sys_clk) begin
 	if (main_litedramcore_sdram_bankmachine7_wrport_we)
 		storage_7[main_litedramcore_sdram_bankmachine7_wrport_adr] <= main_litedramcore_sdram_bankmachine7_wrport_dat_w;
@@ -17394,7 +17428,7 @@ TRELLIS_IO #(
 endmodule
 
 // -----------------------------------------------------------------------------
-//  Auto-Generated by LiteX on 2026-08-30 10:46:51.
+//  Auto-Generated by LiteX on 2026-08-31 16:12:09.
 //------------------------------------------------------------------------------
 
 // Generator : SpinalHDL v1.6.0    git head : 73c8d8e2b86b45646e9d0b2e729291f2b65e6be3

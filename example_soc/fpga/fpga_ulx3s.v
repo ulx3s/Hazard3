@@ -151,7 +151,7 @@ wire        video_apb_pslverr;
 // The shared SoC exposes both the ULX3S SDR SDRAM and ULX4M-LD LiteDRAM ports.
 // This wrapper explicitly disables LiteDRAM and terminates every unused DDR3
 // port so the ULX3S build never relies on parameter defaults or open inputs.
-wire [14:0] unused_ddram_a;
+wire [15:0] unused_ddram_a;
 wire [2:0]  unused_ddram_ba;
 wire        unused_ddram_cas_n;
 wire        unused_ddram_cke;

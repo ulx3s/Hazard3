@@ -1,4 +1,40 @@
 #!/bin/bash
+# -----------------------------------------------------------------------------
+# File:           regenerate-ulx4m.sh
+# Path (repo)     \example_soc\third_party\LiteDRAM\regenerate-ulx4m.sh
+# Path (project): \third_party\Hazard3\example_soc\third_party\LiteDRAM\regenerate-ulx4m.sh
+#
+# Project:     Hazard3-Doom
+# Purpose:     Generate LiteDRAM code
+#
+# Copyright (c) 2026 gojimmypi
+#
+# Licensed under the Apache License, Version 2.0.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is provided under the terms of the applicable license.
+# See LICENSES/Apache-2.0.txt for the complete license terms.
+# See LICENSING.md for project licensing policy and scope.
+# -----------------------------------------------------------------------------
+
+# Physical DRAM:  Micron MT41K512M16HA-125
+# Marking:        D9SWB
+# Organization:   512M x 16
+# Capacity:       8 Gbit = 1 GiB
+# Type:           DDR3L
+# Speed grade:    -125 = DDR3-1600
+# Package:        96-ball FBGA
+#
+# Benign warnings in this run:
+#
+#   Meson 1.12.0 prints: WARNING: Unknown CPU family riscv
+#
+#   WARNING: Broken features used:
+#   * 1.3.0: {'str.format: Value other than strings, integers, bools, options, dictionaries and lists thereof.'}
+#
+#   WARNING: Running the setup command as `meson [options]` instead of `meson setup [options]` is ambiguous and deprecated.
+
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -153,7 +189,7 @@ cpu_variant: ${CPU_VARIANT}
 uart: fifo
 device: LFE5UM-85F-8BG381C
 memtype: DDR3
-sdram_module: MT41K256M16
+sdram_module: MT41K512M16
 sdram_module_nb: 2
 sdram_rank_nb: 1
 sdram_phy: ECP5DDRPHY
@@ -407,8 +443,8 @@ litedram_input_clock_hz=25000000
 hazard3_system_clock_hz=50000000
 litedram_sys_clock_hz=75000000
 ddr_clock_hz=150000000
-memory_class=MT41K256M16
-memory_geometry=15-row,10-column,3-bank,x16,4-Gbit
+memory_class=MT41K512M16
+memory_geometry=16-row,10-column,3-bank,x16,8-Gbit
 memory_modules=2
 memory_ranks=1
 user_port=wishbone
