@@ -8,8 +8,11 @@ sdram_module_nb: 2
 sdram_rank_nb: 1
 sdram_phy: ECP5DDRPHY
 input_clk_freq: 25e6
-sys_clk_freq: 75e6
+sys_clk_freq: 60e6
 init_clk_freq: 25e6
+cmd_buffer_depth: 2
+cmd_buffer_buffered: true
+with_auto_precharge: true
 user_ports:
   wb:
     type: wishbone
