@@ -18,6 +18,13 @@ module fpga_ulx4m_ld (
     output wire        uart_tx,
     input  wire        uart_rx,
 
+    // CM4-compatible micro-SD interface on the ULX4M carrier.
+    output wire        sd_clk,
+    output wire        sd_mosi,
+    input  wire        sd_miso,
+    output wire        sd_csn,
+    output wire        sd_pwr_on,
+
     output wire [3:0]  gpdi_dp,
 
     output wire [15:0] ddram_a,
@@ -41,6 +48,9 @@ module fpga_ulx4m_ld (
 wire clk_sys;
 wire pll_sys_locked;
 wire rst_n_sys;
+
+// CM4 SD_PWR_ON is active high. Keep card power enabled while this bitstream runs.
+assign sd_pwr_on = 1'b1;
 
 localparam integer SYS_CLK_MHZ = `HAZARD3_ULX4M_SYS_CLK_MHZ;
 
@@ -219,6 +229,7 @@ example_soc #(
     .CLK_MHZ            (SYS_CLK_MHZ),
     .SDRAM_ENABLE       (1),
     .LITEDRAM_ENABLE     (1),
+    .SD_SPI_ENABLE       (1),
 
     .EXTENSION_M        (1),
     .EXTENSION_A        (0),
@@ -255,6 +266,11 @@ example_soc #(
 
     .gpio_out (soc_gpio_out),
 
+    .sd_clk  (sd_clk),
+    .sd_mosi (sd_mosi),
+    .sd_miso (sd_miso),
+    .sd_csn  (sd_csn),
+
     .sdram_a    (unused_sdram_a),
     .sdram_ba   (unused_sdram_ba),
     .sdram_d    (unused_sdram_d),
@@ -265,7 +281,7 @@ example_soc #(
     .sdram_casn (unused_sdram_casn),
     .sdram_wen  (unused_sdram_wen),
 
-    // LiteDRAM keeps its proven 25 MHz reference while Hazard3 runs at 50 MHz.
+    // LiteDRAM keeps its proven 25 MHz reference while Hazard3 uses the selected system clock.
     .litedram_ref_clk    (clk_osc),
     .ddram_a             (ddram_a),
     .ddram_ba            (ddram_ba),
