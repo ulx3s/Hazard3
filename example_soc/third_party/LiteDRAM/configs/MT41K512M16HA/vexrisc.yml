@@ -1,0 +1,19 @@
+cpu: vexriscv
+cpu_variant: minimal
+uart: fifo
+device: LFE5UM-85F-8BG381C
+memtype: DDR3
+sdram_module: MT41K512M16
+sdram_module_nb: 2
+sdram_rank_nb: 1
+sdram_phy: ECP5DDRPHY
+input_clk_freq: 25e6
+sys_clk_freq: 60e6
+init_clk_freq: 25e6
+cmd_buffer_depth: 2
+cmd_buffer_buffered: true
+with_auto_precharge: true
+user_ports:
+  wb:
+    type: wishbone
+    data_width: 128

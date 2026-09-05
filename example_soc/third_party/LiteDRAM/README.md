@@ -1,94 +1,54 @@
 # LiteDRAM generated core
 
-This directory contains the generated LiteDRAM 2024.12 / LiteX 2024.12
-ECP5DDRPHY core used by the ULX4M-LD target. The fitted DRAM is a Micron
-MT41K512M16HA-125 (D9SWB), 8 Gbit x16 DDR3L device.
+This directory contains the LiteDRAM 2024.12 / LiteX 2024.12 ECP5DDRPHY core
+used by the ULX4M-LD target. ULX4M-LD boards may contain either of these x16
+DDR3 devices:
 
-The core receives the board's 25 MHz oscillator and generates a 75 MHz
-LiteDRAM user clock and 150 MHz DDR clock. Hazard3 runs independently at the
+| Board part number | LiteDRAM module class | Capacity |
+| --- | --- | ---: |
+| Micron `MT41K512M16HA` | `MT41K512M16` | 1 GiB |
+| Alliance `AS4C256M16D3` | `AS4C256M16D3A` | 512 MiB |
+
+The core receives the board's 25 MHz oscillator and generates a 60 MHz
+LiteDRAM user clock and 120 MHz DDR clock. Hazard3 runs independently at the
 board-build system clock and crosses to the generated Wishbone port through
 `soc/ahb_litedram.v`.
 
-The 8-Gbit device uses 16 row-address signals (`ddram_a[15:0]`); A15 is FPGA
-pin P18 on ULX4M-LD. The generated 1-GiB core exposes a 26-bit 128-bit-word
-Wishbone address. The adapter preserves the current 64-MiB Hazard3/Doom memory
-window by keeping the upper four Wishbone word-address bits at zero.
+## Regeneration
 
-`generated-serv/LITEDRAM_VERSIONS.txt` and
-`generated-vexrisc/LITEDRAM_VERSIONS.txt` record the exact runtime build IDs
-and clock configuration for each generated CPU variant.
+The checked-in YAML files beneath `configs/` are the source of truth for RAM
+geometry, LiteDRAM settings, and initialization CPU. Select the physical RAM
+part number when regenerating:
 
-## SERV
-
-```
-cpu: serv
-cpu_variant: standard
-uart: fifo
-device: LFE5UM-85F-8BG381C
-memtype: DDR3
-sdram_module: MT41K512M16
-sdram_module_nb: 2
-sdram_rank_nb: 1
-sdram_phy: ECP5DDRPHY
-input_clk_freq: 25e6
-sys_clk_freq: 75e6
-init_clk_freq: 25e6
-user_ports:
-  wb:
-    type: wishbone
-    data_width: 128
+```bash
+./regenerate-ulx4m.sh MT41K512M16HA
+./regenerate-ulx4m.sh AS4C256M16D3
 ```
 
-Versions
+Each command regenerates both CPU variants:
 
-```
-ULX4M-LD-LITEDRAM-SERV-20260829
-LiteDRAM=2024.12
-LiteX=2024.12
-Migen=0.9.2
-pythondata-cpu-serv=1.2.0.post146
-SERV_variant=standard
-FPGA=LFE5UM-85F-8BG381C
-litedram_input_clock_hz=25000000
-hazard3_system_clock_hz=50000000
-litedram_sys_clock_hz=75000000
-ddr_clock_hz=150000000
-memory_class=MT41K512M16
-memory_geometry=16-row,10-column,3-bank,x16,8-Gbit
-FPGA_BUILD_ID=0x4C445035
-DDR_CORE_BUILD_ID=0x32343132
-DDR_ADAPTER_BUILD_ID=0x41444C35
-FIRMWARE_BUILD_ID=0x48335235
-DOOM_IMAGE_BUILD_ID=0x44335235
+```text
+generated-serv/
+generated-vexrisc/
 ```
 
-## VexRISC-V
+The generated directories therefore contain one RAM profile at a time. Before
+building or testing a board, check `LITEDRAM_VERSIONS.txt` in the selected CPU
+directory and confirm that `ram_part` matches the fitted DDR3 device.
 
-```
-cpu: vexriscv
-cpu_variant: minimal
-uart: fifo
-device: LFE5UM-85F-8BG381C
-memtype: DDR3
-sdram_module: MT41K512M16
-sdram_module_nb: 2
-sdram_rank_nb: 1
-sdram_phy: ECP5DDRPHY
-input_clk_freq: 25e6
-sys_clk_freq: 75e6
-init_clk_freq: 25e6
-user_ports:
-  wb:
-    type: wishbone
-    data_width: 128
-```
+`regenerate-ulx4m.sh` performs host-tool checks. The Python implementation in
+`regenerate-ulx4m.py` verifies pinned LiteX packages, installs the pinned CPU
+and software-data packages into an isolated temporary directory, invokes
+LiteDRAM, embeds the selected CPU RTL, normalizes initialization-file paths,
+and records the selected source profile. Set `HAZARD3_ULX4M_REUSE_TMP` to a
+preserved temporary directory when continuing a failed generation attempt.
 
-Versions
+The manually maintained `litedram_ulx4m_cpu.v` wrapper selects SERV or VexRisc
+at FPGA build time. Generated Verilog and initialization files must not be
+edited manually.
 
-```
-LiteDRAM=2024.12
-LiteX=2024.12
-Migen=0.9.2
-pythondata-cpu-vexriscv=1.0.1.post407
-VexRiscv_variant=minimal
-```
+The Micron core exposes 16 row-address bits and a 26-bit, 128-bit-word
+Wishbone address. The Alliance core exposes 15 row-address bits and a 25-bit
+Wishbone address because the device has half the density. Both capacities are
+larger than the 64 MiB external-memory window currently exposed by
+Hazard3-Doom.

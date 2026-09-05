@@ -43,7 +43,7 @@ module fpga_ulx4m_ld (
 );
 
 // Match the proven ULX3S Hazard3 clock rate. LiteDRAM still receives the
-// board's direct 25 MHz oscillator and generates its independent 75/150 MHz
+// board's direct 25 MHz oscillator and generates its independent 60/120 MHz
 // memory clock domains; the existing bundled-data CDC crosses between them.
 wire clk_sys;
 wire pll_sys_locked;

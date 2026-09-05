@@ -530,5 +530,5 @@ CoreMark 1.0 : 4.024469 / GCC15.1.0 -O3 -g -march=rv32ema_zba_zbb_zbc_zbkb_zbkx_
 
 ### Email
 
-- [ulx3s.fpga@gmail.com](ulx3s.fpga@gmail.com) (If you do not use chats)
+- [ulx3s.fpga@gmail.com](mailto:ulx3s.fpga@gmail.com) (If you do not use chats)
 
