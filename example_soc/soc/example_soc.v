@@ -13,6 +13,7 @@ module example_soc #(
 	parameter SRAM_DEPTH = 1 << 15, // Default 32 kwords -> 128 kB
 	parameter SRAM_PRELOAD_FILE = "", // Optional resident firmware EBR image
 	parameter SRAM_HAS_WRITE_BUFFER = 1, // Zero-wait write/read forwarding
+	parameter GPIO_IN_WIDTH = 8,    // Default input width; board tops may override.
 	parameter CLK_MHZ    = 12,      // For timer timebase
 	parameter SDRAM_ENABLE = 0,     // Enable the external SDR SDRAM target
 	parameter LITEDRAM_ENABLE = 0,  // Use LiteDRAM DDR3 instead of SDR SDRAM
@@ -46,7 +47,8 @@ module example_soc #(
 	output wire              uart_tx,
 	input  wire              uart_rx,
 
-	output wire [7:0]        gpio_out,
+	input  wire [(GPIO_IN_WIDTH - 1):0] gpio_in,
+	output wire [7:0]                   gpio_out,
 
 	// SAO v1.69bis bridge. The board wrapper owns the bidirectional pads.
 	input  wire              sao_sda_i,
@@ -473,7 +475,8 @@ hazard3_cpu_1port #(
 // - SDRAM at.......... 0x2000_0000 (up to 64 MB)
 // - System timer at.. 0x4000_0000
 // - UART at.......... 0x4000_4000
-// - GPIO at.......... 0x4000_8000
+// - GPIO output at... 0x4000_8000
+// - GPIO input at.... 0x4000_8004
 // - HDMI/video at.... 0x4000_c000
 
 // AHBL layer
@@ -954,7 +957,9 @@ uart_mini uart_u (
 	.dreq         (/* unused */)
 );
 
-apb_gpio gpio_u (
+apb_gpio #(
+	.GPIO_IN_WIDTH (GPIO_IN_WIDTH)
+) gpio_u (
 	.clk           (clk),
 	.rst_n         (rst_n),
 
@@ -967,6 +972,7 @@ apb_gpio gpio_u (
 	.apbs_pready   (gpio_pready),
 	.apbs_pslverr  (gpio_pslverr),
 
+	.gpio_in       (gpio_in),
 	.gpio_out      (gpio_out)
 );
 

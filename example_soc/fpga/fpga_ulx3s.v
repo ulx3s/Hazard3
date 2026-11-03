@@ -10,6 +10,9 @@
 module fpga_ulx3s (
 	input  wire       clk_osc,
 	output wire [7:0] led,
+	input  wire [3:0] sw,
+	input  wire btn_pwr_n, // B0 power/reset button; active low
+	input  wire [6:1] btn, // F1, F2, UP, DOWN, LEFT, RIGHT; active high
 
 	output wire       uart_tx,
 	input  wire       uart_rx,
@@ -49,6 +52,20 @@ wire clk_sys;
 wire pll_sys_locked;
 wire rst_n_sys;
 
+// Synchronize asynchronous board inputs before exposing them to the CPU.
+// Bits 0..3: SW1..SW4; bits 4..9: F1, F2, UP, DOWN, LEFT, RIGHT.
+reg [9:0] gpio_input_meta;
+reg [9:0] gpio_input_sync;
+always @(posedge clk_sys or negedge rst_n_sys) begin
+    if (!rst_n_sys) begin
+        gpio_input_meta <= 10'h000;
+        gpio_input_sync <= 10'h000;
+    end else begin
+        gpio_input_meta <= {btn, sw};
+        gpio_input_sync <= gpio_input_meta;
+    end
+end
+
 `ifdef HAZARD3_ULX3S_12F
 /*
  * The ULX3S 12F is a compact board with a 40 MHz system clock. The 12F
@@ -67,38 +84,35 @@ pll_25_40 pll_sys (
 	.locked  (pll_sys_locked)
 );
 `else
-/* The ULX3S 85F has a 50 MHz system clock. The 85F has a larger EBR profile than
- * the 12F, so the video framebuffer can be implemented in EBR. The 85F has
- * a larger SDRAM chip than the 12F, so the framebuffer is limited to 64 MiB
- * and the SDRAM cache is limited to 64 KiB.
- *
- * The HAS_REGISTERED_READ_HITS is optional here. The timing closure will likely
- * succeed at 50MHz with or without it.
+/* The ULX3S 85F runs the CPU and SDRAM at the board oscillator's 25 MHz.
+ * The EBR framebuffer and the 64 KiB SDRAM cache remain unchanged.
+ * The 12F continues to use its separate 40 MHz system PLL.
  */
-pll_25_50 pll_sys (
-	.clkin   (clk_osc),
-	.clkout0 (clk_sys),
-	.locked  (pll_sys_locked)
-);
+assign clk_sys = clk_osc;
+assign pll_sys_locked = 1'b1;
 `endif
 
 fpga_reset #(
 	.SHIFT (3)
 ) rstgen (
 	.clk         (clk_sys),
-	.force_rst_n (pll_sys_locked),
+	.force_rst_n (pll_sys_locked & btn_pwr_n),
 	.rst_n       (rst_n_sys)
 );
 
-// Keep the proven Hazard3/SDRAM clock tree unchanged. HDMI uses a second PLL,
-// so initial video bring-up cannot disturb CPU, JTAG, UART or SDRAM timing.
+// HDMI uses an independent PLL. The 85F outputs 640x480 using 25/125 MHz;
+// the 12F retains its existing 1024x600 output at 50/250 MHz.
 wire clk_video_pix;
 wire clk_tmds_x5;
 wire pll_video_locked;
 wire rst_n_video_pix;
 wire rst_n_tmds_x5;
 
+`ifdef HAZARD3_ULX3S_12F
 pll_25_50_250 pll_video (
+`else
+pll_25_25_125 pll_video (
+`endif
 	.clkin        (clk_osc),
 	.clk_pix      (clk_video_pix),
 	.clk_tmds_x5  (clk_tmds_x5),
@@ -109,7 +123,7 @@ fpga_reset #(
 	.SHIFT (3)
 ) rstgen_video_pix (
 	.clk         (clk_video_pix),
-	.force_rst_n (pll_video_locked),
+	.force_rst_n (pll_video_locked & btn_pwr_n),
 	.rst_n       (rst_n_video_pix)
 );
 
@@ -117,7 +131,7 @@ fpga_reset #(
 	.SHIFT (3)
 ) rstgen_tmds (
 	.clk         (clk_tmds_x5),
-	.force_rst_n (pll_video_locked),
+	.force_rst_n (pll_video_locked & btn_pwr_n),
 	.rst_n       (rst_n_tmds_x5)
 );
 
@@ -224,7 +238,7 @@ localparam integer SOC_SDRAM_COLUMN_WIDTH = 10;
 `endif /* HAZARD3_SDRAM_32MB */
 
 `else /* ! HAZARD3_ULX3S_12F */
-localparam integer SOC_CLK_MHZ = 50;
+localparam integer SOC_CLK_MHZ = 25;
 localparam [31:0] FPGA_BUILD_ID = 32'h554c5035; // ASCII "ULP5"
 localparam ULX3S_SDRAM_SCANOUT = 1'b0;
 `ifdef HAZARD3_HDMI_EXTENDED_MODES
@@ -332,7 +346,8 @@ end
 endgenerate
 `else
 ulx3s_hdmi_framebuffer #(
-    .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES)
+    .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES),
+    .VIDEO_640X480        (1'b1)
 ) hdmi_framebuffer_u (
 	.clk_sys          (clk_sys),
 	.rst_n_sys        (rst_n_sys),
@@ -361,7 +376,7 @@ ulx3s_hdmi_framebuffer #(
 );
 `endif
 
-// Forward an inverted copy of the 50 MHz system clock. Commands and data are
+// Forward an inverted copy of the system clock. Commands and data are
 // launched on clk_sys rising edges and reach the SDRAM half a cycle before
 // its rising clock edge.
 ddr_out sdram_clock_u (
@@ -378,6 +393,7 @@ example_soc #(
 	.SRAM_DEPTH                  (SOC_SRAM_DEPTH),
 	.SRAM_PRELOAD_FILE           (SOC_SRAM_PRELOAD_FILE),
 	.SRAM_HAS_WRITE_BUFFER       (1),
+	.GPIO_IN_WIDTH               (10),
 	.CLK_MHZ                     (SOC_CLK_MHZ),
 	.SDRAM_ENABLE                (1),
 	.LITEDRAM_ENABLE             (0),
@@ -431,6 +447,7 @@ example_soc #(
 	.sd_miso (sd_miso),
 	.sd_csn  (sd_csn),
 
+    .gpio_in  (gpio_input_sync),
     .gpio_out (led),
 
     .sao_sda_i         (sao_sda),

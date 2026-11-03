@@ -17,9 +17,9 @@ endif
 
 SYNTH_OPT=-abc9
 # Bring-up target: timing failures remain visible in the nextpnr report.
-PNR_OPT=--timing-allow-fail
+PNR_OPT=--timing-allow-fail --speed 6
 
-DEVICE=um5g-85k
+DEVICE=85k
 PACKAGE=CABGA381
 
 include $(SCRIPTS)/synth_ecp5.mk

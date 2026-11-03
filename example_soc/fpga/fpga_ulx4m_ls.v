@@ -196,6 +196,7 @@ example_soc #(
 	.uart_tx (uart_tx),
 	.uart_rx (uart_rx),
 
+    .gpio_in  (8'h00),
     .gpio_out (gpio_out),
 
 	.sdram_a    (sdram_a),
