@@ -14,7 +14,8 @@
 // SDRAM-to-block-RAM DMA from every Doom frame. The original SDRAM DMA path is
 // retained for monitor diagnostics and backward compatibility.
 //
-// The Elecrow panel is driven at 1024x600. The standard source remains 320x200.
+// The standard source remains 320x200. VIDEO_640X480 selects a 640x480
+// output with conventional 800x525 timing, independently of the source size.
 // CONTROL_HIGH_RES optionally selects a 400x240 8-bpp source. CONTROL_GUI_RES
 // selects a packed 512x300 4-bpp indexed source, which scales exactly 2x in
 // both directions. The GUI reuses the existing EBR frame banks; no additional
@@ -27,6 +28,7 @@
 // buffer, so palette changes become visible atomically with the matching frame.
 module ulx3s_hdmi_framebuffer #(
     parameter EXTENDED_VIDEO_MODES = 1'b1,
+    parameter VIDEO_640X480 = 1'b0,
     parameter [24:0] FRAMEBUFFER0_HALFWORD_BASE = 25'h1e00000,
     parameter [24:0] FRAMEBUFFER1_HALFWORD_BASE = 25'h1e08000,
     parameter [24:0] FRAMEBUFFER1_HIGH_HALFWORD_BASE = 25'h1e0c000,
@@ -59,16 +61,18 @@ module ulx3s_hdmi_framebuffer #(
     output wire [3:0]  gpdi_dp
 );
 
-localparam H_ACTIVE = 1024;
-localparam H_FRONT  = 48;
+// Standard 640x480: 800 pixels/line, 525 lines/frame, negative H/V sync.
+// At the board's exact 25 MHz pixel clock this is approximately 59.52 Hz.
+localparam H_ACTIVE = VIDEO_640X480 ? 640 : 1024;
+localparam H_FRONT  = VIDEO_640X480 ? 16 : 48;
 localparam H_SYNC   = 96;
-localparam H_BACK   = 144;
+localparam H_BACK   = VIDEO_640X480 ? 48 : 144;
 localparam H_TOTAL  = H_ACTIVE + H_FRONT + H_SYNC + H_BACK;
 
-localparam V_ACTIVE = 600;
-localparam V_FRONT  = 3;
-localparam V_SYNC   = 10;
-localparam V_BACK   = 11;
+localparam V_ACTIVE = VIDEO_640X480 ? 480 : 600;
+localparam V_FRONT  = VIDEO_640X480 ? 10 : 3;
+localparam V_SYNC   = VIDEO_640X480 ? 2 : 10;
+localparam V_BACK   = VIDEO_640X480 ? 33 : 11;
 localparam V_TOTAL  = V_ACTIVE + V_FRONT + V_SYNC + V_BACK;
 
 localparam STANDARD_SOURCE_WIDTH = 320;
@@ -501,10 +505,12 @@ reg swap_gui_res_sync0;
 reg swap_gui_res_sync1;
 
 wire active_video_now = pixel_x < H_ACTIVE && pixel_y < V_ACTIVE;
-wire hsync_now = pixel_x >= H_ACTIVE + H_FRONT
+wire hsync_pulse = pixel_x >= H_ACTIVE + H_FRONT
     && pixel_x < H_ACTIVE + H_FRONT + H_SYNC;
-wire vsync_now = pixel_y >= V_ACTIVE + V_FRONT
+wire vsync_pulse = pixel_y >= V_ACTIVE + V_FRONT
     && pixel_y < V_ACTIVE + V_FRONT + V_SYNC;
+wire hsync_now = VIDEO_640X480 ? !hsync_pulse : hsync_pulse;
+wire vsync_now = VIDEO_640X480 ? !vsync_pulse : vsync_pulse;
 wire image_region_now = active_video_now;
 wire vblank_start = pixel_x == 0 && pixel_y == V_ACTIVE;
 assign vblank_pix = pixel_y >= V_ACTIVE;
@@ -608,7 +614,7 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
             end else begin
                 pixel_y <= pixel_y + 1'b1;
                 if (pixel_y < V_ACTIVE - 1) begin
-                    if (current_gui_res_pix) begin
+                    if (current_gui_res_pix && !VIDEO_640X480) begin
                         // 300 source lines map exactly to 600 panel lines.
                         vertical_phase <= 10'd0;
                         if (pixel_y[0])
@@ -625,7 +631,7 @@ always @ (posedge clk_pix or negedge rst_n_pix) begin
         end else begin
             pixel_x <= pixel_x + 1'b1;
             if (pixel_x < H_ACTIVE - 1) begin
-                if (current_gui_res_pix) begin
+                if (current_gui_res_pix && !VIDEO_640X480) begin
                     // 512 source pixels map exactly to 1024 panel pixels.
                     horizontal_phase <= 11'd0;
                     if (pixel_x[0])
@@ -819,7 +825,7 @@ ulx3s_tmds_ddr_serialiser serialise_blue_u (
 );
 
 // LSB-first serialization of 10'b0000011111 generates a 50% duty-cycle TMDS
-// clock at the 50 MHz pixel rate.
+// clock at the pixel rate (50 MHz 1024x767, 25 MHz 640x480).
 ulx3s_tmds_ddr_serialiser serialise_clock_u (
     .clk_tmds_x5 (clk_tmds_x5),
     .rst_n        (rst_n_tmds_x5),

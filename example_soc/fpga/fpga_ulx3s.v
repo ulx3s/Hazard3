@@ -84,19 +84,12 @@ pll_25_40 pll_sys (
 	.locked  (pll_sys_locked)
 );
 `else
-/* The ULX3S 85F has a 50 MHz system clock. The 85F has a larger EBR profile than
- * the 12F, so the video framebuffer can be implemented in EBR. The 85F has
- * a larger SDRAM chip than the 12F, so the framebuffer is limited to 64 MiB
- * and the SDRAM cache is limited to 64 KiB.
- *
- * The HAS_REGISTERED_READ_HITS is optional here. The timing closure will likely
- * succeed at 50MHz with or without it.
+/* The ULX3S 85F runs the CPU and SDRAM at the board oscillator's 25 MHz.
+ * The EBR framebuffer and the 64 KiB SDRAM cache remain unchanged.
+ * The 12F continues to use its separate 40 MHz system PLL.
  */
-pll_25_50 pll_sys (
-	.clkin   (clk_osc),
-	.clkout0 (clk_sys),
-	.locked  (pll_sys_locked)
-);
+assign clk_sys = clk_osc;
+assign pll_sys_locked = 1'b1;
 `endif
 
 fpga_reset #(
@@ -107,15 +100,19 @@ fpga_reset #(
 	.rst_n       (rst_n_sys)
 );
 
-// Keep the proven Hazard3/SDRAM clock tree unchanged. HDMI uses a second PLL,
-// so initial video bring-up cannot disturb CPU, JTAG, UART or SDRAM timing.
+// HDMI uses an independent PLL. The 85F outputs 640x480 using 25/125 MHz;
+// the 12F retains its existing 1024x600 output at 50/250 MHz.
 wire clk_video_pix;
 wire clk_tmds_x5;
 wire pll_video_locked;
 wire rst_n_video_pix;
 wire rst_n_tmds_x5;
 
+`ifdef HAZARD3_ULX3S_12F
 pll_25_50_250 pll_video (
+`else
+pll_25_25_125 pll_video (
+`endif
 	.clkin        (clk_osc),
 	.clk_pix      (clk_video_pix),
 	.clk_tmds_x5  (clk_tmds_x5),
@@ -241,7 +238,7 @@ localparam integer SOC_SDRAM_COLUMN_WIDTH = 10;
 `endif /* HAZARD3_SDRAM_32MB */
 
 `else /* ! HAZARD3_ULX3S_12F */
-localparam integer SOC_CLK_MHZ = 50;
+localparam integer SOC_CLK_MHZ = 25;
 localparam [31:0] FPGA_BUILD_ID = 32'h554c5035; // ASCII "ULP5"
 localparam ULX3S_SDRAM_SCANOUT = 1'b0;
 `ifdef HAZARD3_HDMI_EXTENDED_MODES
@@ -349,7 +346,8 @@ end
 endgenerate
 `else
 ulx3s_hdmi_framebuffer #(
-    .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES)
+    .EXTENDED_VIDEO_MODES (HDMI_EXTENDED_VIDEO_MODES),
+    .VIDEO_640X480        (1'b1)
 ) hdmi_framebuffer_u (
 	.clk_sys          (clk_sys),
 	.rst_n_sys        (rst_n_sys),
@@ -378,7 +376,7 @@ ulx3s_hdmi_framebuffer #(
 );
 `endif
 
-// Forward an inverted copy of the 50 MHz system clock. Commands and data are
+// Forward an inverted copy of the system clock. Commands and data are
 // launched on clk_sys rising edges and reach the SDRAM half a cycle before
 // its rising clock edge.
 ddr_out sdram_clock_u (
